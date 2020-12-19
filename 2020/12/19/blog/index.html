@@ -23,12 +23,12 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
+<meta name="description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/12/19/blog/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
+<meta property="og:description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-19T15:59:20.000Z">
 <meta property="article:modified_time" content="2020-12-19T16:04:19.201Z">
@@ -88,7 +88,11 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -147,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Model"><span class="nav-number">1.1.</span> <span class="nav-text">1. Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Strategy"><span class="nav-number">1.2.</span> <span class="nav-text">2. Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E5%8F%AF%E5%88%86%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 数据可分性</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Model"><span class="nav-number">1.1.</span> <span class="nav-text">1. Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Strategy"><span class="nav-number">1.2.</span> <span class="nav-text">2. Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E5%8F%AF%E5%88%86%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 数据可分性</span></a></li></ol></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -244,38 +248,57 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h1><p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
-<h2 id="1-Model"><a href="#1-Model" class="headerlink" title="1. Model"></a>1. Model</h2><blockquote>
-<p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:</p>
-<script type="math/tex; mode=display">
-f(x)=\operatorname{sign}(w \cdot x+b)</script><p>称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即</p>
-<script type="math/tex; mode=display">
-\operatorname{sign}(x)=\left\{\begin{array}{ll}
-+1, & x \geqslant 0 \\
--1, & x<0
-\end{array}\right.</script></blockquote>
+        <h1>感知机</h1>
+<p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
+<h2 id="1-Model">1. Model</h2>
+<blockquote>
+<p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:<br>
+$$<br>
+f(x)=\operatorname{sign}(w \cdot x+b)<br>
+$$<br>
+称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即<br>
+$$<br>
+\operatorname{sign}(x)=\left{\begin{array}{ll}<br>
++1, &amp; x \geqslant 0 \<br>
+-1, &amp; x&lt;0<br>
+\end{array}\right.<br>
+$$</p>
+</blockquote>
 <ul>
-<li><p>假设空间：特征空间中的所有线性分类模型，即函数集合${f|f(x)=w \cdot x+b}$</p>
+<li>
+<p>假设空间：特征空间中的所有线性分类模型，即函数集合${f|f(x)=w \cdot x+b}$</p>
 </li>
-<li><p>几何解释：线性方程$w \cdot x+b=0$是特征空间$\mathbf{R}^{n}$的一个超平面$\mathbf{S}$，把特征空间分成2个部分，使得特征向量分别划入正负两类。$\mathbf{S}$也叫分离超平面（separating hyperplane)</p>
+<li>
+<p>几何解释：线性方程$w \cdot x+b=0$是特征空间$\mathbf{R}^{n}$的一个超平面$\mathbf{S}$，把特征空间分成2个部分，使得特征向量分别划入正负两类。$\mathbf{S}$也叫分离超平面（separating hyperplane)</p>
 <ul>
 <li>超平面$\mathbf{S}\subseteq \mathbf{R}^{n-1}$并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
 </ul>
 </li>
-<li>例子：<ul>
-<li>通过${房屋面积，房龄，…}$来判断房子总价是否高于价格$a$<ul>
+<li>
+<p>例子：</p>
+<ul>
+<li>通过${房屋面积，房龄，…}$来判断房子总价是否高于价格$a$
+<ul>
 <li>假设数据集线性可分</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="2-Strategy"><a href="#2-Strategy" class="headerlink" title="2. Strategy"></a>2. Strategy</h2><h3 id="2-1-数据可分性"><a href="#2-1-数据可分性" class="headerlink" title="2.1 数据可分性"></a>2.1 数据可分性</h3><blockquote>
-<p>定义 2.2 (数据集的线性可分性) $\quad$ 给定一个数据集</p>
-<script type="math/tex; mode=display">
-T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}</script><p>其中， $x<em>{i} \in \mathcal{X}=\mathbf{R}^{n}, y</em>{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N,$ 如果存在某个超平面 $S$</p>
-<script type="math/tex; mode=display">
-w \cdot x+b=0</script><p>能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>$y<em>{i}=+1$ 的实例 $i,$ 有 $w \cdot x</em>{i}+b&gt;0,$ 对所有 $y<em>{i}=-1$ 的实例 $i,$ 有 $w \cdot x</em>{i}+b&lt;0,$ 则 称数据集 $T$ 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 $T$ 线性<br>不可分。</p>
+<h2 id="2-Strategy">2. Strategy</h2>
+<h3 id="2-1-数据可分性">2.1 数据可分性</h3>
+<blockquote>
+<p>定义 2.2 (数据集的线性可分性) $\quad$ 给定一个数据集<br>
+$$<br>
+T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}<br>
+$$<br>
+其中， $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N,$ 如果存在某个超平面 $S$<br>
+$$<br>
+w \cdot x+b=0<br>
+$$<br>
+能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>
+$y_{i}=+1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&gt;0,$ 对所有 $y_{i}=-1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&lt;0,$ 则 称数据集 $T$ 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 $T$ 线性<br>
+不可分。</p>
 </blockquote>
 <ul>
 <li>存在超平面$\mathbf{S}\Longrightarrow $数据集线性可分</li>
@@ -369,8 +392,6 @@ w \cdot x+b=0</script><p>能够将数据集的正实例点和负实例点完全�
 
 
 
-
-  
 
 
 </body>
