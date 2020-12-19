@@ -6,17 +6,17 @@
   
   <title>Chongfeng Ling</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="‘’’ title: 感知机 data: tags: ‘’’ 感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{">
+  <meta name="description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="‘’’ title: 感知机 data: tags: ‘’’ 感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{">
+<meta property="og:description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.1%20Novikoff.png">
 <meta property="article:published_time" content="2020-11-22T02:49:46.032Z">
-<meta property="article:modified_time" content="2020-12-19T15:46:05.679Z">
+<meta property="article:modified_time" content="2020-12-19T16:04:16.546Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
@@ -92,12 +92,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>‘’’</p>
-<p>title: 感知机</p>
-<p>data:</p>
-<p>tags:</p>
-<p>‘’’</p>
-<h1 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h1><p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
+        <h1 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h1><p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
 <h2 id="1-Model"><a href="#1-Model" class="headerlink" title="1. Model"></a>1. Model</h2><blockquote>
 <p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:<br>$$<br>f(x)=\operatorname{sign}(w \cdot x+b)<br>$$<br>称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即<br>$$<br>\operatorname{sign}(x)=\left{\begin{array}{ll}<br>+1, &amp; x \geqslant 0 \<br>-1, &amp; x&lt;0<br>\end{array}\right.<br>$$</p>
 </blockquote>
@@ -252,6 +247,10 @@
       <ul>
         
           <li>
+            <a href="/2020/12/19/blog/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/19/hello-world/">Hello World</a>
           </li>
         
@@ -265,10 +264,6 @@
         
           <li>
             <a href="/2020/11/27/%5BSLM-4%5D%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/23/%5BSLM-3%5D%20K%E8%BF%91%E9%82%BB%E6%B3%95/">(no title)</a>
           </li>
         
       </ul>
