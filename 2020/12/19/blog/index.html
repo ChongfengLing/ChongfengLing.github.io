@@ -23,17 +23,54 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
+<meta name="description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) 假设输入空间（特征空间 ) 是  输出空间是  输入  表示实例的特征向量，对应于输入空间 ( 特征空间  的点; 输出  表示实例的类别。由输入空间到输出空间的如下函数: 称为感知机。其中，  和  为感知机模型参数,  叫作权值（weight ) 或权值向量（weight vector)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/12/19/blog/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
+<meta property="og:description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) 假设输入空间（特征空间 ) 是  输出空间是  输入  表示实例的特征向量，对应于输入空间 ( 特征空间  的点; 输出  表示实例的类别。由输入空间到输出空间的如下函数: 称为感知机。其中，  和  为感知机模型参数,  叫作权值（weight ) 或权值向量（weight vector)">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D_%7B%5Ccirc%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%20%5Cin%20%5Cmathcal%7BX%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%29">
+<meta property="og:image" content="https://math.now.sh?inline=y%20%5Cin%20%5Cmathcal%7BY%7D">
+<meta property="og:image" content="https://math.now.sh?from=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=w">
+<meta property="og:image" content="https://math.now.sh?inline=b">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%2C%20b%20%5Cin%20%5Cmathbf%7BR%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%29%2C%20w%20%5Ccdot%20x">
+<meta property="og:image" content="https://math.now.sh?inline=w">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7Bsign%7D%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%0A%2B1%2C%20%26%20x%20%5Cgeqslant%200%20%5C%5C%0A-1%2C%20%26%20x%3C0%0A%5Cend%7Barray%7D%5Cright.%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%7Bf%7Cf%28x%29%3Dw%20%5Ccdot%20x%2Bb%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x%2Bb%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn-1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%7B%E6%88%BF%E5%B1%8B%E9%9D%A2%E7%A7%AF%EF%BC%8C%E6%88%BF%E9%BE%84%EF%BC%8C...%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=a">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?from=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C">
+<meta property="og:image" content="https://math.now.sh?inline=S">
+<meta property="og:image" content="https://math.now.sh?from=w%20%5Ccdot%20x%2Bb%3D0%0A">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%3D%2B1">
+<meta property="og:image" content="https://math.now.sh?inline=i%2C">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3E0%2C">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%3D-1">
+<meta property="og:image" content="https://math.now.sh?inline=i%2C">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3C0%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=T">
 <meta property="article:published_time" content="2020-12-19T15:59:20.000Z">
 <meta property="article:modified_time" content="2020-12-19T16:04:19.201Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://math.now.sh?inline=%5Cquad">
 
 
 <link rel="canonical" href="http://example.com/2020/12/19/blog/">
@@ -250,32 +287,23 @@
 <p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
 <h2 id="1-Model">1. Model</h2>
 <blockquote>
-<p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:<br>
-$$<br>
-f(x)=\operatorname{sign}(w \cdot x+b)<br>
-$$<br>
-称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即<br>
-$$<br>
-\operatorname{sign}(x)=\left{\begin{array}{ll}<br>
-+1, &amp; x \geqslant 0 \<br>
--1, &amp; x&lt;0<br>
-\end{array}\right.<br>
-$$</p>
-</blockquote>
+<p>定义 2.1 (感知机) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/>假设输入空间（特征空间 ) 是 <img src="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C" style="display:inline-block;margin: 0;"/> 输出空间是 <img src="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D_%7B%5Ccirc%7D" style="display:inline-block;margin: 0;"/> 输入 <img src="https://math.now.sh?inline=x%20%5Cin%20%5Cmathcal%7BX%7D" style="display:inline-block;margin: 0;"/> 表示实例的特征向量，对应于输入空间 ( 特征空间 <img src="https://math.now.sh?inline=%29" style="display:inline-block;margin: 0;"/> 的点; 输出 <img src="https://math.now.sh?inline=y%20%5Cin%20%5Cmathcal%7BY%7D" style="display:inline-block;margin: 0;"/> 表示实例的类别。由输入空间到输出空间的如下函数:</p>
+<p style=""><img src="https://math.now.sh?from=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)%0A" /></p><p>称为感知机。其中， <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"/> 为感知机模型参数, <img src="https://math.now.sh?inline=w%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 叫作权值（weight ) 或权值向量（weight vector) <img src="https://math.now.sh?inline=%2C%20b%20%5Cin%20%5Cmathbf%7BR%7D" style="display:inline-block;margin: 0;"/> 叫作偏置 ( bias <img src="https://math.now.sh?inline=%29%2C%20w%20%5Ccdot%20x" style="display:inline-block;margin: 0;"/> 表示 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的内积。sign 是符号 函数，即</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7Bsign%7D%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%0A%2B1%2C%20%26%20x%20%5Cgeqslant%200%20%5C%5C%0A-1%2C%20%26%20x%3C0%0A%5Cend%7Barray%7D%5Cright.%0A" /></p></blockquote>
 <ul>
 <li>
-<p>假设空间：特征空间中的所有线性分类模型，即函数集合${f|f(x)=w \cdot x+b}$</p>
+<p>假设空间：特征空间中的所有线性分类模型，即函数集合<img src="https://math.now.sh?inline=%5C%7Bf%7Cf%28x%29%3Dw%20%5Ccdot%20x%2Bb%5C%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>几何解释：线性方程$w \cdot x+b=0$是特征空间$\mathbf{R}^{n}$的一个超平面$\mathbf{S}$，把特征空间分成2个部分，使得特征向量分别划入正负两类。$\mathbf{S}$也叫分离超平面（separating hyperplane)</p>
+<p>几何解释：线性方程<img src="https://math.now.sh?inline=w%20%5Ccdot%20x%2Bb%3D0" style="display:inline-block;margin: 0;"/>是特征空间<img src="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/>的一个超平面<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D" style="display:inline-block;margin: 0;"/>，把特征空间分成2个部分，使得特征向量分别划入正负两类。<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D" style="display:inline-block;margin: 0;"/>也叫分离超平面（separating hyperplane)</p>
 <ul>
-<li>超平面$\mathbf{S}\subseteq \mathbf{R}^{n-1}$并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
+<li>超平面<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn-1%7D" style="display:inline-block;margin: 0;"/>并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
 </ul>
 </li>
 <li>
 <p>例子：</p>
 <ul>
-<li>通过${房屋面积，房龄，…}$来判断房子总价是否高于价格$a$
+<li>通过<img src="https://math.now.sh?inline=%5C%7B%E6%88%BF%E5%B1%8B%E9%9D%A2%E7%A7%AF%EF%BC%8C%E6%88%BF%E9%BE%84%EF%BC%8C...%5C%7D" style="display:inline-block;margin: 0;"/>来判断房子总价是否高于价格<img src="https://math.now.sh?inline=a" style="display:inline-block;margin: 0;"/>
 <ul>
 <li>假设数据集线性可分</li>
 </ul>
@@ -286,16 +314,10 @@ $$</p>
 <h2 id="2-Strategy">2. Strategy</h2>
 <h3 id="2-1-数据可分性">2.1 数据可分性</h3>
 <blockquote>
-<p>定义 2.2 (数据集的线性可分性) $\quad$ 给定一个数据集<br>
-$$<br>
-T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}<br>
-$$<br>
-其中， $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N,$ 如果存在某个超平面 $S$<br>
-$$<br>
-w \cdot x+b=0<br>
-$$<br>
-能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>
-$y_{i}=+1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&gt;0,$ 对所有 $y_{i}=-1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&lt;0,$ 则 称数据集 $T$ 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 $T$ 线性<br>
+<p>定义 2.2 (数据集的线性可分性) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/> 给定一个数据集</p>
+<p style=""><img src="https://math.now.sh?from=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A" /></p><p>其中， <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C" style="display:inline-block;margin: 0;"/> 如果存在某个超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=w%20%5Ccdot%20x%2Bb%3D0%0A" /></p><p>能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>
+<img src="https://math.now.sh?inline=y_%7Bi%7D%3D%2B1" style="display:inline-block;margin: 0;"/> 的实例 <img src="https://math.now.sh?inline=i%2C" style="display:inline-block;margin: 0;"/> 有 <img src="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3E0%2C" style="display:inline-block;margin: 0;"/> 对所有 <img src="https://math.now.sh?inline=y_%7Bi%7D%3D-1" style="display:inline-block;margin: 0;"/> 的实例 <img src="https://math.now.sh?inline=i%2C" style="display:inline-block;margin: 0;"/> 有 <img src="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3C0%2C" style="display:inline-block;margin: 0;"/> 则 称数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 线性<br>
 不可分。</p>
 </blockquote>
 <ul>

@@ -23,20 +23,126 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
+<meta name="description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) 假设输入空间（特征空间 ) 是  输出空间是  输入  表示实例的特征向量，对应于输入空间 ( 特征空间  的点; 输出  表示实例的类别。由输入空间到输出空间的如下函数: 称为感知机。其中，  和  为感知机模型参数,  叫作权值（weight ) 或权值向量（weight vector)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间">
+<meta property="og:description" content="感知机 感知机（perceptron）是二类线性分类模型。 1. Model  定义 2.1 (感知机) 假设输入空间（特征空间 ) 是  输出空间是  输入  表示实例的特征向量，对应于输入空间 ( 特征空间  的点; 输出  表示实例的类别。由输入空间到输出空间的如下函数: 称为感知机。其中，  和  为感知机模型参数,  叫作权值（weight ) 或权值向量（weight vector)">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D_%7B%5Ccirc%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%20%5Cin%20%5Cmathcal%7BX%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%29">
+<meta property="og:image" content="https://math.now.sh?inline=y%20%5Cin%20%5Cmathcal%7BY%7D">
+<meta property="og:image" content="https://math.now.sh?from=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=w">
+<meta property="og:image" content="https://math.now.sh?inline=b">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%2C%20b%20%5Cin%20%5Cmathbf%7BR%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%29%2C%20w%20%5Ccdot%20x">
+<meta property="og:image" content="https://math.now.sh?inline=w">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7Bsign%7D%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%0A%2B1%2C%20%26%20x%20%5Cgeqslant%200%20%5C%5C%0A-1%2C%20%26%20x%3C0%0A%5Cend%7Barray%7D%5Cright.%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%7Bf%7Cf%28x%29%3Dw%20%5Ccdot%20x%2Bb%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x%2Bb%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn-1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%7B%E6%88%BF%E5%B1%8B%E9%9D%A2%E7%A7%AF%EF%BC%8C%E6%88%BF%E9%BE%84%EF%BC%8C...%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=a">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?from=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C">
+<meta property="og:image" content="https://math.now.sh?inline=S">
+<meta property="og:image" content="https://math.now.sh?from=w%20%5Ccdot%20x%2Bb%3D0%0A">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%3D%2B1">
+<meta property="og:image" content="https://math.now.sh?inline=i%2C">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3E0%2C">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%3D-1">
+<meta property="og:image" content="https://math.now.sh?inline=i%2C">
+<meta property="og:image" content="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3C0%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=w%2Cb">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5En">
+<meta property="og:image" content="https://math.now.sh?inline=x_0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BS%7D%3D%5C%7Bx%7Cw%5Ccdot%20x%2Bb%3D0%5C%7D">
+<meta property="og:image" content="https://math.now.sh?from=%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%5Cleft%7Cw%20%5Ccdot%20x_%7B0%7D%2Bb%5Cright%7C%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%28x_i%2Cy_i%29">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AD%26%3D%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20%7Cy_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%7C%5Cnonumber%5C%5C%0A%26%3D-%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)%5C%5C%0AL(w%2Cb)%26%3D-%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)%0A%5Cend%7Balign%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%28x_i%2Cy_i%29">
+<meta property="og:image" content="https://math.now.sh?inline=-y_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cgeq0">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N">
+<meta property="og:image" content="https://math.now.sh?inline=w%2Cb">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmin%20_%7Bw%2C%20b%7D%20L%28w%2C%20b%29%3D-%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5Ceta%280%3C%5Ceta%20%5Cleqslant%201%29">
+<meta property="og:image" content="https://math.now.sh?inline=%3A%20w%2C%20b%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)">
+<meta property="og:image" content="https://math.now.sh?inline=w_%7B0%7D%2C%20b_%7B0%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cleqslant%200">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Balign%7D%0Aw%26%20%5Cleftarrow%20w%2B%5Ceta%20y_%7Bi%7D%20x_%7Bi%7D%20%5C%5C%0Ab%20%26%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Balign%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29%2C">
+<meta property="og:image" content="https://math.now.sh?inline=w%2C%20b">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0Aw%20%26%5Cleftarrow%20w%2B%5Ceta%20y_%7Bi%7D%20x_%7Bi%7D%20%5C%5C%0Ab%20%26%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Baligned%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5C%7C%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%5Cright%5C%7C%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20%5Chat%7Bx%7D%3Dw_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20x%2Bb_%7B%5Cmathrm%7Bopt%7D%7D%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cgamma%3E0%2C">
+<meta property="og:image" content="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N">
+<meta property="og:image" content="https://math.now.sh?from=y_%7Bi%7D%5Cleft%28%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20%5Chat%7Bx%7D_%7Bi%7D%5Cright%29%3Dy_%7Bi%7D%5Cleft(w_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20x_%7Bi%7D%2Bb_%7B%5Cmathrm%7Bopt%7D%7D%5Cright)%20%5Cgeqslant%20%5Cgamma%0A">
+<meta property="og:image" content="https://math.now.sh?inline=R%3D%5Cmax%20_%7B1%20%5Cleqslant%20i%20%5Cleqslant%20N%7D%5Cleft%5C%7C%5Chat%7Bx%7D_%7Bi%7D%5Cright%5C%7C%2C">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?from=k%20%5Cleqslant%5Cleft%28%5Cfrac%7BR%7D%7B%5Cgamma%7D%5Cright%29%5E%7B2%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bw%7D%3D%5Cleft%28w%5E%7B%5Cmathrm%7BT%7D%7D%2C%20b%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bx%7D%3D%5Cleft%28x%5E%7B%5Cmathrm%7BT%7D%7D%2C%201%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bx%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%2B1%7D%2C%20%5Chat%7Bw%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%2B1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bw%7D%20%5Ccdot%20%5Chat%7Bx%7D%3Dw%20%5Ccdot%20x%2Bb">
+<meta property="og:image" content="https://math.now.sh?inline=w%2Cb%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%28x_i%2Cy_i%29">
+<meta property="og:image" content="https://math.now.sh?inline=n_i">
+<meta property="og:image" content="https://math.now.sh?inline=N">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0Aw%20%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bi%7D%20y_%7Bi%7D%20x_%7Bi%7D%20%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20n_i%28%5Ceta%20%20y_%7Bi%7D%20x_%7Bi%7D%29%5C%5C%0Ab%20%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bi%7D%20y_%7Bi%7D%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20n_i(%5Ceta%20y_i)%0A%5Cend%7Baligned%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=n_i">
+<meta property="og:image" content="https://math.now.sh?inline=i">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5Ceta%280%3C%5Ceta%20%5Cleqslant%201%29%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%2C%20b%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=f%28x%29%3D%5Coperatorname%7Bsign%7D%5Cleft(%5Csum_%7Bj%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bj%7D%20y_%7Bj%7D%20x_%7Bj%7D%20%5Ccdot%20x%2Bb%5Cright)%2C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%3D%5Cleft%28%5Calpha_%7B1%7D%2C%20%5Calpha_%7B2%7D%2C%20%5Ccdots%2C%20%5Calpha_%7BN%7D%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%20%5Cleftarrow%200%2C%20b%20%5Cleftarrow%200%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%5Cleft%28%5Csum_%7Bj%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bj%7D%20y_%7Bj%7D%20x_%7Bj%7D%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cleqslant%200">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bl%7D%0A%5Calpha_%7Bi%7D%20%5Cleftarrow%20%5Calpha_%7Bi%7D%2B%5Ceta%20%5C%5C%0Ab%20%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Barray%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Ceta%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=n_i%3Dn_i%2B1">
+<meta property="og:image" content="https://math.now.sh?inline=x_i%5Ccdot%20x_j">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BG%7D%3D%5Bx_i%20%5Ccdot%20x_j%5D_%7B%5Cmathbf%7BN%7D%5Ctimes%5Cmathbf%7BN%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=S%20%5Csubset%20%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=S%3D%5Cleft%5C%7Bx_%7B1%7D%2C%20x_%7B2%7D%2C%20%5Ccdots%2C%20x_%7Bk%7D%5Cright%5C%7D%20.">
+<meta property="og:image" content="https://math.now.sh?inline=S">
+<meta property="og:image" content="https://math.now.sh?inline=%5Coperatorname%7Bconv%7D%28S%29">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0A%5Coperatorname%7Bconv%7D%28S%29%3D%5Cleft%5C%7Bx%3D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%20%5Clambda_%7Bi%7D%20x_%7Bi%7D%20%5Cmid%20%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%20%5Clambda_%7Bi%7D%3D1%2C%20%5Clambda_%7Bi%7D%20%5Cgeqslant%200%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20k%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.1%20Novikoff.png">
 <meta property="article:published_time" content="2020-11-22T02:49:46.032Z">
 <meta property="article:modified_time" content="2020-12-19T16:04:16.546Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
+<meta name="twitter:image" content="https://math.now.sh?inline=%5Cquad">
 
 
 <link rel="canonical" href="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/">
@@ -253,32 +359,23 @@
 <p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
 <h2 id="1-Model">1. Model</h2>
 <blockquote>
-<p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:<br>
-$$<br>
-f(x)=\operatorname{sign}(w \cdot x+b)<br>
-$$<br>
-称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即<br>
-$$<br>
-\operatorname{sign}(x)=\left{\begin{array}{ll}<br>
-+1, &amp; x \geqslant 0 \<br>
--1, &amp; x&lt;0<br>
-\end{array}\right.<br>
-$$</p>
-</blockquote>
+<p>定义 2.1 (感知机) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/>假设输入空间（特征空间 ) 是 <img src="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C" style="display:inline-block;margin: 0;"/> 输出空间是 <img src="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D_%7B%5Ccirc%7D" style="display:inline-block;margin: 0;"/> 输入 <img src="https://math.now.sh?inline=x%20%5Cin%20%5Cmathcal%7BX%7D" style="display:inline-block;margin: 0;"/> 表示实例的特征向量，对应于输入空间 ( 特征空间 <img src="https://math.now.sh?inline=%29" style="display:inline-block;margin: 0;"/> 的点; 输出 <img src="https://math.now.sh?inline=y%20%5Cin%20%5Cmathcal%7BY%7D" style="display:inline-block;margin: 0;"/> 表示实例的类别。由输入空间到输出空间的如下函数:</p>
+<p style=""><img src="https://math.now.sh?from=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)%0A" /></p><p>称为感知机。其中， <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"/> 为感知机模型参数, <img src="https://math.now.sh?inline=w%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 叫作权值（weight ) 或权值向量（weight vector) <img src="https://math.now.sh?inline=%2C%20b%20%5Cin%20%5Cmathbf%7BR%7D" style="display:inline-block;margin: 0;"/> 叫作偏置 ( bias <img src="https://math.now.sh?inline=%29%2C%20w%20%5Ccdot%20x" style="display:inline-block;margin: 0;"/> 表示 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的内积。sign 是符号 函数，即</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7Bsign%7D%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%0A%2B1%2C%20%26%20x%20%5Cgeqslant%200%20%5C%5C%0A-1%2C%20%26%20x%3C0%0A%5Cend%7Barray%7D%5Cright.%0A" /></p></blockquote>
 <ul>
 <li>
-<p>假设空间：特征空间中的所有线性分类模型，即函数集合${f|f(x)=w \cdot x+b}$</p>
+<p>假设空间：特征空间中的所有线性分类模型，即函数集合<img src="https://math.now.sh?inline=%5C%7Bf%7Cf%28x%29%3Dw%20%5Ccdot%20x%2Bb%5C%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>几何解释：线性方程$w \cdot x+b=0$是特征空间$\mathbf{R}^{n}$的一个超平面$\mathbf{S}$，把特征空间分成2个部分，使得特征向量分别划入正负两类。$\mathbf{S}$也叫分离超平面（separating hyperplane)</p>
+<p>几何解释：线性方程<img src="https://math.now.sh?inline=w%20%5Ccdot%20x%2Bb%3D0" style="display:inline-block;margin: 0;"/>是特征空间<img src="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/>的一个超平面<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D" style="display:inline-block;margin: 0;"/>，把特征空间分成2个部分，使得特征向量分别划入正负两类。<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D" style="display:inline-block;margin: 0;"/>也叫分离超平面（separating hyperplane)</p>
 <ul>
-<li>超平面$\mathbf{S}\subseteq \mathbf{R}^{n-1}$并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
+<li>超平面<img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn-1%7D" style="display:inline-block;margin: 0;"/>并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
 </ul>
 </li>
 <li>
 <p>例子：</p>
 <ul>
-<li>通过${房屋面积，房龄，…}$来判断房子总价是否高于价格$a$
+<li>通过<img src="https://math.now.sh?inline=%5C%7B%E6%88%BF%E5%B1%8B%E9%9D%A2%E7%A7%AF%EF%BC%8C%E6%88%BF%E9%BE%84%EF%BC%8C...%5C%7D" style="display:inline-block;margin: 0;"/>来判断房子总价是否高于价格<img src="https://math.now.sh?inline=a" style="display:inline-block;margin: 0;"/>
 <ul>
 <li>假设数据集线性可分</li>
 </ul>
@@ -289,16 +386,10 @@ $$</p>
 <h2 id="2-Strategy">2. Strategy</h2>
 <h3 id="2-1-数据可分性">2.1 数据可分性</h3>
 <blockquote>
-<p>定义 2.2 (数据集的线性可分性) $\quad$ 给定一个数据集<br>
-$$<br>
-T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}<br>
-$$<br>
-其中， $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N,$ 如果存在某个超平面 $S$<br>
-$$<br>
-w \cdot x+b=0<br>
-$$<br>
-能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>
-$y_{i}=+1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&gt;0,$ 对所有 $y_{i}=-1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&lt;0,$ 则 称数据集 $T$ 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 $T$ 线性<br>
+<p>定义 2.2 (数据集的线性可分性) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/> 给定一个数据集</p>
+<p style=""><img src="https://math.now.sh?from=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A" /></p><p>其中， <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C" style="display:inline-block;margin: 0;"/> 如果存在某个超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=w%20%5Ccdot%20x%2Bb%3D0%0A" /></p><p>能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>
+<img src="https://math.now.sh?inline=y_%7Bi%7D%3D%2B1" style="display:inline-block;margin: 0;"/> 的实例 <img src="https://math.now.sh?inline=i%2C" style="display:inline-block;margin: 0;"/> 有 <img src="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3E0%2C" style="display:inline-block;margin: 0;"/> 对所有 <img src="https://math.now.sh?inline=y_%7Bi%7D%3D-1" style="display:inline-block;margin: 0;"/> 的实例 <img src="https://math.now.sh?inline=i%2C" style="display:inline-block;margin: 0;"/> 有 <img src="https://math.now.sh?inline=w%20%5Ccdot%20x_%7Bi%7D%2Bb%3C0%2C" style="display:inline-block;margin: 0;"/> 则 称数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 线性<br>
 不可分。</p>
 </blockquote>
 <ul>
@@ -306,59 +397,37 @@ $y_{i}=+1$ 的实例 $i,$ 有 $w \cdot x_{i}+b&gt;0,$ 对所有 $y_{i}=-1$ 的�
 </ul>
 <h3 id="2-2-学习策略">2.2 学习策略</h3>
 <h4 id="2-2-1-误分类点总数">2.2.1 误分类点总数</h4>
-<p>把误分类点总数当成损失函数，不是参数$w,b$的连续可导函数，不易优化</p>
+<p>把误分类点总数当成损失函数，不是参数<img src="https://math.now.sh?inline=w%2Cb" style="display:inline-block;margin: 0;"/>的连续可导函数，不易优化</p>
 <h4 id="2-2-2-误分类点到超平面的总距离">2.2.2 误分类点到超平面的总距离</h4>
 <blockquote>
-<p>定理（2.01) $\quad$空间  $\mathbf{R}^n$中任意一点$x_0$到超平面  $\mathbf{S}={x|w\cdot x+b=0}$ 的距离为<br>
-$$<br>
-\frac{1}{|w|}\left|w \cdot x_{0}+b\right|<br>
-$$</p>
-</blockquote>
-<p>对于误分类数据$(x_i,y_i)$，M为误分类点集合，误分类点到超平面的总距离为<br>
-$$<br>
-\begin{align}<br>
-D&amp;=\frac{1}{|w|} \sum_{x_{i} \in M} |y_{i}\left(w \cdot x_{i}+b\right)|\nonumber\<br>
-&amp;=-\frac{1}{|w|} \sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)\<br>
-L(w,b)&amp;=-\sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)<br>
-\end{align}<br>
-$$</p>
-<ul>
-<li>对误分类点$(x_i,y_i)$，$-y_{i}\left(w \cdot x_{i}+b\right) \geq0$</li>
-<li>(6)是给定数据集$T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}$，其中$x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N$</li>
-<li>(7)非负函数，且对于$w,b$连续可导</li>
-<li>我们的策略是<strong>极小化损失函数</strong>，即$\min <em>{w, b} L(w, b)=-\sum</em>{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)$</li>
+<p>定理（2.01) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/>空间  <img src="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5En" style="display:inline-block;margin: 0;"/>中任意一点<img src="https://math.now.sh?inline=x_0" style="display:inline-block;margin: 0;"/>到超平面  <img src="https://math.now.sh?inline=%5Cmathbf%7BS%7D%3D%5C%7Bx%7Cw%5Ccdot%20x%2Bb%3D0%5C%7D" style="display:inline-block;margin: 0;"/> 的距离为</p>
+<p style=""><img src="https://math.now.sh?from=%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%5Cleft%7Cw%20%5Ccdot%20x_%7B0%7D%2Bb%5Cright%7C%0A" /></p></blockquote>
+<p>对于误分类数据<img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;"/>，M为误分类点集合，误分类点到超平面的总距离为</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AD%26%3D%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20%7Cy_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%7C%5Cnonumber%5C%5C%0A%26%3D-%5Cfrac%7B1%7D%7B%5C%7Cw%5C%7C%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)%5C%5C%0AL(w%2Cb)%26%3D-%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)%0A%5Cend%7Balign%7D%0A" /></p><ul>
+<li>对误分类点<img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=-y_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cgeq0" style="display:inline-block;margin: 0;"/></li>
+<li>(6)是给定数据集<img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D" style="display:inline-block;margin: 0;"/>，其中<img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B%2B1%2C-1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N" style="display:inline-block;margin: 0;"/></li>
+<li>(7)非负函数，且对于<img src="https://math.now.sh?inline=w%2Cb" style="display:inline-block;margin: 0;"/>连续可导</li>
+<li>我们的策略是<strong>极小化损失函数</strong>，即<img src="https://math.now.sh?inline=%5Cmin%20_%7Bw%2C%20b%7D%20L%28w%2C%20b%29%3D-%5Csum_%7Bx_%7Bi%7D%20%5Cin%20M%7D%20y_%7Bi%7D%5Cleft(w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright)" style="display:inline-block;margin: 0;"/></li>
 </ul>
 <h2 id="3-Algorithm">3. Algorithm</h2>
 <p>求解损失函数(7)的最优化问题，通过随机梯度下降(stochastic gradient descent)</p>
 <h3 id="3-1-算法原始形式">3.1 算法原始形式</h3>
 <blockquote>
 <p>算法 2.1（感知机学习算法的原始形式）<br>
-输入: 训练数据集 $T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right},$ 其中 $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in$$\mathcal{Y}={-1,+1}, i=1,2, \cdots, N ;$ 学习率 $\eta(0&lt;\eta \leqslant 1)$;<br>
-输出 $: w, b ;$ 感知机模型 $f(x)=\operatorname{sign}(w \cdot x+b)$ 。<br>
-(1) 选取初值 $w_{0}, b_{0}$;<br>
-(2)在训练集中随机选取数据$\left(x_{i}, y_{i}\right)$;<br>
-(3) 如果 $y_{i}\left(w \cdot x_{i}+b\right) \leqslant 0$,<br>
-$$<br>
-\begin{align}<br>
-w&amp; \leftarrow w+\eta y_{i} x_{i} \<br>
-b &amp;\leftarrow b+\eta y_{i}<br>
-\end{align}<br>
-$$<br>
-(4）转至 (2)，直至训练集中没有误分类点。</p>
+输入: 训练数据集 <img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C" style="display:inline-block;margin: 0;"/> 其中 <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin" style="display:inline-block;margin: 0;"/><img src="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B" style="display:inline-block;margin: 0;"/> 学习率 <img src="https://math.now.sh?inline=%5Ceta%280%3C%5Ceta%20%5Cleqslant%201%29" style="display:inline-block;margin: 0;"/>;<br>
+输出 <img src="https://math.now.sh?inline=%3A%20w%2C%20b%20%3B" style="display:inline-block;margin: 0;"/> 感知机模型 <img src="https://math.now.sh?inline=f%28x%29%3D%5Coperatorname%7Bsign%7D(w%20%5Ccdot%20x%2Bb)" style="display:inline-block;margin: 0;"/> 。<br>
+(1) 选取初值 <img src="https://math.now.sh?inline=w_%7B0%7D%2C%20b_%7B0%7D" style="display:inline-block;margin: 0;"/>;<br>
+(2)在训练集中随机选取数据<img src="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29" style="display:inline-block;margin: 0;"/>;<br>
+(3) 如果 <img src="https://math.now.sh?inline=y_%7Bi%7D%5Cleft%28w%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cleqslant%200" style="display:inline-block;margin: 0;"/>,</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0Aw%26%20%5Cleftarrow%20w%2B%5Ceta%20y_%7Bi%7D%20x_%7Bi%7D%20%5C%5C%0Ab%20%26%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Balign%7D%0A" /></p><p>(4）转至 (2)，直至训练集中没有误分类点。</p>
 </blockquote>
 <ul>
 <li>
 <p>一次随机选取一个误分类点使其梯度下降</p>
 </li>
 <li>
-<p><strong>随机</strong>选取一个误分类点 $\left(x_{i}, y_{i}\right),$ 对 $w, b$ 进行更新 :<br>
-$$<br>
-\begin{aligned}<br>
-w &amp;\leftarrow w+\eta y_{i} x_{i} \<br>
-b &amp;\leftarrow b+\eta y_{i}<br>
-\end{aligned}<br>
-$$</p>
-</li>
+<p><strong>随机</strong>选取一个误分类点 <img src="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29%2C" style="display:inline-block;margin: 0;"/> 对 <img src="https://math.now.sh?inline=w%2C%20b" style="display:inline-block;margin: 0;"/> 进行更新 :</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0Aw%20%26%5Cleftarrow%20w%2B%5Ceta%20y_%7Bi%7D%20x_%7Bi%7D%20%5C%5C%0Ab%20%26%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Baligned%7D%0A" /></p></li>
 <li>
 <p>不同初值，不同分类点选取会影响最后的解</p>
 </li>
@@ -366,53 +435,35 @@ $$</p>
 <h3 id="3-2-原始算法的收敛性">3.2 原始算法的收敛性</h3>
 <p>证明对一个线性可分的数据集，感知机学习算法的原始形式在有限次迭代后能得到正确的分离超平面与感知机模型</p>
 <blockquote>
-<p><strong>定理 2.1 (Novikoff)</strong> 设训练数据集 $T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}$ 是线 性可分的，其中 $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}={-1,+1}, i=1,2, \cdots, N,$ 则<br>
-(1) 存在满足条件 $\left|\hat{w}<em>{\mathrm{opt}}\right|=1$ 的超平面 $\hat{w}</em>{\mathrm{opt}} \cdot \hat{x}=w_{\mathrm{opt}} \cdot x+b_{\mathrm{opt}}=0$ 将训练数据集完全正确分开; 且存在 $\gamma&gt;0,$ 对所有 $i=1,2, \cdots, N$<br>
-$$<br>
-y_{i}\left(\hat{w}<em>{\mathrm{opt}} \cdot \hat{x}</em>{i}\right)=y_{i}\left(w_{\mathrm{opt}} \cdot x_{i}+b_{\mathrm{opt}}\right) \geqslant \gamma<br>
-$$<br>
-(2) 令 $R=\max <em>{1 \leqslant i \leqslant N}\left|\hat{x}</em>{i}\right|,$ 则感知机算法 2.1 在训练数据集上的误分类次数 $k$ 满足不等式<br>
-$$<br>
-k \leqslant\left(\frac{R}{\gamma}\right)^{2}<br>
-$$</p>
-</blockquote>
+<p><strong>定理 2.1 (Novikoff)</strong> 设训练数据集 <img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D" style="display:inline-block;margin: 0;"/> 是线 性可分的，其中 <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%3D%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%2C" style="display:inline-block;margin: 0;"/> 则<br>
+(1) 存在满足条件 <img src="https://math.now.sh?inline=%5Cleft%5C%7C%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%5Cright%5C%7C%3D1" style="display:inline-block;margin: 0;"/> 的超平面 <img src="https://math.now.sh?inline=%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20%5Chat%7Bx%7D%3Dw_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20x%2Bb_%7B%5Cmathrm%7Bopt%7D%7D%3D0" style="display:inline-block;margin: 0;"/> 将训练数据集完全正确分开; 且存在 <img src="https://math.now.sh?inline=%5Cgamma%3E0%2C" style="display:inline-block;margin: 0;"/> 对所有 <img src="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=y_%7Bi%7D%5Cleft%28%5Chat%7Bw%7D_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20%5Chat%7Bx%7D_%7Bi%7D%5Cright%29%3Dy_%7Bi%7D%5Cleft(w_%7B%5Cmathrm%7Bopt%7D%7D%20%5Ccdot%20x_%7Bi%7D%2Bb_%7B%5Cmathrm%7Bopt%7D%7D%5Cright)%20%5Cgeqslant%20%5Cgamma%0A" /></p><p>(2) 令 <img src="https://math.now.sh?inline=R%3D%5Cmax%20_%7B1%20%5Cleqslant%20i%20%5Cleqslant%20N%7D%5Cleft%5C%7C%5Chat%7Bx%7D_%7Bi%7D%5Cright%5C%7C%2C" style="display:inline-block;margin: 0;"/> 则感知机算法 2.1 在训练数据集上的误分类次数 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 满足不等式</p>
+<p style=""><img src="https://math.now.sh?from=k%20%5Cleqslant%5Cleft%28%5Cfrac%7BR%7D%7B%5Cgamma%7D%5Cright%29%5E%7B2%7D%0A" /></p></blockquote>
 <ul>
-<li>$\hat{w}=\left(w^{\mathrm{T}}, b\right)^{\mathrm{T}}$，$\hat{x}=\left(x^{\mathrm{T}}, 1\right)^{\mathrm{T}}$，$\hat{x} \in \mathbf{R}^{n+1}, \hat{w} \in \mathbf{R}^{n+1}$，$\hat{w} \cdot \hat{x}=w \cdot x+b$</li>
+<li><img src="https://math.now.sh?inline=%5Chat%7Bw%7D%3D%5Cleft%28w%5E%7B%5Cmathrm%7BT%7D%7D%2C%20b%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=%5Chat%7Bx%7D%3D%5Cleft%28x%5E%7B%5Cmathrm%7BT%7D%7D%2C%201%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=%5Chat%7Bx%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%2B1%7D%2C%20%5Chat%7Bw%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%2B1%7D" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=%5Chat%7Bw%7D%20%5Ccdot%20%5Chat%7Bx%7D%3Dw%20%5Ccdot%20x%2Bb" style="display:inline-block;margin: 0;"/></li>
 <li>对于线性可分数据集，感知机的解存在但不唯一。</li>
 <li>在线性支持向量机中，添加超平面约束条件，从而得到唯一超平面。</li>
 </ul>
 <h3 id="3-3-算法对偶形式">3.3 算法对偶形式</h3>
-<p>我们假设$w,b=0$，在原始算法中，对于一个误分类点$(x_i,y_i)$，我们进行了$n_i$次更新，对于所有$N$个点，我们有<br>
-$$<br>
-\begin{aligned}<br>
-w &amp;=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i} =\sum_{i=1}^{N} n_i(\eta  y_{i} x_{i})\<br>
-b &amp;=\sum_{i=1}^{N} \alpha_{i} y_{i}=\sum_{i=1}^{N} n_i(\eta y_i)<br>
-\end{aligned}<br>
-$$<br>
-我们从解w，b转化为$n_i$即第$i$个是实例点由于误分而进行更新的次数。</p>
+<p>我们假设<img src="https://math.now.sh?inline=w%2Cb%3D0" style="display:inline-block;margin: 0;"/>，在原始算法中，对于一个误分类点<img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;"/>，我们进行了<img src="https://math.now.sh?inline=n_i" style="display:inline-block;margin: 0;"/>次更新，对于所有<img src="https://math.now.sh?inline=N" style="display:inline-block;margin: 0;"/>个点，我们有</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0Aw%20%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bi%7D%20y_%7Bi%7D%20x_%7Bi%7D%20%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20n_i%28%5Ceta%20%20y_%7Bi%7D%20x_%7Bi%7D%29%5C%5C%0Ab%20%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bi%7D%20y_%7Bi%7D%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20n_i(%5Ceta%20y_i)%0A%5Cend%7Baligned%7D%0A" /></p><p>我们从解w，b转化为<img src="https://math.now.sh?inline=n_i" style="display:inline-block;margin: 0;"/>即第<img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"/>个是实例点由于误分而进行更新的次数。</p>
 <p>实例点更新越多，说明距离分离超平面越近，越难分类，对结果影响大，很可能就是支持向量。</p>
 <blockquote>
 <p>算法 2.2 (感知机学习算法的对偶形式)<br>
-输入: 线性可分的数据集 $T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right},$ 其中 $x_{i} \in \mathbf{R}^{n}, y_{i} \in$<br>
-${-1,+1}, i=1,2, \cdots, N ;$ 学习率 $\eta(0&lt;\eta \leqslant 1) ;$<br>
-输 出: $\alpha, b ;$ 感 知机 模 型 $f(x)=\operatorname{sign}\left(\sum_{j=1}^{N} \alpha_{j} y_{j} x_{j} \cdot x+b\right),$ 其中 $\alpha=\left(\alpha_{1}, \alpha_{2}, \cdots, \alpha_{N}\right)^{\mathrm{T}}$<br>
-(1) $\alpha \leftarrow 0, b \leftarrow 0 ;$<br>
-(2)在训练集中选取数据 $\left(x_{i}, y_{i}\right)$;<br>
-(3)如果 $y_{i}\left(\sum_{j=1}^{N} \alpha_{j} y_{j} x_{j} \cdot x_{i}+b\right) \leqslant 0$<br>
-$$<br>
-\begin{array}{l}<br>
-\alpha_{i} \leftarrow \alpha_{i}+\eta \<br>
-b \leftarrow b+\eta y_{i}<br>
-\end{array}<br>
-$$<br>
-(4)转至 (2)直到没有误分类数据。</p>
+输入: 线性可分的数据集 <img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C" style="display:inline-block;margin: 0;"/> 其中 <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20y_%7Bi%7D%20%5Cin" style="display:inline-block;margin: 0;"/><br>
+<img src="https://math.now.sh?inline=%5C%7B-1%2C%2B1%5C%7D%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B" style="display:inline-block;margin: 0;"/> 学习率 <img src="https://math.now.sh?inline=%5Ceta%280%3C%5Ceta%20%5Cleqslant%201%29%20%3B" style="display:inline-block;margin: 0;"/><br>
+输 出: <img src="https://math.now.sh?inline=%5Calpha%2C%20b%20%3B" style="display:inline-block;margin: 0;"/> 感 知机 模 型 <img src="https://math.now.sh?inline=f%28x%29%3D%5Coperatorname%7Bsign%7D%5Cleft(%5Csum_%7Bj%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bj%7D%20y_%7Bj%7D%20x_%7Bj%7D%20%5Ccdot%20x%2Bb%5Cright)%2C" style="display:inline-block;margin: 0;"/> 其中 <img src="https://math.now.sh?inline=%5Calpha%3D%5Cleft%28%5Calpha_%7B1%7D%2C%20%5Calpha_%7B2%7D%2C%20%5Ccdots%2C%20%5Calpha_%7BN%7D%5Cright%29%5E%7B%5Cmathrm%7BT%7D%7D" style="display:inline-block;margin: 0;"/><br>
+(1) <img src="https://math.now.sh?inline=%5Calpha%20%5Cleftarrow%200%2C%20b%20%5Cleftarrow%200%20%3B" style="display:inline-block;margin: 0;"/><br>
+(2)在训练集中选取数据 <img src="https://math.now.sh?inline=%5Cleft%28x_%7Bi%7D%2C%20y_%7Bi%7D%5Cright%29" style="display:inline-block;margin: 0;"/>;<br>
+(3)如果 <img src="https://math.now.sh?inline=y_%7Bi%7D%5Cleft%28%5Csum_%7Bj%3D1%7D%5E%7BN%7D%20%5Calpha_%7Bj%7D%20y_%7Bj%7D%20x_%7Bj%7D%20%5Ccdot%20x_%7Bi%7D%2Bb%5Cright%29%20%5Cleqslant%200" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bl%7D%0A%5Calpha_%7Bi%7D%20%5Cleftarrow%20%5Calpha_%7Bi%7D%2B%5Ceta%20%5C%5C%0Ab%20%5Cleftarrow%20b%2B%5Ceta%20y_%7Bi%7D%0A%5Cend%7Barray%7D%0A" /></p><p>(4)转至 (2)直到没有误分类数据。</p>
 </blockquote>
 <ul>
 <li>
-<p>(12)当$\eta=1$，即$n_i=n_i+1$，对点更新次数加一</p>
+<p>(12)当<img src="https://math.now.sh?inline=%5Ceta%3D1" style="display:inline-block;margin: 0;"/>，即<img src="https://math.now.sh?inline=n_i%3Dn_i%2B1" style="display:inline-block;margin: 0;"/>，对点更新次数加一</p>
 </li>
 <li>
-<p>对偶算法只涉及到矩阵的内积$x_i\cdot x_j$计算，我们可以将内积预先计算存储，即我们计算Gram矩阵$\mathbf{G}=[x_i \cdot x_j]_{\mathbf{N}\times\mathbf{N}}$</p>
+<p>对偶算法只涉及到矩阵的内积<img src="https://math.now.sh?inline=x_i%5Ccdot%20x_j" style="display:inline-block;margin: 0;"/>计算，我们可以将内积预先计算存储，即我们计算Gram矩阵<img src="https://math.now.sh?inline=%5Cmathbf%7BG%7D%3D%5Bx_i%20%5Ccdot%20x_j%5D_%7B%5Cmathbf%7BN%7D%5Ctimes%5Cmathbf%7BN%7D%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
 <p>和原始形式一样，感知机学习算法的对偶形式迭代是收敛的，且存在多个解。</p>
@@ -430,13 +481,8 @@ $$<br>
 <p>证明以下定理： 样本集线性可分的充分必要条件是正实例点集所构成的凸壳CD 与负实例点集所构成的凸壳互不相交。</p>
 </li>
 <li>
-<p>设集合 $S \subset \mathbf{R}^{n}$ 是由 $\mathbf{R}^{n}$ 中的 $k$ 个点所组成的集合, 即 $S=\left{x_{1}, x_{2}, \cdots, x_{k}\right} .$ 定义 $S$ 的凸亮$\operatorname{conv}(S)$ 为<br>
-$$<br>
-\begin{aligned}<br>
-\operatorname{conv}(S)=\left{x=\sum_{i=1}^{k} \lambda_{i} x_{i} \mid \sum_{i=1}^{k} \lambda_{i}=1, \lambda_{i} \geqslant 0, i=1,2, \cdots, k\right}<br>
-\end{aligned}<br>
-$$</p>
-</li>
+<p>设集合 <img src="https://math.now.sh?inline=S%20%5Csubset%20%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 是由 <img src="https://math.now.sh?inline=%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 中的 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 个点所组成的集合, 即 <img src="https://math.now.sh?inline=S%3D%5Cleft%5C%7Bx_%7B1%7D%2C%20x_%7B2%7D%2C%20%5Ccdots%2C%20x_%7Bk%7D%5Cright%5C%7D%20." style="display:inline-block;margin: 0;"/> 定义 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"/> 的凸亮<img src="https://math.now.sh?inline=%5Coperatorname%7Bconv%7D%28S%29" style="display:inline-block;margin: 0;"/> 为</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0A%5Coperatorname%7Bconv%7D%28S%29%3D%5Cleft%5C%7Bx%3D%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%20%5Clambda_%7Bi%7D%20x_%7Bi%7D%20%5Cmid%20%5Csum_%7Bi%3D1%7D%5E%7Bk%7D%20%5Clambda_%7Bi%7D%3D1%2C%20%5Clambda_%7Bi%7D%20%5Cgeqslant%200%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20k%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A" /></p></li>
 </ul>
 </li>
 </ol>

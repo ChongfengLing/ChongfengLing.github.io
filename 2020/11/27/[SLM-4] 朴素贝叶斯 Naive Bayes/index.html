@@ -23,19 +23,86 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem $$ \underbrace{P(X|Y)}{posterior}&#x3D;\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}{evidence}}&#x3D;\frac{\o">
+<meta name="description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem  ：先验概率prior ：后验概率posterior ：似然likelihood。  1. Model   输入空间 为  维向量的集合，输出空间为类集合   输入特征向量，输出类标记   是输入空间上的随机向量，是输出空间上的随机变量   训练数据集 由  独立同分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/11/27/[SLM-4]%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem $$ \underbrace{P(X|Y)}{posterior}&#x3D;\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}{evidence}}&#x3D;\frac{\o">
+<meta property="og:description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem  ：先验概率prior ：后验概率posterior ：似然likelihood。  1. Model   输入空间 为  维向量的集合，输出空间为类集合   输入特征向量，输出类标记   是输入空间上的随机向量，是输出空间上的随机变量   训练数据集 由  独立同分">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://math.now.sh?from=%5Cunderbrace%7BP%28X%7CY%29%7D_%7Bposterior%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7BP(Y)%7D_%7Bevidence%7D%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7B%5Csum%5Climits_x%20P(Y%7CX)P(X)%7D_%7Bevidence%7D%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%29">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%7CY%29">
+<meta property="og:image" content="https://math.now.sh?inline=P%28Y%7CX%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0AT%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%2C%20Y%29">
+<meta property="og:image" content="https://math.now.sh?inline=x_1">
+<meta property="og:image" content="https://math.now.sh?inline=x_2">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%2CY%29">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%2C%20Y%29%3DP(Y)%20P(X%20%5Cmid%20Y)%3DP(X)%20P(Y%20%5Cmid%20X)">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A">
+<meta property="og:image" content="https://math.now.sh?inline=c_1">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29%3DP%5Cleft(X%5E%7B(1)%7D%3Dx%5E%7B(1)%7D%2C%20%5Ccdots%2C%20X%5E%7B(n)%7D%3Dx%5E%7B(n)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%2C%5C%5C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5CLongrightarrow">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AP%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29%20%26%3DP%5Cleft(X%5E%7B(1)%7D%3Dx%5E%7B(1)%7D%2C%20%5Ccdots%2C%20X%5E%7B(n)%7D%3Dx%5E%7B(n)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%5Cnonumber%20%5C%5C%0A%26%3D%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A%5Cend%7Balign%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x%3D%5B">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%3D(">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%3D(">
+<meta property="og:image" content="https://math.now.sh?inline=c_k">
+<meta property="og:image" content="https://math.now.sh?inline=P%5Cleft%28x%5E%7B(i%29%7D%20%5Cmid%20y%3Dc_k%5Cright)%3D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%20%5Cpi%20%5Csigma_%7By%7D%5E%7B2%7D%7D%7D%20%5Cexp%20%5Cleft(-%5Cfrac%7B%5Cleft(x%5E%7B(i)%7D-%5Cmu_%7By%7D%5Cright)%5E%7B2%7D%7D%7B2%20%5Csigma_%7By%7D%5E%7B2%7D%7D%5Cright)">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmu_y%3A">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28i%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Csigma_%7By%7D%3A">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28i%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=c_k">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AP%28Y%20%5Cmid%20X%29%26%3D%5Cfrac%7BP(X%2C%20Y)%7D%7BP(X)%7D%3D%5Cfrac%7BP(Y)%20P(X%20%5Cmid%20Y)%7D%7B%5Csum_%7BY%7D%20P(Y)%20P(X%20%5Cmid%20Y)%7D%5C%5C%0AP%5Cleft(Y%3Dc_%7Bk%7D%20%5Cmid%20X%3Dx%5Cright)%26%3D%5Cfrac%7BP%5Cleft(X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%7D%7B%5Csum_%7Bk%7D%20P%5Cleft(X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%7D%5C%5C%0A%26%3D%5Cfrac%7BP%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%7D%7B%5Csum_%7Bk%7D%20(P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright))%7D%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A%5Cend%7Balign%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%5Cleft%28Y%3Dc_%7Bk%7D%20%5Cmid%20X%3Dx%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=c_k">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bl%7D%0Ay%3Df%28x%29%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20%5Cfrac%7BP%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20%5C%5C%20%7D%7B%5Csum_%7Bk%7D%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%7D%0A%5Cend%7Barray%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%28X%3Dx%29">
+<meta property="og:image" content="https://math.now.sh?inline=c_k">
+<meta property="og:image" content="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=P%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%5Cright.">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft.x_%7Bi%7D%5E%7B%28n%29%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C%20x_%7Bi%7D%5E%7B(j)%7D">
+<meta property="og:image" content="https://math.now.sh?inline=i">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%5E%7B%28j%29%7D%20%5Cin%5Cleft%5C%7Ba_%7Bj%201%7D%2C%20a_%7Bj%202%7D%2C%20%5Ccdots%2C%20a_%7Bj%20S_%7Bj%7D%7D%5Cright%5C%7D%2C%20a_%7Bj%20l%7D">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=l">
+<meta property="og:image" content="https://math.now.sh?inline=j%3D1%2C2%2C%20%5Ccdots%2C%20n%2C%20l%3D1%2C2%2C%20%5Ccdots%2C%20S_%7Bj%7D%2C%20y_%7Bi%7D%20%5Cin%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%7D%7BN%7D%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bc%7D%0AP%5Cleft%28X%5E%7B(j%29%7D%3Da_%7Bj%20l%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(x_%7Bi%7D%5E%7B(j)%7D%3Da_%7Bj%20l%7D%2C%20y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%20%7D%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%7D%20%5C%5C%0Aj%3D1%2C2%2C%20%5Ccdots%2C%20n%20%3B%20%5Cquad%20l%3D1%2C2%2C%20%5Ccdots%2C%20S_%7Bj%7D%20%3B%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A%5Cend%7Barray%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x%3D%5Cleft%28x%5E%7B(1%29%7D%2C%20x%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=P%5Cleft%28X%5E%7B(j%29%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)">
+<meta property="og:image" content="https://math.now.sh?inline=%5Clambda%20%5Cge0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Clambda%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Clambda%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=1%2FK%2C%5C%3B1%2FS_j">
+<meta property="og:image" content="https://math.now.sh?from=P_%7B%5Clambda%7D%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%2B%5Clambda%7D%7BN%2BK%20%5Clambda%7D%0A">
+<meta property="og:image" content="https://math.now.sh?from=P_%7B%5Clambda%7D%28X%5E%7B(j%29%7D%3Da_%7Bjl%7D%7CY%3Dc_k)%3D%5Cfrac%7B%5Csum%5Climits_%7Bi%3D1%7D%5ENI(x_i%5E%7Bj%7D%3Da_%7Bjl%7D%2Cy_j%3Dc_k)%2B%5Clambda%7D%7B%5Csum%5Climits_%7Bi%3D1%7D%5ENI(y_j%3Dc_k)%2BS_j%5Clambda%7D%0A">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-4%20Proof%201.png">
 <meta property="article:published_time" content="2020-11-26T16:11:26.197Z">
 <meta property="article:modified_time" content="2020-12-07T08:11:16.612Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-4%20Proof%201.png">
+<meta name="twitter:image" content="https://math.now.sh?from=%5Cunderbrace%7BP%28X%7CY%29%7D_%7Bposterior%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7BP(Y)%7D_%7Bevidence%7D%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7B%5Csum%5Climits_x%20P(Y%7CX)P(X)%7D_%7Bevidence%7D%7D%0A">
 
 
 <link rel="canonical" href="http://example.com/2020/11/27/[SLM-4]%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/">
@@ -151,7 +218,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">朴素贝叶斯 Naive Bayes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Bayes-Theorem"><span class="nav-number">1.1.</span> <span class="nav-text">0. Bayes Theorem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Model"><span class="nav-number">1.2.</span> <span class="nav-text">1. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AD%A6%E4%B9%A0%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83-P-X-Y"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 学习联合概率分布$P(X,Y)$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E8%AE%A1%E7%AE%97%E5%90%8E%E9%AA%8C%E5%88%86%E5%B8%83"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 计算后验分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.3 后验概率最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1.3.1 含义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.4 朴素贝叶斯法中的参数估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">1.4.1 极大似然估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">1.4.2 贝叶斯估计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Trick"><span class="nav-number">1.3.</span> <span class="nav-text">3. Trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Log-function"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Log function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Coding"><span class="nav-number">1.4.</span> <span class="nav-text">4. Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Proof"><span class="nav-number">1.5.</span> <span class="nav-text">5. Proof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E7%94%A8%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E6%B3%95%E6%8E%A8%E5%87%BA%E7%AD%89%E5%BC%8F-10"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 用极大似然法推出等式(10)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Reference"><span class="nav-number">1.6.</span> <span class="nav-text">6. Reference</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">朴素贝叶斯 Naive Bayes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Bayes-Theorem"><span class="nav-number">1.1.</span> <span class="nav-text">0. Bayes Theorem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Model"><span class="nav-number">1.2.</span> <span class="nav-text">1. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AD%A6%E4%B9%A0%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83P-X-Y"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 学习联合概率分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E8%AE%A1%E7%AE%97%E5%90%8E%E9%AA%8C%E5%88%86%E5%B8%83"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 计算后验分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.3 后验概率最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1.3.1 含义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.4 朴素贝叶斯法中的参数估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">1.4.1 极大似然估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">1.4.2 贝叶斯估计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Trick"><span class="nav-number">1.3.</span> <span class="nav-text">3. Trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Log-function"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Log function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Coding"><span class="nav-number">1.4.</span> <span class="nav-text">4. Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Proof"><span class="nav-number">1.5.</span> <span class="nav-text">5. Proof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E7%94%A8%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E6%B3%95%E6%8E%A8%E5%87%BA%E7%AD%89%E5%BC%8F-10"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 用极大似然法推出等式(10)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Reference"><span class="nav-number">1.6.</span> <span class="nav-text">6. Reference</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -251,70 +318,50 @@
         <h1>朴素贝叶斯 Naive Bayes</h1>
 <p>基于Bayes Theorem和特征条件独立假设的分类方法。</p>
 <h2 id="0-Bayes-Theorem">0. Bayes Theorem</h2>
-<p>$$<br>
-\underbrace{P(X|Y)}<em>{posterior}=\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}</em>{evidence}}=\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{\sum\limits_x P(Y|X)P(X)}_{evidence}}<br>
-$$</p>
-<ul>
-<li>$P(X)$：先验概率prior</li>
-<li>$P(X|Y)$：后验概率posterior</li>
-<li>$P(Y|X)$：似然likelihood。</li>
+<p style=""><img src="https://math.now.sh?from=%5Cunderbrace%7BP%28X%7CY%29%7D_%7Bposterior%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7BP(Y)%7D_%7Bevidence%7D%7D%3D%5Cfrac%7B%5Coverbrace%7BP(Y%7CX)%7D%5E%7Blikelihood%7D%5Coverbrace%7BP(X)%7D%5E%7Bprior%7D%7D%7B%5Cunderbrace%7B%5Csum%5Climits_x%20P(Y%7CX)P(X)%7D_%7Bevidence%7D%7D%0A" /></p><ul>
+<li><img src="https://math.now.sh?inline=P%28X%29" style="display:inline-block;margin: 0;"/>：先验概率prior</li>
+<li><img src="https://math.now.sh?inline=P%28X%7CY%29" style="display:inline-block;margin: 0;"/>：后验概率posterior</li>
+<li><img src="https://math.now.sh?inline=P%28Y%7CX%29" style="display:inline-block;margin: 0;"/>：似然likelihood。</li>
 </ul>
 <h2 id="1-Model">1. Model</h2>
 <ul>
 <li>
-<p>输入空间$\mathcal{X} \subseteq \mathbf{R}^{n}$ 为 $n$ 维向量的集合，输出空间为类集合$\mathcal{Y}=\left{c_{1}, c_{2}, \cdots, c_{K}\right}$</p>
+<p>输入空间<img src="https://math.now.sh?inline=%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 为 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"/> 维向量的集合，输出空间为类集合<img src="https://math.now.sh?inline=%5Cmathcal%7BY%7D%3D%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>输入特征向量$x$，输出类标记$y$</p>
+<p>输入特征向量<img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>，输出类标记<img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>$X$是输入空间上的随机向量，$Y$是输出空间上的随机变量</p>
+<p><img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>是输入空间上的随机向量，<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>是输出空间上的随机变量</p>
 </li>
 <li>
-<p>训练数据集<br>
-$$<br>
-\begin{aligned}<br>
-T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}<br>
-\end{aligned}<br>
-$$<br>
-由 $P(X, Y)$ 独立同分布产生。</p>
+<p>训练数据集</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0AT%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A" /></p><p>由 <img src="https://math.now.sh?inline=P%28X%2C%20Y%29" style="display:inline-block;margin: 0;"/> 独立同分布产生。</p>
 <ul>
-<li>这边的独立指的是向量$x_1$与$x_2$等之间的独立，不是特征条件独立。</li>
+<li>这边的独立指的是向量<img src="https://math.now.sh?inline=x_1" style="display:inline-block;margin: 0;"/>与<img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"/>等之间的独立，不是特征条件独立。</li>
 </ul>
 </li>
 </ul>
-<h3 id="1-1-学习联合概率分布-P-X-Y">1.1 学习联合概率分布$P(X,Y)$</h3>
+<h3 id="1-1-学习联合概率分布P-X-Y">1.1 学习联合概率分布<img src="https://math.now.sh?inline=P%28X%2CY%29" style="display:inline-block;margin: 0;"/></h3>
 <ol>
 <li>
-<p>$P(X, Y)=P(Y) P(X \mid Y)=P(X) P(Y \mid X)$，用第一个等式</p>
+<p><img src="https://math.now.sh?inline=P%28X%2C%20Y%29%3DP(Y)%20P(X%20%5Cmid%20Y)%3DP(X)%20P(Y%20%5Cmid%20X)" style="display:inline-block;margin: 0;"/>，用第一个等式</p>
 </li>
 <li>
-<p><strong>先验概率分布</strong><br>
-$$<br>
-P\left(Y=c_{k}\right), \quad k=1,2, \cdots, K<br>
-$$</p>
-<ul>
-<li>由测试集可知，有多少概率/比例的$c_1$标签</li>
+<p><strong>先验概率分布</strong></p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A" /></p><ul>
+<li>由测试集可知，有多少概率/比例的<img src="https://math.now.sh?inline=c_1" style="display:inline-block;margin: 0;"/>标签</li>
 </ul>
 </li>
 <li>
-<p><strong>条件概率分布</strong><br>
-$$<br>
-P\left(X=x \mid Y=c_{k}\right)=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} \mid Y=c_{k}\right),\ \quad k=1,2, \cdots, K<br>
-$$</p>
-<ul>
+<p><strong>条件概率分布</strong></p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29%3DP%5Cleft(X%5E%7B(1)%7D%3Dx%5E%7B(1)%7D%2C%20%5Ccdots%2C%20X%5E%7B(n)%7D%3Dx%5E%7B(n)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%2C%5C%5C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A" /></p><ul>
 <li>
-<p>特征向量相等$\Longrightarrow$每一维度上都相等</p>
+<p>特征向量相等<img src="https://math.now.sh?inline=%5CLongrightarrow" style="display:inline-block;margin: 0;"/>每一维度上都相等</p>
 </li>
 <li>
-<p>朴素贝叶斯法对条件概率做条件独立性假设，即<br>
-$$<br>
-\begin{align}<br>
-P\left(X=x \mid Y=c_{k}\right) &amp;=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} \mid Y=c_{k}\right)\nonumber \<br>
-&amp;=\prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)<br>
-\end{align}<br>
-$$</p>
-</li>
+<p>朴素贝叶斯法对条件概率做条件独立性假设，即</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AP%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29%20%26%3DP%5Cleft(X%5E%7B(1)%7D%3Dx%5E%7B(1)%7D%2C%20%5Ccdots%2C%20X%5E%7B(n)%7D%3Dx%5E%7B(n)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%5Cnonumber%20%5C%5C%0A%26%3D%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A%5Cend%7Balign%7D%0A" /></p></li>
 <li>
 <p>如果不加独立分布假设，那么(1,1,1,1)和(1,1,1,2)独立，没有可以利用的信息。需要更大的测试集。</p>
 </li>
@@ -322,16 +369,16 @@ $$</p>
 </li>
 <li>
 <p><strong>重复“词语”的处理</strong></p>
-<p>我们得到一个垃圾邮件向量$x=[‘发票’，‘发票’，‘发票‘，‘充值’，’购物‘]$，如何处理出现3次的“发票”</p>
+<p>我们得到一个垃圾邮件向量<img src="https://math.now.sh?inline=x%3D%5B'%E5%8F%91%E7%A5%A8'%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%99%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%98%EF%BC%8C%E2%80%98%E5%85%85%E5%80%BC%E2%80%99%EF%BC%8C%E2%80%99%E8%B4%AD%E7%89%A9%E2%80%98%5D" style="display:inline-block;margin: 0;"/>，如何处理出现3次的“发票”</p>
 <ol>
 <li>多项式模型
 <ul>
-<li>每一个“发票”都是独立的，统计多次，即$P(X=(‘发票’，‘发票’，‘发票‘)|Y=c_k)=P^3(‘发票|Y=c_k’)$</li>
+<li>每一个“发票”都是独立的，统计多次，即<img src="https://math.now.sh?inline=P%28X%3D('%E5%8F%91%E7%A5%A8'%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%99%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%98%29%7CY%3Dc_k)%3DP%5E3('%E5%8F%91%E7%A5%A8%7CY%3Dc_k')" style="display:inline-block;margin: 0;"/></li>
 </ul>
 </li>
 <li>伯努利模型
 <ul>
-<li>只分成出现，不出现的二元情况，即$P(X=(‘发票’，‘发票’，‘发票‘)|Y=c_k)=P(‘发票|Y=c_k’)$</li>
+<li>只分成出现，不出现的二元情况，即<img src="https://math.now.sh?inline=P%28X%3D('%E5%8F%91%E7%A5%A8'%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%99%EF%BC%8C%E2%80%98%E5%8F%91%E7%A5%A8%E2%80%98%29%7CY%3Dc_k)%3DP('%E5%8F%91%E7%A5%A8%7CY%3Dc_k')" style="display:inline-block;margin: 0;"/></li>
 </ul>
 </li>
 <li>混合模型
@@ -343,11 +390,11 @@ $$</p>
 <li>高斯模型
 <ul>
 <li>适用于连续变量</li>
-<li>假设：在给定一个类别$c_k$后，各个特征符合正态分布</li>
-<li>$P\left(x^{(i)} \mid y=c_k\right)=\frac{1}{\sqrt{2 \pi \sigma_{y}^{2}}} \exp \left(-\frac{\left(x^{(i)}-\mu_{y}\right)^{2}}{2 \sigma_{y}^{2}}\right)$
+<li>假设：在给定一个类别<img src="https://math.now.sh?inline=c_k" style="display:inline-block;margin: 0;"/>后，各个特征符合正态分布</li>
+<li><img src="https://math.now.sh?inline=P%5Cleft%28x%5E%7B(i%29%7D%20%5Cmid%20y%3Dc_k%5Cright)%3D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%20%5Cpi%20%5Csigma_%7By%7D%5E%7B2%7D%7D%7D%20%5Cexp%20%5Cleft(-%5Cfrac%7B%5Cleft(x%5E%7B(i)%7D-%5Cmu_%7By%7D%5Cright)%5E%7B2%7D%7D%7B2%20%5Csigma_%7By%7D%5E%7B2%7D%7D%5Cright)" style="display:inline-block;margin: 0;"/>
 <ul>
-<li>$\mu_y:$ 在类别为 $y$ 的样本中，特征 $x^{(i)}$ 的均值。<br>
-$\sigma_{y}:$ 在类别为 $y$ 的样本中，特征 $x^{(i)}$ 的标准差。</li>
+<li><img src="https://math.now.sh?inline=%5Cmu_y%3A" style="display:inline-block;margin: 0;"/> 在类别为 <img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/> 的样本中，特征 <img src="https://math.now.sh?inline=x%5E%7B%28i%29%7D" style="display:inline-block;margin: 0;"/> 的均值。<br>
+<img src="https://math.now.sh?inline=%5Csigma_%7By%7D%3A" style="display:inline-block;margin: 0;"/> 在类别为 <img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/> 的样本中，特征 <img src="https://math.now.sh?inline=x%5E%7B%28i%29%7D" style="display:inline-block;margin: 0;"/> 的标准差。</li>
 </ul>
 </li>
 </ul>
@@ -356,87 +403,51 @@ $\sigma_{y}:$ 在类别为 $y$ 的样本中，特征 $x^{(i)}$ 的标准差。</
 </li>
 </ol>
 <h3 id="1-2-计算后验分布">1.2 计算后验分布</h3>
-<p>通过贝叶斯定理，得到在给定了一个特征向量的情况下，标签为$c_k$的概率。<br>
-$$<br>
-\begin{align}<br>
-P(Y \mid X)&amp;=\frac{P(X, Y)}{P(X)}=\frac{P(Y) P(X \mid Y)}{\sum_{Y} P(Y) P(X \mid Y)}\<br>
-P\left(Y=c_{k} \mid X=x\right)&amp;=\frac{P\left(X=x \mid Y=c_{k}\right) P\left(Y=c_{k}\right)}{\sum_{k} P\left(X=x \mid Y=c_{k}\right) P\left(Y=c_{k}\right)}\<br>
-&amp;=\frac{P\left(Y=c_{k}\right) \prod P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)}{\sum_{k} (P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right))}, \quad k=1,2, \cdots, K<br>
-\end{align}<br>
-$$</p>
-<ul>
+<p>通过贝叶斯定理，得到在给定了一个特征向量的情况下，标签为<img src="https://math.now.sh?inline=c_k" style="display:inline-block;margin: 0;"/>的概率。</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AP%28Y%20%5Cmid%20X%29%26%3D%5Cfrac%7BP(X%2C%20Y)%7D%7BP(X)%7D%3D%5Cfrac%7BP(Y)%20P(X%20%5Cmid%20Y)%7D%7B%5Csum_%7BY%7D%20P(Y)%20P(X%20%5Cmid%20Y)%7D%5C%5C%0AP%5Cleft(Y%3Dc_%7Bk%7D%20%5Cmid%20X%3Dx%5Cright)%26%3D%5Cfrac%7BP%5Cleft(X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%7D%7B%5Csum_%7Bk%7D%20P%5Cleft(X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%7D%5C%5C%0A%26%3D%5Cfrac%7BP%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%7D%7B%5Csum_%7Bk%7D%20(P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright))%7D%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A%5Cend%7Balign%7D%0A" /></p><ul>
 <li>把(2)带入到(5)，得到等式(6)</li>
 </ul>
 <h3 id="1-3-后验概率最大化">1.3 后验概率最大化</h3>
-<p>得到了概率表达式之后，我们便去寻找使得概率$P\left(Y=c_{k} \mid X=x\right)$最大的标签$c_k$</p>
-<p>朴素贝叶斯分类器：<br>
-$$<br>
-\begin{array}{l}<br>
-y=f(x)=\arg \max <em>{c</em>{k}} \frac{P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right) \ }{\sum_{k} P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)}<br>
-\end{array}<br>
-$$<br>
-(7)中的分母本质上为$P(X=x)$，与$c_k$的取值无关，故(7)可表示成<br>
-$$<br>
-y=\arg \max <em>{c</em>{k}} P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)<br>
-$$</p>
-<h4 id="1-3-1-含义">1.3.1 含义</h4>
+<p>得到了概率表达式之后，我们便去寻找使得概率<img src="https://math.now.sh?inline=P%5Cleft%28Y%3Dc_%7Bk%7D%20%5Cmid%20X%3Dx%5Cright%29" style="display:inline-block;margin: 0;"/>最大的标签<img src="https://math.now.sh?inline=c_k" style="display:inline-block;margin: 0;"/></p>
+<p>朴素贝叶斯分类器：</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bl%7D%0Ay%3Df%28x%29%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20%5Cfrac%7BP%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%20%5C%5C%20%7D%7B%5Csum_%7Bk%7D%20P%5Cleft(Y%3Dc_%7Bk%7D%5Cright)%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%7D%0A%5Cend%7Barray%7D%0A" /></p><p>(7)中的分母本质上为<img src="https://math.now.sh?inline=P%28X%3Dx%29" style="display:inline-block;margin: 0;"/>，与<img src="https://math.now.sh?inline=c_k" style="display:inline-block;margin: 0;"/>的取值无关，故(7)可表示成</p>
+<p style=""><img src="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A" /></p><h4 id="1-3-1-含义">1.3.1 含义</h4>
 <ul>
 <li>后验概率最大化等价于期望风险最小化</li>
 </ul>
 <h3 id="1-4-朴素贝叶斯法中的参数估计">1.4 朴素贝叶斯法中的参数估计</h3>
-<p>为了学习朴素贝叶斯法中的$P\left(Y=c_{k}\right)$与$P\left(X=x \mid Y=c_{k}\right)$</p>
+<p>为了学习朴素贝叶斯法中的<img src="https://math.now.sh?inline=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29" style="display:inline-block;margin: 0;"/>与<img src="https://math.now.sh?inline=P%5Cleft%28X%3Dx%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright%29" style="display:inline-block;margin: 0;"/></p>
 <h4 id="1-4-1-极大似然估计">1.4.1 极大似然估计</h4>
 <p>核心思想为根据以有的测试数据集，得到每一类的频率，即为概率</p>
 <blockquote>
 <p>算法 4.1 (朴素贝叶斯算法 (Naive Bayes algorithm) )</p>
-<p>输入: 训练数据 $T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right},$ 其中 $x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots,\right.$<br>
-$\left.x_{i}^{(n)}\right)^{\mathrm{T}}, x_{i}^{(j)}$ 是第 $i$ 个样本的第 $j$ 个特征, $x_{i}^{(j)} \in\left{a_{j 1}, a_{j 2}, \cdots, a_{j S_{j}}\right}, a_{j l}$ 是第 $j$ 个特<br>
-征可能取的第 $l$ 个值, $j=1,2, \cdots, n, l=1,2, \cdots, S_{j}, y_{i} \in\left{c_{1}, c_{2}, \cdots, c_{K}\right} ;$ 实例 $x$;<br>
-输出：实例 $x$ 的分类。<br>
-（1）计算先验概率及条件概率<br>
-$$<br>
-P\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}{N}, \quad k=1,2, \cdots, K<br>
-$$</p>
-<p>$$<br>
-\begin{array}{c}<br>
-P\left(X^{(j)}=a_{j l} \mid Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(x_{i}^{(j)}=a_{j l}, y_{i}=c_{k}\right) }{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)} \<br>
-j=1,2, \cdots, n ; \quad l=1,2, \cdots, S_{j} ; \quad k=1,2, \cdots, K<br>
-\end{array}<br>
-$$<br>
-（2）对于给定的实例 $x=\left(x^{(1)}, x^{(2)}, \cdots, x^{(n)}\right)^{\mathrm{T}},$ 计算<br>
-$$<br>
-P\left(Y=c_{k}\right) \prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right), \quad k=1,2, \cdots, K<br>
-$$<br>
-（3）确定实例 $x$ 的类<br>
-$$<br>
-y=\arg \max <em>{c</em>{k}} P\left(Y=c_{k}\right) \prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)<br>
-$$</p>
-</blockquote>
+<p>输入: 训练数据 <img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%2C" style="display:inline-block;margin: 0;"/> 其中 <img src="https://math.now.sh?inline=x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%5Cright." style="display:inline-block;margin: 0;"/><br>
+<img src="https://math.now.sh?inline=%5Cleft.x_%7Bi%7D%5E%7B%28n%29%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C%20x_%7Bi%7D%5E%7B(j)%7D" style="display:inline-block;margin: 0;"/> 是第 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"/> 个样本的第 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 个特征, <img src="https://math.now.sh?inline=x_%7Bi%7D%5E%7B%28j%29%7D%20%5Cin%5Cleft%5C%7Ba_%7Bj%201%7D%2C%20a_%7Bj%202%7D%2C%20%5Ccdots%2C%20a_%7Bj%20S_%7Bj%7D%7D%5Cright%5C%7D%2C%20a_%7Bj%20l%7D" style="display:inline-block;margin: 0;"/> 是第 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 个特<br>
+征可能取的第 <img src="https://math.now.sh?inline=l" style="display:inline-block;margin: 0;"/> 个值, <img src="https://math.now.sh?inline=j%3D1%2C2%2C%20%5Ccdots%2C%20n%2C%20l%3D1%2C2%2C%20%5Ccdots%2C%20S_%7Bj%7D%2C%20y_%7Bi%7D%20%5Cin%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D%20%3B" style="display:inline-block;margin: 0;"/> 实例 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>;<br>
+输出：实例 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的分类。<br>
+（1）计算先验概率及条件概率</p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%7D%7BN%7D%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A" /></p><p style=""><img src="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bc%7D%0AP%5Cleft%28X%5E%7B(j%29%7D%3Da_%7Bj%20l%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(x_%7Bi%7D%5E%7B(j)%7D%3Da_%7Bj%20l%7D%2C%20y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%20%7D%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%7D%20%5C%5C%0Aj%3D1%2C2%2C%20%5Ccdots%2C%20n%20%3B%20%5Cquad%20l%3D1%2C2%2C%20%5Ccdots%2C%20S_%7Bj%7D%20%3B%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A%5Cend%7Barray%7D%0A" /></p><p>（2）对于给定的实例 <img src="https://math.now.sh?inline=x%3D%5Cleft%28x%5E%7B(1%29%7D%2C%20x%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C" style="display:inline-block;margin: 0;"/> 计算</p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%2C%20%5Cquad%20k%3D1%2C2%2C%20%5Ccdots%2C%20K%0A" /></p><p>（3）确定实例 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的类</p>
+<p style=""><img src="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bk%7D%7D%20P%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%20%5Cprod_%7Bj%3D1%7D%5E%7Bn%7D%20P%5Cleft(X%5E%7B(j)%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)%0A" /></p></blockquote>
 <h4 id="1-4-2-贝叶斯估计">1.4.2 贝叶斯估计</h4>
-<p><strong>问题</strong>：通过极大似然估计，可能会出现(8)中的几个$P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)$为0（我们把“发票”当成了一个特征，但句子中没有出现“发票”这一词），这个情况很常见</p>
+<p><strong>问题</strong>：通过极大似然估计，可能会出现(8)中的几个<img src="https://math.now.sh?inline=P%5Cleft%28X%5E%7B(j%29%7D%3Dx%5E%7B(j)%7D%20%5Cmid%20Y%3Dc_%7Bk%7D%5Cright)" style="display:inline-block;margin: 0;"/>为0（我们把“发票”当成了一个特征，但句子中没有出现“发票”这一词），这个情况很常见</p>
 <p><strong>原因</strong>：训练集太少，没有满足大数定律。</p>
 <p><strong>解决</strong>：</p>
-<p>给定先验概率，赋值为$\lambda \ge0$</p>
+<p>给定先验概率，赋值为<img src="https://math.now.sh?inline=%5Clambda%20%5Cge0" style="display:inline-block;margin: 0;"/></p>
 <ul>
 <li>在一个训练集中，对一个本应该为0 的概率赋予一个较小值，那么就会降低其他词语的概率</li>
-<li>$\lambda=0$：极大似然估计</li>
-<li>$\lambda=1$：Laplace Smoothing</li>
-<li>”加上“基础的概率$1/K,;1/S_j$</li>
+<li><img src="https://math.now.sh?inline=%5Clambda%3D0" style="display:inline-block;margin: 0;"/>：极大似然估计</li>
+<li><img src="https://math.now.sh?inline=%5Clambda%3D1" style="display:inline-block;margin: 0;"/>：Laplace Smoothing</li>
+<li>”加上“基础的概率<img src="https://math.now.sh?inline=1%2FK%2C%5C%3B1%2FS_j" style="display:inline-block;margin: 0;"/></li>
 </ul>
 <p><strong>算法</strong>：</p>
 <ul>
 <li>
-<p>计算先验概率的等式(10)变成<br>
-$$<br>
-P_{\lambda}\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)+\lambda}{N+K \lambda}<br>
-$$</p>
-</li>
+<p>计算先验概率的等式(10)变成</p>
+<p style=""><img src="https://math.now.sh?from=P_%7B%5Clambda%7D%5Cleft%28Y%3Dc_%7Bk%7D%5Cright%29%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bk%7D%5Cright)%2B%5Clambda%7D%7BN%2BK%20%5Clambda%7D%0A" /></p></li>
 <li>
-<p>计算条件概率的等式(11)变成<br>
-$$<br>
-P_{\lambda}(X^{(j)}=a_{jl}|Y=c_k)=\frac{\sum\limits_{i=1}^NI(x_i^{j}=a_{jl},y_j=c_k)+\lambda}{\sum\limits_{i=1}^NI(y_j=c_k)+S_j\lambda}<br>
-$$</p>
-</li>
+<p>计算条件概率的等式(11)变成</p>
+<p style=""><img src="https://math.now.sh?from=P_%7B%5Clambda%7D%28X%5E%7B(j%29%7D%3Da_%7Bjl%7D%7CY%3Dc_k)%3D%5Cfrac%7B%5Csum%5Climits_%7Bi%3D1%7D%5ENI(x_i%5E%7Bj%7D%3Da_%7Bjl%7D%2Cy_j%3Dc_k)%2B%5Clambda%7D%7B%5Csum%5Climits_%7Bi%3D1%7D%5ENI(y_j%3Dc_k)%2BS_j%5Clambda%7D%0A" /></p></li>
 </ul>
 <h2 id="3-Trick">3. Trick</h2>
 <h3 id="3-1-Log-function">3.1 Log function</h3>

@@ -23,20 +23,111 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="k 近邻法 k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。 1. Algorithm  算法 $3.1(k$ 近邻法 $)$ 输入: 训练数据集 $$ \begin{aligned} T&#x3D;\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\r">
+<meta name="description" content="k 近邻法 k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。 1. Algorithm  算法  近邻法  输入: 训练数据集 其中，  为实例的特征向量,  为实例的类别，  实例特征向量 ; 输出：实例  所属的类 。 (1) 根据给定的距离度量，在训练集  中找出与  最邻近的  个点，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/11/23/[SLM-3]%20K%E8%BF%91%E9%82%BB%E6%B3%95/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="k 近邻法 k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。 1. Algorithm  算法 $3.1(k$ 近邻法 $)$ 输入: 训练数据集 $$ \begin{aligned} T&#x3D;\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\r">
+<meta property="og:description" content="k 近邻法 k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。 1. Algorithm  算法  近邻法  输入: 训练数据集 其中，  为实例的特征向量,  为实例的类别，  实例特征向量 ; 输出：实例  所属的类 。 (1) 根据给定的距离度量，在训练集  中找出与  最邻近的  个点，">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://math.now.sh?inline=3.1%28k">
+<meta property="og:image" content="https://math.now.sh?inline=%29">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0AT%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=N_%7Bk%7D%28x%29">
+<meta property="og:image" content="https://math.now.sh?inline=N_%7Bk%7D%28x%29">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bj%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20N_%7Bk%7D%28x%29%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bj%7D%5Cright)%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B%20j%3D1%2C2%2C%20%5Ccdots%2C%20K%0A">
+<meta property="og:image" content="https://math.now.sh?inline=I">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D%3Dc_%7Bj%7D">
+<meta property="og:image" content="https://math.now.sh?inline=I">
+<meta property="og:image" content="https://math.now.sh?inline=1%2C">
+<meta property="og:image" content="https://math.now.sh?inline=I">
+<meta property="og:image" content="https://math.now.sh?inline=x_i">
+<meta property="og:image" content="https://math.now.sh?inline=x_i">
+<meta property="og:image" content="https://math.now.sh?inline=L_%7Bp%7D">
+<meta property="og:image" content="https://math.now.sh?from=L_%7Bp%7D%5Cleft%28x_%7Bi%7D%2C%20x_%7Bj%7D%5Cright%29%3D%5Cleft(%5Csum_%7Bl%3D1%7D%5E%7Bn%7D%5Cleft%7Cx_%7Bi%7D%5E%7B(l)%7D-x_%7Bj%7D%5E%7B(l)%7D%5Cright%7C%5E%7Bp%7D%5Cright)%5E%7B%5Cfrac%7B1%7D%7Bp%7D%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmathcal%7BX%7D">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%2C%20x_%7Bj%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bi%7D%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bj%7D%3D%5Cleft%28x_%7Bj%7D%5E%7B(1%29%7D%2C%20x_%7Bj%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bj%7D%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=p%5Cgeq1">
+<meta property="og:image" content="https://math.now.sh?inline=p%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=p%3D2">
+<meta property="og:image" content="https://math.now.sh?inline=p%3D%5Cinfin">
+<meta property="og:image" content="https://math.now.sh?inline=k%3DN">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=c">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=T%3D%5Cleft%5C%7Bx_%7B1%7D%2C%20x_%7B2%7D%2C%20%5Ccdots%2C%20x_%7BN%7D%5Cright%5C%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bi%7D%5E%7B(k)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%281%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%281%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%281%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%281%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%281%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=l%3Dj%28%5Cbmod%20k%29%2B1%2C">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=j%2B1">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://math.now.sh?inline=l">
+<meta property="og:image" content="https://math.now.sh?inline=l%3Dj%28%5Cbmod%20k%29%2B1">
+<meta property="og:image" content="https://math.now.sh?inline=k%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=k%3D1">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=k%3E1">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D%3Dc">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28l%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=k%20d">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1%3D-6">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E2%3D-3">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1%3D-2">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1%3D6">
+<meta property="og:image" content="https://math.now.sh?inline=O%28logN%29">
+<meta property="og:image" content="https://math.now.sh?inline=N">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cgeq">
 <meta property="article:published_time" content="2020-11-23T12:51:59.423Z">
 <meta property="article:modified_time" content="2020-12-11T13:43:36.701Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+<meta name="twitter:image" content="https://math.now.sh?inline=3.1%28k">
 
 
 <link rel="canonical" href="http://example.com/2020/11/23/[SLM-3]%20K%E8%BF%91%E9%82%BB%E6%B3%95/">
@@ -152,7 +243,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">k 近邻法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">1. Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Model"><span class="nav-number">1.2.</span> <span class="nav-text">2. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-k%E5%80%BC%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 k值选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%88%86%E7%B1%BB%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 分类决策规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Implement-kd-tree"><span class="nav-number">1.3.</span> <span class="nav-text">3. Implement: kd tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-kd%E6%A0%91%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 kd树的构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1%E5%B9%B3%E8%A1%A1kd%E6%A0%91"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.1.1平衡kd树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-kd%E6%A0%91%E7%9A%84%E6%90%9C%E7%B4%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 kd树的搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-k-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">3.2.1 $k&#x3D;1$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-k-1"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">3.2.2 $k&gt;1$</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Summary"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Question"><span class="nav-number">1.4.</span> <span class="nav-text">4. Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Code"><span class="nav-number">1.5.</span> <span class="nav-text">5. Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Reference"><span class="nav-number">1.6.</span> <span class="nav-text">6. Reference</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">k 近邻法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">1. Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Model"><span class="nav-number">1.2.</span> <span class="nav-text">2. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-k%E5%80%BC%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 k值选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%88%86%E7%B1%BB%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 分类决策规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Implement-kd-tree"><span class="nav-number">1.3.</span> <span class="nav-text">3. Implement: kd tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-kd%E6%A0%91%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 kd树的构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1%E5%B9%B3%E8%A1%A1kd%E6%A0%91"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.1.1平衡kd树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-kd%E6%A0%91%E7%9A%84%E6%90%9C%E7%B4%A2"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 kd树的搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-k-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">3.2.1 </span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-k-1"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">3.2.2 </span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Summary"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Question"><span class="nav-number">1.4.</span> <span class="nav-text">4. Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Code"><span class="nav-number">1.5.</span> <span class="nav-text">5. Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Reference"><span class="nav-number">1.6.</span> <span class="nav-text">6. Reference</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -253,21 +344,13 @@
 <p>k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。<strong>k值的选择、距离度量、分类决策规则</strong>是KNN的3个基本要素。</p>
 <h2 id="1-Algorithm">1. Algorithm</h2>
 <blockquote>
-<p><strong>算法 $3.1(k$ 近邻法 $)$</strong><br>
-输入: 训练数据集<br>
-$$<br>
-\begin{aligned}<br>
-T=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}<br>
-\end{aligned}<br>
-$$<br>
-其中， $x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}$ 为实例的特征向量, $y_{i} \in \mathcal{Y}=\left{c_{1}, c_{2}, \cdots, c_{K}\right}$ 为实例的类别， $i=1,2, \cdots, N ;$ 实例特征向量 $x$;<br>
-输出：实例 $x$ 所属的类 $y$。<br>
-(1) 根据给定的距离度量，在训练集 $T$ 中找出与 $x$ 最邻近的 $k$ 个点，涵盖这 $k$ 个点的 $x$ 的邻域记作 $N_{k}(x)$;<br>
-(2) 在 $N_{k}(x)$ 中根据分类决策规则 (如多数表决) 决定 $x$ 的类别 $y$ :<br>
-$$<br>
-y=\arg \max <em>{c</em>{j}} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right), \quad i=1,2, \cdots, N ; j=1,2, \cdots, K<br>
-$$<br>
-式 (1) 中， $I$ 为指示函数，即当 $y_{i}=c_{j}$ 时 $I$ 为 $1,$ 否则 $I$ 为 0 。</p>
+<p><strong>算法 <img src="https://math.now.sh?inline=3.1%28k" style="display:inline-block;margin: 0;"/> 近邻法 <img src="https://math.now.sh?inline=%29" style="display:inline-block;margin: 0;"/></strong><br>
+输入: 训练数据集</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0AT%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D%0A%5Cend%7Baligned%7D%0A" /></p><p>其中， <img src="https://math.now.sh?inline=x_%7Bi%7D%20%5Cin%20%5Cmathcal%7BX%7D%20%5Csubseteq%20%5Cmathbf%7BR%7D%5E%7Bn%7D" style="display:inline-block;margin: 0;"/> 为实例的特征向量, <img src="https://math.now.sh?inline=y_%7Bi%7D%20%5Cin%20%5Cmathcal%7BY%7D%3D%5Cleft%5C%7Bc_%7B1%7D%2C%20c_%7B2%7D%2C%20%5Ccdots%2C%20c_%7BK%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/> 为实例的类别， <img src="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B" style="display:inline-block;margin: 0;"/> 实例特征向量 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>;<br>
+输出：实例 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 所属的类 <img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/>。<br>
+(1) 根据给定的距离度量，在训练集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 中找出与 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 最邻近的 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 个点，涵盖这 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 个点的 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的邻域记作 <img src="https://math.now.sh?inline=N_%7Bk%7D%28x%29" style="display:inline-block;margin: 0;"/>;<br>
+(2) 在 <img src="https://math.now.sh?inline=N_%7Bk%7D%28x%29" style="display:inline-block;margin: 0;"/> 中根据分类决策规则 (如多数表决) 决定 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的类别 <img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/> :</p>
+<p style=""><img src="https://math.now.sh?from=y%3D%5Carg%20%5Cmax%20_%7Bc_%7Bj%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20N_%7Bk%7D%28x%29%7D%20I%5Cleft(y_%7Bi%7D%3Dc_%7Bj%7D%5Cright)%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20N%20%3B%20j%3D1%2C2%2C%20%5Ccdots%2C%20K%0A" /></p><p>式 (1) 中， <img src="https://math.now.sh?inline=I" style="display:inline-block;margin: 0;"/> 为指示函数，即当 <img src="https://math.now.sh?inline=y_%7Bi%7D%3Dc_%7Bj%7D" style="display:inline-block;margin: 0;"/> 时 <img src="https://math.now.sh?inline=I" style="display:inline-block;margin: 0;"/> 为 <img src="https://math.now.sh?inline=1%2C" style="display:inline-block;margin: 0;"/> 否则 <img src="https://math.now.sh?inline=I" style="display:inline-block;margin: 0;"/> 为 0 。</p>
 </blockquote>
 <ul>
 <li>算法没有显式的学习过程。</li>
@@ -286,26 +369,23 @@ $$<br>
 <p>在训练集、距离度量、k值、分类决策鬼册确定后，对任意新输入实例，所属类别唯一。</p>
 </li>
 <li>
-<p>每一个训练实例点$x_i$，存在一个单元cell，在单元内到此$x_i$的距离最小。所有实例点的单元划分了特征空间。</p>
+<p>每一个训练实例点<img src="https://math.now.sh?inline=x_i" style="display:inline-block;margin: 0;"/>，存在一个单元cell，在单元内到此<img src="https://math.now.sh?inline=x_i" style="display:inline-block;margin: 0;"/>的距离最小。所有实例点的单元划分了特征空间。</p>
 </li>
 </ul>
 <h3 id="2-1-距离度量">2.1 距离度量</h3>
 <p>计算特征空间中两点的距离。</p>
-<p>$L_{p}$ (Minkowski) distance<br>
-$$<br>
-L_{p}\left(x_{i}, x_{j}\right)=\left(\sum_{l=1}^{n}\left|x_{i}^{(l)}-x_{j}^{(l)}\right|^{p}\right)^{\frac{1}{p}}<br>
-$$</p>
-<ul>
+<p><img src="https://math.now.sh?inline=L_%7Bp%7D" style="display:inline-block;margin: 0;"/> (Minkowski) distance</p>
+<p style=""><img src="https://math.now.sh?from=L_%7Bp%7D%5Cleft%28x_%7Bi%7D%2C%20x_%7Bj%7D%5Cright%29%3D%5Cleft(%5Csum_%7Bl%3D1%7D%5E%7Bn%7D%5Cleft%7Cx_%7Bi%7D%5E%7B(l)%7D-x_%7Bj%7D%5E%7B(l)%7D%5Cright%7C%5E%7Bp%7D%5Cright)%5E%7B%5Cfrac%7B1%7D%7Bp%7D%7D%0A" /></p><ul>
 <li>
 <ul>
-<li>设特征空间 $\mathcal{X}$ 是 $n$ 维实数向量空间 $x_{i}, x_{j} \in \mathbf{R}^{n}, x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(n)}\right)^{\mathrm{T}},$<br>
-$x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}$</li>
-<li>$p\geq1$</li>
+<li>设特征空间 <img src="https://math.now.sh?inline=%5Cmathcal%7BX%7D" style="display:inline-block;margin: 0;"/> 是 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"/> 维实数向量空间 <img src="https://math.now.sh?inline=x_%7Bi%7D%2C%20x_%7Bj%7D%20%5Cin%20%5Cmathbf%7BR%7D%5E%7Bn%7D%2C%20x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bi%7D%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C" style="display:inline-block;margin: 0;"/><br>
+<img src="https://math.now.sh?inline=x_%7Bj%7D%3D%5Cleft%28x_%7Bj%7D%5E%7B(1%29%7D%2C%20x_%7Bj%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bj%7D%5E%7B(n)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D" style="display:inline-block;margin: 0;"/></li>
+<li><img src="https://math.now.sh?inline=p%5Cgeq1" style="display:inline-block;margin: 0;"/></li>
 </ul>
 </li>
-<li>$p=1$，Manhattan distance</li>
-<li>$p=2$， Euclidean distance</li>
-<li>$p=\infin$，‘Max’ distance</li>
+<li><img src="https://math.now.sh?inline=p%3D1" style="display:inline-block;margin: 0;"/>，Manhattan distance</li>
+<li><img src="https://math.now.sh?inline=p%3D2" style="display:inline-block;margin: 0;"/>， Euclidean distance</li>
+<li><img src="https://math.now.sh?inline=p%3D%5Cinfin" style="display:inline-block;margin: 0;"/>，‘Max’ distance</li>
 </ul>
 <h3 id="2-2-k值选择">2.2 k值选择</h3>
 <p>选取一些较小k值，通过<strong>交叉验证法</strong>选取最优k值。</p>
@@ -320,13 +400,13 @@ $x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}$<
 <ul>
 <li>近似误差增大，估计误差减小。较远错误标签实例点也能造成影响。</li>
 <li>模型更简单。</li>
-<li>$k=N$时，则为测试集最多类。</li>
+<li><img src="https://math.now.sh?inline=k%3DN" style="display:inline-block;margin: 0;"/>时，则为测试集最多类。</li>
 </ul>
 </li>
 </ul>
 <h3 id="2-3-分类决策规则">2.3 分类决策规则</h3>
 <p>一般为<strong>多数表决(majority voting rule)</strong></p>
-<p>对给定的实例$x$，最近邻的$k$个训练实例点存在$c$个类别。为了使得分类错误的概率最小，所以选取类别中最多的那一类。</p>
+<p>对给定的实例<img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>，最近邻的<img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/>个训练实例点存在<img src="https://math.now.sh?inline=c" style="display:inline-block;margin: 0;"/>个类别。为了使得分类错误的概率最小，所以选取类别中最多的那一类。</p>
 <h2 id="3-Implement-kd-tree">3. Implement: kd tree</h2>
 <p>线性扫描 (linear scan) 要计算实例与每一个训练实例的距离，耗时。</p>
 <h3 id="3-1-kd树的构造">3.1 kd树的构造</h3>
@@ -337,25 +417,25 @@ $x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}$<
 <li>效率不一定最优。</li>
 </ul>
 <blockquote>
-<p>算法 3.2 (构造平衡 $k d$ 树）</p>
-<p>输入: $k$ 维空间数据集 $T=\left{x_{1}, x_{2}, \cdots, x_{N}\right},$ 其中 $x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(k)}\right)^{\mathrm{T}},$<br>
-$i=1,2, \cdots, N$<br>
-输出: $k d$ 树。<br>
-（1）开始：构造根结点，根结点对应于包含 $T$ 的 $k$ 维空间的超矩形区域。<br>
-选择 $x^{(1)}$ 为坐标轴，以 $T$ 中所有实例的 $x^{(1)}$ 坐标的中位数为切分点，将根结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 $x^{(1)}$ 垂直的超平面实现。<br>
-由根结点生成深度为 1 的左、右子结点: <strong>左子结点对应坐标 $x^{(1)}$ 小于切分点的子 区域，右子结点对应于坐标 $x^{(1)}$ 大于切分点的子区域</strong>。<br>
+<p>算法 3.2 (构造平衡 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树）</p>
+<p>输入: <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 维空间数据集 <img src="https://math.now.sh?inline=T%3D%5Cleft%5C%7Bx_%7B1%7D%2C%20x_%7B2%7D%2C%20%5Ccdots%2C%20x_%7BN%7D%5Cright%5C%7D%2C" style="display:inline-block;margin: 0;"/> 其中 <img src="https://math.now.sh?inline=x_%7Bi%7D%3D%5Cleft%28x_%7Bi%7D%5E%7B(1%29%7D%2C%20x_%7Bi%7D%5E%7B(2)%7D%2C%20%5Ccdots%2C%20x_%7Bi%7D%5E%7B(k)%7D%5Cright)%5E%7B%5Cmathrm%7BT%7D%7D%2C" style="display:inline-block;margin: 0;"/><br>
+<img src="https://math.now.sh?inline=i%3D1%2C2%2C%20%5Ccdots%2C%20N" style="display:inline-block;margin: 0;"/><br>
+输出: <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树。<br>
+（1）开始：构造根结点，根结点对应于包含 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 的 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 维空间的超矩形区域。<br>
+选择 <img src="https://math.now.sh?inline=x%5E%7B%281%29%7D" style="display:inline-block;margin: 0;"/> 为坐标轴，以 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 中所有实例的 <img src="https://math.now.sh?inline=x%5E%7B%281%29%7D" style="display:inline-block;margin: 0;"/> 坐标的中位数为切分点，将根结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 <img src="https://math.now.sh?inline=x%5E%7B%281%29%7D" style="display:inline-block;margin: 0;"/> 垂直的超平面实现。<br>
+由根结点生成深度为 1 的左、右子结点: <strong>左子结点对应坐标 <img src="https://math.now.sh?inline=x%5E%7B%281%29%7D" style="display:inline-block;margin: 0;"/> 小于切分点的子 区域，右子结点对应于坐标 <img src="https://math.now.sh?inline=x%5E%7B%281%29%7D" style="display:inline-block;margin: 0;"/> 大于切分点的子区域</strong>。<br>
 将落在切分超平面上的实例点保存在根结点。<br>
-（2）重复: 对深度为 $j$ 的结点，选择 $x^{(l)}$ 为切分的坐标轴， $l=j(\bmod k)+1,$ 以该结点的区域中所有实例的 $x^{(l)}$ 坐标的中位数为切分点，将该结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 $x^{(l)}$ 垂直的超平面实现。<br>
-由该结点生成深度为 $j+1$ 的左、右子结点: 左子结点对应坐标 $x^{(l)}$ 小于切分点 的子区域，右子结点对应坐标 $x^{(l)}$ 大于切分点的子区域。<br>
+（2）重复: 对深度为 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 的结点，选择 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 为切分的坐标轴， <img src="https://math.now.sh?inline=l%3Dj%28%5Cbmod%20k%29%2B1%2C" style="display:inline-block;margin: 0;"/> 以该结点的区域中所有实例的 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 坐标的中位数为切分点，将该结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 垂直的超平面实现。<br>
+由该结点生成深度为 <img src="https://math.now.sh?inline=j%2B1" style="display:inline-block;margin: 0;"/> 的左、右子结点: 左子结点对应坐标 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 小于切分点 的子区域，右子结点对应坐标 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 大于切分点的子区域。<br>
 将落在切分超平面上的实例点保存在该结点。</p>
-<p>（3）直到两个子区域没有实例存在时停止。从而形成 $k d$ 树的区域划分.</p>
+<p>（3）直到两个子区域没有实例存在时停止。从而形成 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树的区域划分.</p>
 </blockquote>
 <p><strong>构造过程图示</strong>：</p>
 <p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png" alt="SLM-3 平衡kd树图示"></p>
 <ul>
 <li>按照黄、绿、蓝、红，垂直x，y，x，y的顺序切分。</li>
-<li>左右节点确定：根据在第$l$维度上2个子节点对应坐标大小确定，小左大右。</li>
-<li>$l=j(\bmod k)+1$：在k维方向都按顺序切上之后，回过头在循环切。
+<li>左右节点确定：根据在第<img src="https://math.now.sh?inline=l" style="display:inline-block;margin: 0;"/>维度上2个子节点对应坐标大小确定，小左大右。</li>
+<li><img src="https://math.now.sh?inline=l%3Dj%28%5Cbmod%20k%29%2B1" style="display:inline-block;margin: 0;"/>：在k维方向都按顺序切上之后，回过头在循环切。
 <ul>
 <li>公式细节因初始根节点的深度是0或1而有不同</li>
 </ul>
@@ -364,28 +444,28 @@ $i=1,2, \cdots, N$<br>
 <li>偶数个数的中位数：自己确定，代码上别忘了。</li>
 </ul>
 <h3 id="3-2-kd树的搜索">3.2 kd树的搜索</h3>
-<h4 id="3-2-1-k-1">3.2.1 $k=1$</h4>
+<h4 id="3-2-1-k-1">3.2.1 <img src="https://math.now.sh?inline=k%3D1" style="display:inline-block;margin: 0;"/></h4>
 <blockquote>
-<p>算法 3.3 (用 $k d$ 树的最近邻搜索)<br>
-输入: 已构造的 $k d$ 树，目标点 $x$;<br>
-输出: $x$ 的最近邻，$k=1$。<br>
-(1) 在 $k d$ 树中找出包含目标点 $x$ 的叶结点: 从根结点出发，递归地向下访问 $k d$ 树。若目标点 $x$ 当前维的坐标小于切分点的坐标，则移动到左子结点，否则移动到右子结点。直到子结点为叶结点为止。<br>
+<p>算法 3.3 (用 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树的最近邻搜索)<br>
+输入: 已构造的 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树，目标点 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>;<br>
+输出: <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的最近邻，<img src="https://math.now.sh?inline=k%3D1" style="display:inline-block;margin: 0;"/>。<br>
+(1) 在 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树中找出包含目标点 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的叶结点: 从根结点出发，递归地向下访问 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树。若目标点 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 当前维的坐标小于切分点的坐标，则移动到左子结点，否则移动到右子结点。直到子结点为叶结点为止。<br>
 (2) 以此叶结点为“当前最近点”。<br>
 (3) 递归地向上回退，在每个结点进行以下操作:<br>
 (a）如果该结点保存的实例点比当前最近点距离目标点更近，则以该实例点 为“当前最近点”。<br>
 (b）当前最近点一定存在于该结点一个子结点对应的区域。检查该子结点的父结点的另一子结点对应的区域是否有更近的点。具体地，检查另一子结点对应的区域是否与以目标点为球心、以目标点与“当前最近点”问的距离为半径的超球体相交。</p>
 <p>​		如果相交，可能在另一个子结点对应的区域内存在距目标点更近的点，移动到另一个子结点。接着，递归地进行最近邻搜索;<br>
 ​		如果不相交，向上回退。<br>
-(4）当回退到根结点时，搜索结束。最后的“当前最近点&quot;即为 $x$ 的最近邻点。</p>
+(4）当回退到根结点时，搜索结束。最后的“当前最近点&quot;即为 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的最近邻点。</p>
 </blockquote>
-<h4 id="3-2-2-k-1">3.2.2 $k&gt;1$</h4>
+<h4 id="3-2-2-k-1">3.2.2 <img src="https://math.now.sh?inline=k%3E1" style="display:inline-block;margin: 0;"/></h4>
 <blockquote>
-<p>算法 3.04 (用 $k d$ 树的最近邻搜索)<br>
-输入: 已构造的 $k d$ 树，目标点 $x$;<br>
-输出: $x$ 的k最近邻。</p>
+<p>算法 3.04 (用 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树的最近邻搜索)<br>
+输入: 已构造的 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树，目标点 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>;<br>
+输出: <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/> 的k最近邻。</p>
 <ol>
 <li>
-<p>根据p的坐标和kd树的结点向下进行搜索 (如果树的结点是以 $x^{(l)}=c$ 来切分的, 那么如果p的 $x^{(l)}$ 坐标小于c, 则走左子结点, 否则走右子结点)</p>
+<p>根据p的坐标和kd树的结点向下进行搜索 (如果树的结点是以 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D%3Dc" style="display:inline-block;margin: 0;"/> 来切分的, 那么如果p的 <img src="https://math.now.sh?inline=x%5E%7B%28l%29%7D" style="display:inline-block;margin: 0;"/> 坐标小于c, 则走左子结点, 否则走右子结点)</p>
 </li>
 <li>
 <p>到达叶子结点时，将其标记为已访问。如果S中不足k个点, 则将该结点加入到S中; 如果S不空且当前结点与p点的距离小于S中最长的距离，则用当前结点替换S中离p最远的点</p>
@@ -398,7 +478,7 @@ $i=1,2, \cdots, N$<br>
 <p>(b). 如果此时S中不足k个点, 则将当前结点加入到S中; 如果S中已有k个点, 且当前结点与p 点的距离小于S中最长距离，则用当前结点替换S中距离最远的点。</p>
 <p>©. 计算p点和当前结点切分线的距离。如果该距离大于等于S中距离p最远的距离并且S中已 有k个点, 执行3; 如果该距离小于S中最远的距离或S中没有k个点, 从当前结点的另一子节点开始执行1; 如果当前结点没有另一子结点, 执行3。</p>
 </blockquote>
-<p><strong>算法3.04 (用 $k d$ 树的最近邻搜索)搜索过程</strong>：目标点P（-1，-5），k=3，S：存储k个近邻点。初始所有点=[0, 0] ，即 [未访问, 不在S中]</p>
+<p><strong>算法3.04 (用 <img src="https://math.now.sh?inline=k%20d" style="display:inline-block;margin: 0;"/> 树的最近邻搜索)搜索过程</strong>：目标点P（-1，-5），k=3，S：存储k个近邻点。初始所有点=[0, 0] ，即 [未访问, 不在S中]</p>
 <p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png" alt="SLM-3 平衡kd树图示"></p>
 <blockquote>
 <ol>
@@ -418,14 +498,14 @@ $i=1,2, \cdots, N$<br>
 <ul>
 <li>执行(a)，到D。D=[1, 0]</li>
 <li>执行(b)，D=[1, 1]</li>
-<li>执行©，P到D的切分线$x^1=-6$距离为5。S未满。D没有另一子节点。</li>
+<li>执行©，P到D的切分线<img src="https://math.now.sh?inline=x%5E1%3D-6" style="display:inline-block;margin: 0;"/>距离为5。S未满。D没有另一子节点。</li>
 </ul>
 </li>
 <li>执行算法3：
 <ul>
 <li>执行(a)，到B。B=[1, 0]</li>
 <li>执行(b)，B=[1,1]，S={H, D, B}</li>
-<li>执行©，P到B的切分线$x^2=-3$距离为2，小于S的最大距离。从B另一子节点E执行算法1.</li>
+<li>执行©，P到B的切分线<img src="https://math.now.sh?inline=x%5E2%3D-3" style="display:inline-block;margin: 0;"/>距离为2，小于S的最大距离。从B另一子节点E执行算法1.</li>
 </ul>
 </li>
 <li>执行算法1：
@@ -442,7 +522,7 @@ $i=1,2, \cdots, N$<br>
 <ul>
 <li>执行(a)，到E，E=[1, 0]</li>
 <li>执行(b)，d(E,P)小于S的最大距离。E=[1, 1]，H=[1, 0]，S={E, D, B}</li>
-<li>执行©，P到E的切分线$x^1=-2$距离为1，小于S的最大距离。从E另一子节点I执行算法1.</li>
+<li>执行©，P到E的切分线<img src="https://math.now.sh?inline=x%5E1%3D-2" style="display:inline-block;margin: 0;"/>距离为1，小于S的最大距离。从E另一子节点I执行算法1.</li>
 </ul>
 </li>
 <li>执行算法1：
@@ -459,7 +539,7 @@ $i=1,2, \cdots, N$<br>
 <ul>
 <li>执行若干(a)，到A，A=[1, 0]</li>
 <li>执行(b)，d(A, P)大于S的最大距离。</li>
-<li>执行©，P到E的切分线$x^1=6$距离为7，大于最长距离。不加入。</li>
+<li>执行©，P到E的切分线<img src="https://math.now.sh?inline=x%5E1%3D6" style="display:inline-block;margin: 0;"/>距离为7，大于最长距离。不加入。</li>
 </ul>
 </li>
 <li>执行算法3：
@@ -472,13 +552,13 @@ $i=1,2, \cdots, N$<br>
 <h3 id="3-3-Summary">3.3 Summary</h3>
 <ol>
 <li>
-<p>kd Tree的平均复杂度$O(logN)$, $N$为训练实例数。适合训练实例数远大于空间维数的KNN。</p>
+<p>kd Tree的平均复杂度<img src="https://math.now.sh?inline=O%28logN%29" style="display:inline-block;margin: 0;"/>, <img src="https://math.now.sh?inline=N" style="display:inline-block;margin: 0;"/>为训练实例数。适合训练实例数远大于空间维数的KNN。</p>
 </li>
 <li>
 <p>把k维大空间多次对半分成k维小空间。</p>
 </li>
 <li>
-<p>目标点与实例点的距离$\geq$目标点与该实例点对应切分超平面的距离。因此：</p>
+<p>目标点与实例点的距离<img src="https://math.now.sh?inline=%5Cgeq" style="display:inline-block;margin: 0;"/>目标点与该实例点对应切分超平面的距离。因此：</p>
 <ol>
 <li>当此实例点当前应该替换S中某点从而加入到S集合中时，另一半空间存在子空间，子空间的点到目标点的距离小于实例点到目标点的距离。
 <ol>

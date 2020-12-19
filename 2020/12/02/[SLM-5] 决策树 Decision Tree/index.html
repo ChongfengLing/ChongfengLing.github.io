@@ -23,21 +23,400 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树) $\quad$ 分类决策树模型是一种描述对实例进行分类的">
+<meta name="description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树)  分类决策树模型是一种描述对实例进行分类的树形结构。决策">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Chongfeng Ling">
 <meta property="og:url" content="http://example.com/2020/12/02/[SLM-5]%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/index.html">
 <meta property="og:site_name" content="Chongfeng Ling">
-<meta property="og:description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树) $\quad$ 分类决策树模型是一种描述对实例进行分类的">
+<meta property="og:description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树)  分类决策树模型是一种描述对实例进行分类的树形结构。决策">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=P%28Y%7CX%29%2C%5C%3BX%3A%E7%89%B9%E5%BE%81%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%5C%3B%5C%3B%5C%3B%5C%3BY%3A%E7%B1%BB%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F">
+<meta property="og:image" content="https://math.now.sh?inline=P%28Y%7CX%29">
+<meta property="og:image" content="https://math.now.sh?inline=y">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28X%3Dx_%7Bi%7D%5Cright%29%3Dp_%7Bi%7D%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%0A">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?from=H%28X%29%3DH(p)%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20p_%7Bi%7D%20%5Clog%20p_%7Bi%7D%0A">
+<meta property="og:image" content="https://math.now.sh?from=%E5%AF%B9p_i%3D0%EF%BC%8C%E5%AE%9A%E4%B9%890log0%3D0%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=e">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=x_i">
+<meta property="og:image" content="https://math.now.sh?inline=0%20%5Cleqslant%20H%28p%29%20%5Cleqslant%20%5Clog%20n">
+<meta property="og:image" content="https://math.now.sh?from=P%5Cleft%28X%3Dx_%7Bi%7D%2C%20Y%3Dy_%7Bj%7D%5Cright%29%3Dp_%7Bi%20j%7D%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%20%3B%20%5Cquad%20j%3D1%2C2%2C%20%5Ccdots%2C%20m%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=H%28Y%7CX%29">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?from=H%28Y%20%5Cmid%20X%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20p_%7Bi%7D%20H%5Cleft(Y%20%5Cmid%20X%3Dx_%7Bi%7D%5Cright)%5C%5C%0Ap_%7Bi%7D%3DP%5Cleft(X%3Dx_%7Bi%7D%5Cright)%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%0A">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=g%28D%2C%20A%29%2C">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=H%28D%29">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=H%28D%20%5Cmid%20A%29">
+<meta property="og:image" content="https://math.now.sh?from=g%28D%2C%20A%29%3DH(D)-H(D%20%5Cmid%20A)%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=g_%7BR%7D%28D%2C%20A%29">
+<meta property="og:image" content="https://math.now.sh?inline=g%28D%2C%20A%29">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=H_%7BA%7D%28D%29">
+<meta property="og:image" content="https://math.now.sh?from=g_%7BR%7D%28D%2C%20A%29%3D%5Cfrac%7Bg(D%2C%20A)%7D%7BH_%7BA%7D(D)%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%2C%20H_%7BA%7D%28D%29%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%2C%20n">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=C_k">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=D_n">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%20k%7D%3DD_%7Bi%7D%20%5Ccap%20C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%7CD%7C">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=g%28D%2C%20A%29">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=H%28D%29">
+<meta property="og:image" content="https://math.now.sh?from=H%28D%29%3D-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=H%28D%20%5Cmid%20A%29">
+<meta property="og:image" content="https://math.now.sh?from=H%28D%20%5Cmid%20A%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20H%5Cleft(D_%7Bi%7D%5Cright)%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%20k%7D%5Cright%7C%7D%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%20k%7D%5Cright%7C%7D%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?from=g%28D%2C%20A%29%3DH(D)-H(D%20%5Cmid%20A)%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cvarepsilon%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5C%5C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A%3D%5Cvarnothing%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cvarepsilon%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=a_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D%3Da_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=i">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=A-%5Cleft%5C%7BA_%7Bg%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Csim">
+<meta property="og:image" content="https://math.now.sh?inline=%285%29%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bi%7D%20%5Ccirc">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cvarepsilon">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A%3D%5Cvarnothing%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cvarepsilon%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D">
+<meta property="og:image" content="https://math.now.sh?inline=a_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=A_%7Bg%7D%3Da_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=i">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=A-%5Cleft%5C%7BA_%7Bg%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%285%29%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bi%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=%7CT%7C">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=N_t">
+<meta property="og:image" content="https://math.now.sh?inline=K">
+<meta property="og:image" content="https://math.now.sh?inline=N_%7Btk%7D%EF%BC%9B%5C%3Bk%3D1%2C2%2C...%2CK">
+<meta property="og:image" content="https://math.now.sh?inline=H_t%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%20%5Cgeq0">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%20H_%7Bt%7D(T)%2B%5Calpha%7CT%7C%0A">
+<meta property="og:image" content="https://math.now.sh?inline=H_t%28T%29">
+<meta property="og:image" content="https://math.now.sh?from=H_%7Bt%7D%28T%29%3D-%5Csum_%7Bk%7D%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%20%5Clog%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29">
+<meta property="og:image" content="https://math.now.sh?from=C%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%20H_%7Bt%7D(T)%3D-%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20N_%7Bt%20k%7D%20%5Clog%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%0A">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3DC(T)%2B%5Calpha%7CT%7C%0A">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=%7CT%7C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%7D%20%5Ccirc">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E5%89%AA%E6%9E%9D.png">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7BB%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7BA%7D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7B%5Calpha%7D%5Cleft%28T_%7BB%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7B%5Calpha%7D%5Cleft%28T_%7BA%7D%5Cright%29%2C">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7BA%7D%5Cright%29%20%5Cleqslant%20C_%7B%5Calpha%7D%5Cleft(T_%7BB%7D%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%5E%7B%5Ccirc%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=X">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?inline=D%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=Y">
+<meta property="og:image" content="https://math.now.sh?inline=M">
+<meta property="og:image" content="https://math.now.sh?inline=R_%7B1%7D%2C%20R_%7B2%7D%2C%20%5Ccdots%2C%20R_%7BM%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=R_%7Bm%7D">
+<meta property="og:image" content="https://math.now.sh?inline=c_%7Bm%7D%2C">
+<meta property="og:image" content="https://math.now.sh?from=f%28x%29%3D%5Csum_%7Bm%3D1%7D%5E%7BM%7D%20c_%7Bm%7D%20I%5Cleft(x%20%5Cin%20R_%7Bm%7D%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x">
+<meta property="og:image" content="https://math.now.sh?inline=c_m">
+<meta property="og:image" content="https://math.now.sh?inline=%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7Bm%7D%7D%5Cleft%28y_%7Bi%7D-f%5Cleft(x_%7Bi%7D%5Cright%29%5Cright)%5E%7B2%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x_i%5Cin%20R_m">
+<meta property="og:image" content="https://math.now.sh?inline=R_%7Bm%7D">
+<meta property="og:image" content="https://math.now.sh?inline=c_%7Bm%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bc%7D_%7Bm%7D">
+<meta property="og:image" content="https://math.now.sh?inline=R_%7Bm%7D">
+<meta property="og:image" content="https://math.now.sh?inline=x_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?inline=y_%7Bi%7D">
+<meta property="og:image" content="https://math.now.sh?from=%5Chat%7Bc%7D_%7Bm%7D%3D%5Coperatorname%7Bave%7D%5Cleft%28y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7Bm%7D%5Cright%29%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28j%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=s">
+<meta property="og:image" content="https://math.now.sh?from=R_%7B1%7D%28j%2C%20s%29%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%20%5Cleqslant%20s%5Cright%5C%7D%20%5Cquad%20%5Ctext%20%7B%20%E5%92%8C%20%7D%20%5Cquad%20R_%7B2%7D(j%2C%20s)%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%3Es%5Cright%5C%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=s">
+<meta property="og:image" content="https://math.now.sh?from=%5Cmin%20_%7Bj%2C%20s%7D%5Cleft%5B%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%5Cright%5D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E%7B%28j%29%7D">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=s">
+<meta property="og:image" content="https://math.now.sh?inline=x_n">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=c_1%2Cc_2">
+<meta property="og:image" content="https://math.now.sh?inline=c_m">
+<meta property="og:image" content="https://math.now.sh?from=%5Chat%7Bc%7D_%7B1%7D%3D%5Coperatorname%7Bave%7D%5Cleft%28y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7B1%7D(j%2C%20s%29%5Cright)%20%5Cquad%20%5Ctext%20%7B%20%E5%92%8C%20%7D%20%5Cquad%20%5Chat%7Bc%7D_%7B2%7D%3D%5Coperatorname%7Bave%7D%5Cleft(y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=f%28x%29">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=s">
+<meta property="og:image" content="https://math.now.sh?from=%5Cmin%20_%7Bj%2C%20s%7D%5Cleft%5B%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%5Cright%5D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=j">
+<meta property="og:image" content="https://math.now.sh?inline=s">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2C%20s%29">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2C%20s%29">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bc%7D%0AR_%7B1%7D%28j%2C%20s%29%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%20%5Cleqslant%20s%5Cright%5C%7D%2C%20%5Cquad%20R_%7B2%7D(j%2C%20s)%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%3Es%5Cright%5C%7D%20%5C%5C%0A%5Chat%7Bc%7D_%7Bm%7D%3D%5Cfrac%7B1%7D%7BN_%7Bm%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7Bm%7D(j%2C%20s)%7D%20y_%7Bi%7D%2C%20%5Cquad%20x%20%5Cin%20R_%7Bm%7D%2C%20%5Cquad%20m%3D1%2C2%0A%5Cend%7Barray%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%281%29%2C(2)%2C">
+<meta property="og:image" content="https://math.now.sh?inline=M">
+<meta property="og:image" content="https://math.now.sh?inline=R_%7B1%7D%2C%20R_%7B2%7D%2C%20%5Ccdots%2C%20R_%7BM%7D%2C">
+<meta property="og:image" content="https://math.now.sh?from=f%28x%29%3D%5Csum_%7Bm%3D1%7D%5E%7BM%7D%20%5Chat%7Bc%7D_%7Bm%7D%20I%5Cleft(x%20%5Cin%20R_%7Bm%7D%5Cright)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E2">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E3">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=x_1">
+<meta property="og:image" content="https://math.now.sh?inline=x_2">
+<meta property="og:image" content="https://math.now.sh?inline=x_3">
+<meta property="og:image" content="https://math.now.sh?inline=x_4">
+<meta property="og:image" content="https://math.now.sh?inline=j%3Dx%5E1">
+<meta property="og:image" content="https://math.now.sh?inline=s%3D1.5">
+<meta property="og:image" content="https://math.now.sh?inline=c_1%3D1%2C%5C%3Bc_2%3D2.5">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%3D%5C%5C%20%5B(1-1)%5E2%2B(1-1)%5E2%5D%2B%5B(2-2.5)%5E2%2B(3-2.5)%5E2%5D%3D0.5">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.6)%2C%5C%3B0.67">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.2)%2C%5C%3B(j%2Cs)%3D(x%5E1%2C1.8)">
+<meta property="og:image" content="https://math.now.sh?inline=j%3Dx%5E1">
+<meta property="og:image" content="https://math.now.sh?inline=s%3D1.5">
+<meta property="og:image" content="https://math.now.sh?inline=error%3D0.5">
+<meta property="og:image" content="https://math.now.sh?inline=j%3Dx%5E2">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E2%2C4)%2C%5C%3Berror%3D0.5">
+<meta property="og:image" content="https://math.now.sh?inline=j%3Dx%5E3">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E3%2C2.75)%2C%5C%3Berror%3D2">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cmin%20_%7Bj%2C%20s%7D%3D%5Cmin%5B0.5%2C%5C%3B0.5%2C%5C%3B2%5D%3D0.5">
+<meta property="og:image" content="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.5)">
+<meta property="og:image" content="https://math.now.sh?inline=R_1%2C%5C%3BR_2">
+<meta property="og:image" content="https://math.now.sh?inline=R_1">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E2">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E3">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=x_1">
+<meta property="og:image" content="https://math.now.sh?inline=x_2">
+<meta property="og:image" content="https://math.now.sh?inline=R_2">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E1">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E2">
+<meta property="og:image" content="https://math.now.sh?inline=x%5E3">
+<meta property="og:image" content="https://math.now.sh?inline=y">
+<meta property="og:image" content="https://math.now.sh?inline=x_3">
+<meta property="og:image" content="https://math.now.sh?inline=x_4">
+<meta property="og:image" content="https://math.now.sh?inline=%5Chat%7Bc%7D_1%3D1%2C%5C%3B%5Chat%7Bc%7D_2%3D2.5">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cquad">
+<meta property="og:image" content="https://math.now.sh?inline=K">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=p_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28p%29%3D%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20p_%7Bk%7D%5Cleft(1-p_%7Bk%7D%5Cright)%3D1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20p_%7Bk%7D%5E%7B2%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=p%2C">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28p%29%3D2%20p(1-p)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=D%2C">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28D%29%3D1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%5Cleft(%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%5Cright)%5E%7B2%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=k">
+<meta property="og:image" content="https://math.now.sh?inline=K">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=a">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7B1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7B2%7D">
+<meta property="og:image" content="https://math.now.sh?from=D_%7B1%7D%3D%5C%7B%28x%2C%20y%29%20%5Cin%20D%20%5Cmid%20A(x)%3Da%5C%7D%2C%20%5Cquad%20D_%7B2%7D%3DD-D_%7B1%7D%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28D%2C%20A%29%3D%5Cfrac%7B%5Cleft%7CD_%7B1%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Coperatorname%7BGini%7D%5Cleft(D_%7B1%7D%5Cright)%2B%5Cfrac%7B%5Cleft%7CD_%7B2%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Coperatorname%7BGini%7D%5Cleft(D_%7B2%7D%5Cright)%0A">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%9F%BA%E5%B0%BC%E3%80%81%E7%86%B5%E4%B8%8E%E5%88%86%E7%B1%BB%E8%AF%AF%E5%B7%AE.png">
+<meta property="og:image" content="https://math.now.sh?inline=D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=A%2C">
+<meta property="og:image" content="https://math.now.sh?inline=a%2C">
+<meta property="og:image" content="https://math.now.sh?inline=A%3Da">
+<meta property="og:image" content="https://math.now.sh?inline=D">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7B1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=D_%7B2%7D">
+<meta property="og:image" content="https://math.now.sh?inline=A%3Da">
+<meta property="og:image" content="https://math.now.sh?inline=A">
+<meta property="og:image" content="https://math.now.sh?inline=a">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3DC(T)%2B%5Calpha%7CT%7C%5Cnonumber%0A">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%5Cleft(1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%5Cleft(%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%5Cright)%5E%7B2%7D%5Cright)%2C%7CT%7C">
+<meta property="og:image" content="https://math.now.sh?inline=K">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%7D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%7B%5Calpha%7D%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%20%5Crightarrow%20%5Cinfty">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=0%3D%5Calpha_%7B0%7D%3C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha_%7B1%7D%3C%5Ccdots%3C%5Calpha_%7Bn%7D%3C%2B%5Cinfty%2C">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5B%5Calpha_%7Bi%7D%2C%20%5Calpha_%7Bi%2B1%7D%5Cright%29%2C%20i%3D0%2C1%2C%20%5Ccdots%2C%20n%20%3B">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%20%5Cin%5Cleft%5B%5Calpha_%7Bi%7D%2C%20%5Calpha_%7Bi%2B1%7D%5Cright%29%2C%20i%3D0%2C1%2C%20%5Ccdots%2C%20n">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%28t%29%3DC(t)%2B%5Calpha%0A">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bt%7D">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%3DC%5Cleft(T_%7Bt%7D%5Cright)%2B%5Calpha%5Cleft%7CT_%7Bt%7D%5Cright%7C%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%3D0">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%3CC_%7B%5Calpha%7D(t)%0A">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AC_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%20%26%3DC_%7B%5Calpha%7D(t)%5C%5C%0A%5Calpha%20%26%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%0A%5Cend%7Balign%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=T_t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bt%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_0">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?from=g%28t%29%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=g%28t%29">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B0%7D">
+<meta property="og:image" content="https://math.now.sh?inline=g%28t%29">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bt%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B1%7D%2C">
+<meta property="og:image" content="https://math.now.sh?inline=g%28t%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha_%7B1%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5B%5Calpha_%7B1%7D%2C%20%5Calpha_%7B2%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=g%28t%29%3D%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B0%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%20%5Ccirc%7D">
+<meta property="og:image" content="https://math.now.sh?inline=k%3D0%2C%20T%3DT_%7B0%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha%3D%2B%5Cinfty">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=C%5Cleft%28T_%7Bt%7D%5Cright%29%2C%5Cleft%7CT_%7Bt%7D%5Cright%7C">
+<meta property="og:image" content="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0A%0Ag%28t%29%20%26%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%20%5C%5C%0A%5Calpha%20%26%3D%5Cmin%20(%5Calpha%2C%20g(t))%0A%5Cend%7Baligned%7D%0A">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bt%7D">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=C%5Cleft%28T_%7Bt%7D%5Cright%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Cleft%7CT_%7Bt%7D%5Cright%7C">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bt%7D">
+<meta property="og:image" content="https://math.now.sh?inline=g%28t%29%3D%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=t">
+<meta property="og:image" content="https://math.now.sh?inline=T">
+<meta property="og:image" content="https://math.now.sh?inline=k%3Dk%2B1%2C%20%5Calpha_%7Bk%7D%3D%5Calpha%2C%20T_%7Bk%7D%3DT_%7B%5Ccirc%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bk%7D">
+<meta property="og:image" content="https://math.now.sh?inline=%3B">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7Bk%7D%3DT_%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D">
+<meta property="og:image" content="https://math.now.sh?inline=T_%7B%5Calpha%5E%7B%5Ccirc%7D%7D">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=2%5E2">
 <meta property="article:published_time" content="2020-12-02T08:14:56.880Z">
 <meta property="article:modified_time" content="2020-12-18T08:01:49.754Z">
 <meta property="article:author" content="CHongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png">
+<meta name="twitter:image" content="https://math.now.sh?inline=%5Cquad">
 
 
 <link rel="canonical" href="http://example.com/2020/12/02/[SLM-5]%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/">
@@ -254,7 +633,7 @@
 <p>决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。</p>
 <h2 id="1-Model">1. Model</h2>
 <blockquote>
-<p>定义 5.1 (决策树) $\quad$ 分类决策树模型是一种描述对实例进行分类的树形结构。决策树由结点 ( node ) 和有向边 ( directed edge ) 组成。结点有两种类型: 内部结点 ( internal node ) 和叶结,点 ( leaf node ) 。内部结点表示一个特征或属性, 叶结点表示一个类。</p>
+<p>定义 5.1 (决策树) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/> 分类决策树模型是一种描述对实例进行分类的树形结构。决策树由结点 ( node ) 和有向边 ( directed edge ) 组成。结点有两种类型: 内部结点 ( internal node ) 和叶结,点 ( leaf node ) 。内部结点表示一个特征或属性, 叶结点表示一个类。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">		A--是--&gt;C[叶结点]</span><br><span class="line">		A((根节点))--否--&gt;B((内部结点))</span><br><span class="line">		B--是--&gt;D[叶结点]</span><br><span class="line">		B--否--&gt;E[叶结点]</span><br></pre></td></tr></table></figure>
 <h3 id="1-1-决策树与if-then规则">1.1 决策树与if-then规则</h3>
@@ -266,8 +645,8 @@
 </ul>
 <h3 id="1-2-决策树与给定特征条件下的类条件概率分布">1.2 决策树与给定特征条件下的类条件概率分布</h3>
 <p><strong>决策树的生成等价于对特征空间的划分(partition)</strong>，从而划分成互不相交的单元(cell)/区域(region)，再每一个单元定义一个类的概率分布就构成的一个条件概率分布。决策树所表示的条件概率分布由各个单元给定条件下类的条件概率分布组成。</p>
-<p>$P(Y|X),;X:特征的随机变量;;;;Y:类的随机变量$</p>
-<p>条件概率$P(Y|X)$往往偏大于某一类$y$。分类时把该节点实例强行分到条件概率大的那一类。</p>
+<p><img src="https://math.now.sh?inline=P%28Y%7CX%29%2C%5C%3BX%3A%E7%89%B9%E5%BE%81%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%5C%3B%5C%3B%5C%3B%5C%3BY%3A%E7%B1%BB%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F" style="display:inline-block;margin: 0;"/></p>
+<p>条件概率<img src="https://math.now.sh?inline=P%28Y%7CX%29" style="display:inline-block;margin: 0;"/>往往偏大于某一类<img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/>。分类时把该节点实例强行分到条件概率大的那一类。</p>
 <img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png" alt="image-20201202210309048" style="zoom:50%;" />
 <h3 id="1-3-决策树的学习">1.3 决策树的学习</h3>
 <p>学习本质：为训练数据集归纳出一组分类规则</p>
@@ -283,77 +662,46 @@
 <h3 id="2-1-信息增益-Information-Gain">2.1 信息增益 Information Gain</h3>
 <h4 id="2-1-1-熵-Entropy、信息熵">2.1.1 熵 Entropy、信息熵</h4>
 <blockquote>
-<p>定义 5.01（熵）		熵是表示随机变量不确定性的度量。设$X$为离散随机变量，概率分布为<br>
-$$<br>
-P\left(X=x_{i}\right)=p_{i}, \quad i=1,2, \cdots, n<br>
-$$<br>
-随机变量$X$的熵为<br>
-$$<br>
-H(X)=H§=-\sum_{i=1}^{n} p_{i} \log p_{i}<br>
-$$</p>
-<p>$$<br>
-对p_i=0，定义0log0=0\nonumber<br>
-$$</p>
-</blockquote>
+<p>定义 5.01（熵）		熵是表示随机变量不确定性的度量。设<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>为离散随机变量，概率分布为</p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28X%3Dx_%7Bi%7D%5Cright%29%3Dp_%7Bi%7D%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%0A" /></p><p>随机变量<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的熵为</p>
+<p style=""><img src="https://math.now.sh?from=H%28X%29%3DH(p)%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20p_%7Bi%7D%20%5Clog%20p_%7Bi%7D%0A" /></p><p style=""><img src="https://math.now.sh?from=%E5%AF%B9p_i%3D0%EF%BC%8C%E5%AE%9A%E4%B9%890log0%3D0%5Cnonumber%0A" /></p></blockquote>
 <ul>
-<li>在(2)中，对数底为2/$e$时，熵单位为比特bit/纳特nat</li>
-<li>熵只和$X$的分布有关，与取值$x_i$无关</li>
+<li>在(2)中，对数底为2/<img src="https://math.now.sh?inline=e" style="display:inline-block;margin: 0;"/>时，熵单位为比特bit/纳特nat</li>
+<li>熵只和<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的分布有关，与取值<img src="https://math.now.sh?inline=x_i" style="display:inline-block;margin: 0;"/>无关</li>
 <li>熵越大，随机变量的不确定性就越大</li>
-<li>$0 \leqslant H§ \leqslant \log n$</li>
+<li><img src="https://math.now.sh?inline=0%20%5Cleqslant%20H%28p%29%20%5Cleqslant%20%5Clog%20n" style="display:inline-block;margin: 0;"/></li>
 </ul>
 <h4 id="2-1-2-条件熵-Conditional-Entropy">2.1.2 条件熵 Conditional Entropy</h4>
 <blockquote>
-<p>定义 5.02（条件熵）		对随机变量(X,Y)，联合概率分布为<br>
-$$<br>
-P\left(X=x_{i}, Y=y_{j}\right)=p_{i j}, \quad i=1,2, \cdots, n ; \quad j=1,2, \cdots, m\nonumber<br>
-$$<br>
-条件熵$H(Y|X)$表示一直随机变量$X$的情况下随机变量$Y$的不确定性。<strong>定义为给定$X$后$Y$的条件概率分布的熵对$X$的数学期望</strong>，即<br>
-$$<br>
-H(Y \mid X)=\sum_{i=1}^{n} p_{i} H\left(Y \mid X=x_{i}\right)\<br>
-p_{i}=P\left(X=x_{i}\right), i=1,2, \cdots, n<br>
-$$</p>
-</blockquote>
+<p>定义 5.02（条件熵）		对随机变量(X,Y)，联合概率分布为</p>
+<p style=""><img src="https://math.now.sh?from=P%5Cleft%28X%3Dx_%7Bi%7D%2C%20Y%3Dy_%7Bj%7D%5Cright%29%3Dp_%7Bi%20j%7D%2C%20%5Cquad%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%20%3B%20%5Cquad%20j%3D1%2C2%2C%20%5Ccdots%2C%20m%5Cnonumber%0A" /></p><p>条件熵<img src="https://math.now.sh?inline=H%28Y%7CX%29" style="display:inline-block;margin: 0;"/>表示一直随机变量<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的情况下随机变量<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>的不确定性。<strong>定义为给定<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>后<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>的条件概率分布的熵对<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的数学期望</strong>，即</p>
+<p style=""><img src="https://math.now.sh?from=H%28Y%20%5Cmid%20X%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20p_%7Bi%7D%20H%5Cleft(Y%20%5Cmid%20X%3Dx_%7Bi%7D%5Cright)%5C%5C%0Ap_%7Bi%7D%3DP%5Cleft(X%3Dx_%7Bi%7D%5Cright)%2C%20i%3D1%2C2%2C%20%5Ccdots%2C%20n%0A" /></p></blockquote>
 <p>当熵和条件熵的概率有极大似然估计得到时，对应的为经验熵(empirical entropy)和经验条件熵(empirical conditional entropy)</p>
 <h4 id="2-1-3-信息增益">2.1.3 信息增益</h4>
-<p><strong>信息增益表示得知特征$X$的信息从而使得类$Y$的信息的不确定性减少程度。</strong></p>
+<p><strong>信息增益表示得知特征<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的信息从而使得类<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>的信息的不确定性减少程度。</strong></p>
 <blockquote>
-<p>定义 5.2 (信息增益) $\quad$ 特征 $A$ 对训练数据集$D$的信息增益 $g(D, A),$ 定义为集合$D$的经验熵$H(D)$ 与特征 $A$ 给定条件下$D$的经验条件熵 $H(D \mid A)$ 之差，即<br>
-$$<br>
-g(D, A)=H(D)-H(D \mid A)\nonumber<br>
-$$</p>
-</blockquote>
+<p>定义 5.2 (信息增益) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/> 特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 对训练数据集<img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>的信息增益 <img src="https://math.now.sh?inline=g%28D%2C%20A%29%2C" style="display:inline-block;margin: 0;"/> 定义为集合<img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>的经验熵<img src="https://math.now.sh?inline=H%28D%29" style="display:inline-block;margin: 0;"/> 与特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 给定条件下<img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>的经验条件熵 <img src="https://math.now.sh?inline=H%28D%20%5Cmid%20A%29" style="display:inline-block;margin: 0;"/> 之差，即</p>
+<p style=""><img src="https://math.now.sh?from=g%28D%2C%20A%29%3DH(D)-H(D%20%5Cmid%20A)%5Cnonumber%0A" /></p></blockquote>
 <ul>
 <li>熵和条件熵之差称为互信息 mutual information，在决策树中即为信息增益</li>
-<li>$D$一般为标签</li>
+<li><img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>一般为标签</li>
 </ul>
 <h4 id="2-1-4-信息增益比-information-gain-ratio">2.1.4 信息增益比 information gain ratio</h4>
 <p>在训练集里，某一个特征较多时，信息增益会偏大。因此采用信息增益比来校正。</p>
 <blockquote>
-<p>定义 5.3 $ (信息增益比) $$\quad$ 特征 $A$ 对训练数据集 $D$ 的信息增益比 $g_{R}(D, A)$ 定义为其信息增益 $g(D, A)$ 与训练数据集 $D$ 关于特征 $A$ 的值的熵 $H_{A}(D)$ 之比，即<br>
-$$<br>
-g_{R}(D, A)=\frac{g(D, A)}{H_{A}(D)}<br>
-$$<br>
-其中 $, H_{A}(D)=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \log <em>{2} \frac{\left|D</em>{i}\right|}{|D|}, n$ 是特征 $A$ 取值的个数。</p>
+<p>定义 5.3 $ (信息增益比) $$\quad$ 特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 对训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的信息增益比 <img src="https://math.now.sh?inline=g_%7BR%7D%28D%2C%20A%29" style="display:inline-block;margin: 0;"/> 定义为其信息增益 <img src="https://math.now.sh?inline=g%28D%2C%20A%29" style="display:inline-block;margin: 0;"/> 与训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 关于特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 的值的熵 <img src="https://math.now.sh?inline=H_%7BA%7D%28D%29" style="display:inline-block;margin: 0;"/> 之比，即</p>
+<p style=""><img src="https://math.now.sh?from=g_%7BR%7D%28D%2C%20A%29%3D%5Cfrac%7Bg(D%2C%20A)%7D%7BH_%7BA%7D(D)%7D%0A" /></p><p>其中 <img src="https://math.now.sh?inline=%2C%20H_%7BA%7D%28D%29%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%2C%20n" style="display:inline-block;margin: 0;"/> 是特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 取值的个数。</p>
 </blockquote>
 <h4 id="2-1-5-特征增益的算法">2.1.5 特征增益的算法</h4>
-<p>对数据集$D$，有$k$个类$C_k$，对特征$A$有$n$个取值$D_n$，$D_{i k}=D_{i} \cap C_{k}$，$|D|$为数据集中的样本个数</p>
+<p>对数据集<img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>，有<img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/>个类<img src="https://math.now.sh?inline=C_k" style="display:inline-block;margin: 0;"/>，对特征<img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/>有<img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"/>个取值<img src="https://math.now.sh?inline=D_n" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=D_%7Bi%20k%7D%3DD_%7Bi%7D%20%5Ccap%20C_%7Bk%7D" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=%7CD%7C" style="display:inline-block;margin: 0;"/>为数据集中的样本个数</p>
 <blockquote>
 <p>算法 5.1 (信息增益的算法)<br>
-输入: 训练数据集 $D$ 和特征 $A$;<br>
-输出: 特征 $A$ 对训练数据集 $D$ 的信息增益 $g(D, A)$ 。<br>
-(1) 计算数据集 $D$ 的经验熵$H(D)$<br>
-$$<br>
-H(D)=-\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|} \log <em>{2} \frac{\left|C</em>{k}\right|}{|D|}\nonumber<br>
-$$<br>
-(2) 计算特征 $A$ 对数据集 $D$ 的经验条件熵 $H(D \mid A)$<br>
-$$<br>
-H(D \mid A)=\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} H\left(D_{i}\right)=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \sum_{k=1}^{K} \frac{\left|D_{i k}\right|}{\left|D_{i}\right|} \log <em>{2} \frac{\left|D</em>{i k}\right|}{\left|D_{i}\right|}\nonumber<br>
-$$<br>
-(3) 计算信息增益<br>
-$$<br>
-g(D, A)=H(D)-H(D \mid A)\nonumber<br>
-$$</p>
-</blockquote>
+输入: 训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 和特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/>;<br>
+输出: 特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 对训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的信息增益 <img src="https://math.now.sh?inline=g%28D%2C%20A%29" style="display:inline-block;margin: 0;"/> 。<br>
+(1) 计算数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的经验熵<img src="https://math.now.sh?inline=H%28D%29" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=H%28D%29%3D-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%5Cnonumber%0A" /></p><p>(2) 计算特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 对数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的经验条件熵 <img src="https://math.now.sh?inline=H%28D%20%5Cmid%20A%29" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=H%28D%20%5Cmid%20A%29%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20H%5Cleft(D_%7Bi%7D%5Cright)%3D-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%20k%7D%5Cright%7C%7D%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%20%5Clog%20_%7B2%7D%20%5Cfrac%7B%5Cleft%7CD_%7Bi%20k%7D%5Cright%7C%7D%7B%5Cleft%7CD_%7Bi%7D%5Cright%7C%7D%5Cnonumber%0A" /></p><p>(3) 计算信息增益</p>
+<p style=""><img src="https://math.now.sh?from=g%28D%2C%20A%29%3DH(D)-H(D%20%5Cmid%20A)%5Cnonumber%0A" /></p></blockquote>
 <ul>
 <li>没有特征B！A是特征的符号</li>
 </ul>
@@ -362,14 +710,14 @@ $$</p>
 <p>从根结点开始，计算所有可能的特征，选取信息增益最大的特征作为节点特征。并由该特征的不同取值点建立子节点。递归调用。</p>
 <blockquote>
 <p>算法 5.2 (ID3 算法)<br>
-输入: 训练数据集 $D,$ 特征集 $A$ 间值 $\varepsilon ;$$\$</p>
-<p>输出：决策树 $T$ 。</p>
-<p>(1) 若 $D$ 中所有实例属于同一类 $C_{k},$ 则 $T$ 为单结点树，并将类 $C_{k}$ 作为该结点 的类标记，返回 $T$;<br>
-(2) 若 $A=\varnothing,$ 则 $T$ 为单结点树，并将 $D$ 中实例数最大的类 $C_{k}$ 作为该结点的类标记，返回 $T$ :<br>
-(3) 否则，按算法 5.1 计算 $A$ 中各特征对 $D$ 的信息增益，选择信息增益最大的特征 $A_{g}$ :</p>
-<p>(4) 如果 $A_{g}$ 的信息增益小于间值 $\varepsilon,$ 则置 $T$ 为单结点树，并将 $D$ 中实例数最大 的类 $C_{k}$ 作为该结点的类标记，返回 $T$ :<br>
-(5) 否则，对 $A_{g}$ 的每一可能值 $a_{i},$ 依 $A_{g}=a_{i}$ 将 $D$ 分割为若干非空子集 $D_{i},$ 将 $D_{i}$ 中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树 $T,$ 返回 $T$;<br>
-(6) 对第 $i$ 个子结点，以 $D_{i}$ 为训练集，以 $A-\left{A_{g}\right}$ 为特征集，逆归地调用步 (1)$\sim$ 步 $(5),$ 得到子树 $T_{i},$ 返回 $T_{i} \circ$</p>
+输入: 训练数据集 <img src="https://math.now.sh?inline=D%2C" style="display:inline-block;margin: 0;"/> 特征集 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 间值 <img src="https://math.now.sh?inline=%5Cvarepsilon%20%3B" style="display:inline-block;margin: 0;"/><img src="https://math.now.sh?inline=%5C%5C" style="display:inline-block;margin: 0;"/></p>
+<p>输出：决策树 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 。</p>
+<p>(1) 若 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中所有实例属于同一类 <img src="https://math.now.sh?inline=C_%7Bk%7D%2C" style="display:inline-block;margin: 0;"/> 则 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将类 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结点 的类标记，返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(2) 若 <img src="https://math.now.sh?inline=A%3D%5Cvarnothing%2C" style="display:inline-block;margin: 0;"/> 则 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中实例数最大的类 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结点的类标记，返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> :<br>
+(3) 否则，按算法 5.1 计算 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 中各特征对 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的信息增益，选择信息增益最大的特征 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/> :</p>
+<p>(4) 如果 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/> 的信息增益小于间值 <img src="https://math.now.sh?inline=%5Cvarepsilon%2C" style="display:inline-block;margin: 0;"/> 则置 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中实例数最大 的类 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结点的类标记，返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> :<br>
+(5) 否则，对 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/> 的每一可能值 <img src="https://math.now.sh?inline=a_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 依 <img src="https://math.now.sh?inline=A_%7Bg%7D%3Da_%7Bi%7D" style="display:inline-block;margin: 0;"/> 将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 分割为若干非空子集 <img src="https://math.now.sh?inline=D_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 将 <img src="https://math.now.sh?inline=D_%7Bi%7D" style="display:inline-block;margin: 0;"/> 中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树 <img src="https://math.now.sh?inline=T%2C" style="display:inline-block;margin: 0;"/> 返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(6) 对第 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"/> 个子结点，以 <img src="https://math.now.sh?inline=D_%7Bi%7D" style="display:inline-block;margin: 0;"/> 为训练集，以 <img src="https://math.now.sh?inline=A-%5Cleft%5C%7BA_%7Bg%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/> 为特征集，逆归地调用步 (1)<img src="https://math.now.sh?inline=%5Csim" style="display:inline-block;margin: 0;"/> 步 <img src="https://math.now.sh?inline=%285%29%2C" style="display:inline-block;margin: 0;"/> 得到子树 <img src="https://math.now.sh?inline=T_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 返回 <img src="https://math.now.sh?inline=T_%7Bi%7D%20%5Ccirc" style="display:inline-block;margin: 0;"/></p>
 </blockquote>
 <ul>
 <li>极大似然法进行概率估计？</li>
@@ -379,174 +727,132 @@ $$</p>
 <p>ID3算法的改进，用信息增益比来选择特征</p>
 <blockquote>
 <p>算法 5.3 (C4.5 的生成算法)</p>
-<p>输入: 训练数据集 $D$, 特征集 $A$ 间值 $\varepsilon$;</p>
-<p>输出：决策树 $T$ 。<br>
-(1) 如果 $D$ 中所有实例属于同一类 $C_{k},$ 则置 $T$ 为单结点树，并将 $C_{k}$ 作为该结 点的类, 返回 $T$;<br>
-(2) 如果 $A=\varnothing,$ 则置 $T$ 为单结点树，并将 $D$ 中实例数最大的类 $C_{k}$ 作为该结点 的类, 返回 $T$;<br>
-(3) 否则，按式 (5.10) 计算 $A$ 中各特征对 $D$ 的<em><strong>信息增益比</strong></em>, 选择信息增益比最大 的特征 $A_{g}$;<br>
-(4) 如果 $A_{g}$ 的信息增益比小于间值 $\varepsilon,$ 则置 $T$ 为单结点树，并将 $D$ 中实例数最 大的类 $C_{k}$ 作为该结点的类, 返回 $T$;<br>
-(5) 否则, 对 $A_{g}$ 的每一可能值 $a_{i},$ 依 $A_{g}=a_{i}$ 将 $D$ 分割为子集若干非空 $D_{i},$ 将 $D_{i}$ 中实例数最大的类作为标记，构建子结点, 由结点及其子结点构成树 $T,$ 返回 $T$;<br>
-(6) 对结点 $i$, 以 $D_{i}$ 为训练集，以 $A-\left{A_{g}\right}$ 为特征集，递归地调用步 (1) 步 $(5),$ 得到子树 $T_{i},$ 返回 $T_{i}$ 。</p>
+<p>输入: 训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>, 特征集 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 间值 <img src="https://math.now.sh?inline=%5Cvarepsilon" style="display:inline-block;margin: 0;"/>;</p>
+<p>输出：决策树 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 。<br>
+(1) 如果 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中所有实例属于同一类 <img src="https://math.now.sh?inline=C_%7Bk%7D%2C" style="display:inline-block;margin: 0;"/> 则置 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结 点的类, 返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(2) 如果 <img src="https://math.now.sh?inline=A%3D%5Cvarnothing%2C" style="display:inline-block;margin: 0;"/> 则置 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中实例数最大的类 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结点 的类, 返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(3) 否则，按式 (5.10) 计算 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 中各特征对 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的<em><strong>信息增益比</strong></em>, 选择信息增益比最大 的特征 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/>;<br>
+(4) 如果 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/> 的信息增益比小于间值 <img src="https://math.now.sh?inline=%5Cvarepsilon%2C" style="display:inline-block;margin: 0;"/> 则置 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 为单结点树，并将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中实例数最 大的类 <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 作为该结点的类, 返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(5) 否则, 对 <img src="https://math.now.sh?inline=A_%7Bg%7D" style="display:inline-block;margin: 0;"/> 的每一可能值 <img src="https://math.now.sh?inline=a_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 依 <img src="https://math.now.sh?inline=A_%7Bg%7D%3Da_%7Bi%7D" style="display:inline-block;margin: 0;"/> 将 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 分割为子集若干非空 <img src="https://math.now.sh?inline=D_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 将 <img src="https://math.now.sh?inline=D_%7Bi%7D" style="display:inline-block;margin: 0;"/> 中实例数最大的类作为标记，构建子结点, 由结点及其子结点构成树 <img src="https://math.now.sh?inline=T%2C" style="display:inline-block;margin: 0;"/> 返回 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>;<br>
+(6) 对结点 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"/>, 以 <img src="https://math.now.sh?inline=D_%7Bi%7D" style="display:inline-block;margin: 0;"/> 为训练集，以 <img src="https://math.now.sh?inline=A-%5Cleft%5C%7BA_%7Bg%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/> 为特征集，递归地调用步 (1) 步 <img src="https://math.now.sh?inline=%285%29%2C" style="display:inline-block;margin: 0;"/> 得到子树 <img src="https://math.now.sh?inline=T_%7Bi%7D%2C" style="display:inline-block;margin: 0;"/> 返回 <img src="https://math.now.sh?inline=T_%7Bi%7D" style="display:inline-block;margin: 0;"/> 。</p>
 </blockquote>
 <h2 id="5-Pruning">5. Pruning</h2>
 <p>考虑树的复杂度，对生成的决策树进行剪枝，减掉子树或叶结点</p>
 <p><strong>策略：极小化决策树的损失函数</strong>，即正则化的极大似然估计</p>
-<p>设树$T$，叶节点个数$|T|$，树$T$的叶结点$t$，此叶结点的样本点个数$N_t$；此叶结点有$K$类样本点的个数$N_{tk}；;k=1,2,…,K$；此叶结点的经验熵$H_t(T)$，函数参数$\alpha \geq0$。此决策树的损失函数定义为<br>
-$$<br>
-C_{\alpha}(T)=\sum_{t=1}^{|T|} N_{t} H_{t}(T)+\alpha|T|<br>
-$$<br>
-经验熵$H_t(T)$为<br>
-$$<br>
-H_{t}(T)=-\sum_{k} \frac{N_{t k}}{N_{t}} \log \frac{N_{t k}}{N_{t}}<br>
-$$<br>
-记(6)的左边为$C(T)$<br>
-$$<br>
-C(T)=\sum_{t=1}^{|T|} N_{t} H_{t}(T)=-\sum_{t=1}^{|T|} \sum_{k=1}^{K} N_{t k} \log \frac{N_{t k}}{N_{t}}<br>
-$$<br>
-最后得到<br>
-$$<br>
-C_{\alpha}(T)=C(T)+\alpha|T|<br>
-$$</p>
-<ul>
-<li>$C(T)$为样本点个数与经验熵的积，表示模型对训练数据的预测误差</li>
-<li>$|T|$为模型复杂度
+<p>设树<img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>，叶节点个数<img src="https://math.now.sh?inline=%7CT%7C" style="display:inline-block;margin: 0;"/>，树<img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>的叶结点<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>，此叶结点的样本点个数<img src="https://math.now.sh?inline=N_t" style="display:inline-block;margin: 0;"/>；此叶结点有<img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"/>类样本点的个数<img src="https://math.now.sh?inline=N_%7Btk%7D%EF%BC%9B%5C%3Bk%3D1%2C2%2C...%2CK" style="display:inline-block;margin: 0;"/>；此叶结点的经验熵<img src="https://math.now.sh?inline=H_t%28T%29" style="display:inline-block;margin: 0;"/>，函数参数<img src="https://math.now.sh?inline=%5Calpha%20%5Cgeq0" style="display:inline-block;margin: 0;"/>。此决策树的损失函数定义为</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%20H_%7Bt%7D(T)%2B%5Calpha%7CT%7C%0A" /></p><p>经验熵<img src="https://math.now.sh?inline=H_t%28T%29" style="display:inline-block;margin: 0;"/>为</p>
+<p style=""><img src="https://math.now.sh?from=H_%7Bt%7D%28T%29%3D-%5Csum_%7Bk%7D%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%20%5Clog%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%0A" /></p><p>记(6)的左边为<img src="https://math.now.sh?inline=C%28T%29" style="display:inline-block;margin: 0;"/></p>
+<p style=""><img src="https://math.now.sh?from=C%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%20H_%7Bt%7D(T)%3D-%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20N_%7Bt%20k%7D%20%5Clog%20%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%0A" /></p><p>最后得到</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3DC(T)%2B%5Calpha%7CT%7C%0A" /></p><ul>
+<li><img src="https://math.now.sh?inline=C%28T%29" style="display:inline-block;margin: 0;"/>为样本点个数与经验熵的积，表示模型对训练数据的预测误差</li>
+<li><img src="https://math.now.sh?inline=%7CT%7C" style="display:inline-block;margin: 0;"/>为模型复杂度
 <ul>
 <li>越大说明叶结点越多，树越复杂</li>
-<li>$\alpha$越大，选择较简单的模型树</li>
+<li><img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>越大，选择较简单的模型树</li>
 </ul>
 </li>
 </ul>
 <h3 id="5-1-Pruning-algorithm">5.1 Pruning algorithm</h3>
 <blockquote>
 <p>算法 5.4 (树的剪枝算法)<br>
-输入: 生成算法产生的整个树 $T$, 参数 $\alpha$;<br>
-输出：修剪后的子树 $T_{\alpha} \circ$<br>
+输入: 生成算法产生的整个树 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/>, 参数 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>;<br>
+输出：修剪后的子树 <img src="https://math.now.sh?inline=T_%7B%5Calpha%7D%20%5Ccirc" style="display:inline-block;margin: 0;"/><br>
 （1）计算每个结点的经验熵。<br>
 （2）递归地从树的叶结点向上回缩。</p>
 <p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E5%89%AA%E6%9E%9D.png" alt="image-20201205222057313"></p>
-<p>​	设一组叶结点回缩到其父结点之前与之后的整体树分别为 $T_{B}$ 与 $T_{A}$, 其对应的 损失函数值分别是 $C_{\alpha}\left(T_{B}\right)$ 与 $C_{\alpha}\left(T_{A}\right),$ 如果<br>
-$$<br>
-C_{\alpha}\left(T_{A}\right) \leqslant C_{\alpha}\left(T_{B}\right)<br>
-$$<br>
-则进行剪枝，即将父结点变为新的叶结点。<br>
-(3) 返回 ( 2 )，直至不能继续为止，得到损失函数最小的子树 $T_{\alpha^{\circ}}$</p>
+<p>​	设一组叶结点回缩到其父结点之前与之后的整体树分别为 <img src="https://math.now.sh?inline=T_%7BB%7D" style="display:inline-block;margin: 0;"/> 与 <img src="https://math.now.sh?inline=T_%7BA%7D" style="display:inline-block;margin: 0;"/>, 其对应的 损失函数值分别是 <img src="https://math.now.sh?inline=C_%7B%5Calpha%7D%5Cleft%28T_%7BB%7D%5Cright%29" style="display:inline-block;margin: 0;"/> 与 <img src="https://math.now.sh?inline=C_%7B%5Calpha%7D%5Cleft%28T_%7BA%7D%5Cright%29%2C" style="display:inline-block;margin: 0;"/> 如果</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7BA%7D%5Cright%29%20%5Cleqslant%20C_%7B%5Calpha%7D%5Cleft(T_%7BB%7D%5Cright)%0A" /></p><p>则进行剪枝，即将父结点变为新的叶结点。<br>
+(3) 返回 ( 2 )，直至不能继续为止，得到损失函数最小的子树 <img src="https://math.now.sh?inline=T_%7B%5Calpha%5E%7B%5Ccirc%7D%7D" style="display:inline-block;margin: 0;"/></p>
 </blockquote>
 <ul>
 <li>动态规划的算法实现</li>
 </ul>
 <h2 id="6-CART-Algorithm">6. CART Algorithm</h2>
-<p>分类与回归树(classification and regression tree)是给定随机变量$X$的条件下给出随机变量$Y$的条件概率分布的学习方法。决策树是二叉树，左分支是“是”分支，右否。<strong>通过递归的二分每个特征，使得特征空间划分成有限个单元</strong>，在这些单元上确定概率分布。</p>
+<p>分类与回归树(classification and regression tree)是给定随机变量<img src="https://math.now.sh?inline=X" style="display:inline-block;margin: 0;"/>的条件下给出随机变量<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>的条件概率分布的学习方法。决策树是二叉树，左分支是“是”分支，右否。<strong>通过递归的二分每个特征，使得特征空间划分成有限个单元</strong>，在这些单元上确定概率分布。</p>
 <h3 id="6-1-CART的生成">6.1 CART的生成</h3>
 <h4 id="6-1-1-回归树生成">6.1.1 回归树生成</h4>
 <h5 id="6-1-1-1-Model">6.1.1.1  Model</h5>
 <p>用<strong>平方误差最小化准则</strong>，进行特征选择，递归的构建二叉决策树。</p>
-<p>对数据集$D=\left{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right}$，$Y$是连续变量，生成回归树。</p>
+<p>对数据集<img src="https://math.now.sh?inline=D%3D%5Cleft%5C%7B%5Cleft%28x_%7B1%7D%2C%20y_%7B1%7D%5Cright%29%2C%5Cleft(x_%7B2%7D%2C%20y_%7B2%7D%5Cright)%2C%20%5Ccdots%2C%5Cleft(x_%7BN%7D%2C%20y_%7BN%7D%5Cright)%5Cright%5C%7D" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=Y" style="display:inline-block;margin: 0;"/>是连续变量，生成回归树。</p>
 <p>回归树对应的是<strong>特征空间的划分</strong>以及<strong>划分单元上的输出值</strong>。</p>
 <blockquote>
 <p>定义 5.03 （回归树模型）</p>
-<p>假设已将输入空间划分为 $M$ 个单元 $R_{1}, R_{2}, \cdots, R_{M},$ 并且在每个单元 $R_{m}$ 上 有一个固定的输出值 $c_{m},$ 于是回归树模型可表示为<br>
-$$<br>
-f(x)=\sum_{m=1}^{M} c_{m} I\left(x \in R_{m}\right)<br>
-$$</p>
-</blockquote>
+<p>假设已将输入空间划分为 <img src="https://math.now.sh?inline=M" style="display:inline-block;margin: 0;"/> 个单元 <img src="https://math.now.sh?inline=R_%7B1%7D%2C%20R_%7B2%7D%2C%20%5Ccdots%2C%20R_%7BM%7D%2C" style="display:inline-block;margin: 0;"/> 并且在每个单元 <img src="https://math.now.sh?inline=R_%7Bm%7D" style="display:inline-block;margin: 0;"/> 上 有一个固定的输出值 <img src="https://math.now.sh?inline=c_%7Bm%7D%2C" style="display:inline-block;margin: 0;"/> 于是回归树模型可表示为</p>
+<p style=""><img src="https://math.now.sh?from=f%28x%29%3D%5Csum_%7Bm%3D1%7D%5E%7BM%7D%20c_%7Bm%7D%20I%5Cleft(x%20%5Cin%20R_%7Bm%7D%5Cright)%0A" /></p></blockquote>
 <ul>
 <li>
-<p>$x$是特征向量</p>
+<p><img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"/>是特征向量</p>
 </li>
 <li>
-<p>当输入空间划分确定，利用平方误差最小准则可以确定$c_m$的最优值</p>
+<p>当输入空间划分确定，利用平方误差最小准则可以确定<img src="https://math.now.sh?inline=c_m" style="display:inline-block;margin: 0;"/>的最优值</p>
 <ul>
 <li>
-<p>平方误差定义为$\sum_{x_{i} \in R_{m}}\left(y_{i}-f\left(x_{i}\right)\right)^{2}$。注意$x_i\in R_m$</p>
+<p>平方误差定义为<img src="https://math.now.sh?inline=%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7Bm%7D%7D%5Cleft%28y_%7Bi%7D-f%5Cleft(x_%7Bi%7D%5Cright%29%5Cright)%5E%7B2%7D" style="display:inline-block;margin: 0;"/>。注意<img src="https://math.now.sh?inline=x_i%5Cin%20R_m" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>利用平方误差最小原则，单元 $R_{m}$ 上的 $c_{m}$ 的最优值 $\hat{c}<em>{m}$ 是 $R</em>{m}$ 上的所有输入实例 $x_{i}$ 对应的输出 $y_{i}$ 的均值，即<br>
-$$<br>
-\hat{c}<em>{m}=\operatorname{ave}\left(y</em>{i} \mid x_{i} \in R_{m}\right)\nonumber<br>
-$$</p>
-</li>
+<p>利用平方误差最小原则，单元 <img src="https://math.now.sh?inline=R_%7Bm%7D" style="display:inline-block;margin: 0;"/> 上的 <img src="https://math.now.sh?inline=c_%7Bm%7D" style="display:inline-block;margin: 0;"/> 的最优值 <img src="https://math.now.sh?inline=%5Chat%7Bc%7D_%7Bm%7D" style="display:inline-block;margin: 0;"/> 是 <img src="https://math.now.sh?inline=R_%7Bm%7D" style="display:inline-block;margin: 0;"/> 上的所有输入实例 <img src="https://math.now.sh?inline=x_%7Bi%7D" style="display:inline-block;margin: 0;"/> 对应的输出 <img src="https://math.now.sh?inline=y_%7Bi%7D" style="display:inline-block;margin: 0;"/> 的均值，即</p>
+<p style=""><img src="https://math.now.sh?from=%5Chat%7Bc%7D_%7Bm%7D%3D%5Coperatorname%7Bave%7D%5Cleft%28y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7Bm%7D%5Cright%29%5Cnonumber%0A" /></p></li>
 </ul>
 </li>
 </ul>
 <p><strong>问题1：如何划分特征空间，即选择划分点</strong></p>
-<p>通过启发式算法，选择第 $j$ 个变量 $x^{(j)}$和它取的特征值 $s$, 作为切分变量（splitting variable）和切分点 (splitting point)，并定义两个区域<br>
-$$<br>
-R_{1}(j, s)=\left{x \mid x^{(j)} \leqslant s\right} \quad \text { 和 } \quad R_{2}(j, s)=\left{x \mid x^{(j)}&gt;s\right}<br>
-$$<br>
-在一开始的选择基础上，寻找最优切分变量$j$和最优切分点$s$。具体的，求解<br>
-$$<br>
-\min <em>{j, s}\left[\min <em>{c</em>{1}} \sum</em>{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min <em>{c</em>{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]<br>
-$$</p>
-<ul>
-<li>(11)中，$x^{(j)}$是第$j$个特征，$s$是此特征维度上的值。$x_n$是第$n$个输入向量。<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012328159/article/details/93667566">ref</a></li>
-<li>(12)中，括号里的对于$c_1,c_2$取极小值是已知的。</li>
+<p>通过启发式算法，选择第 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 个变量 <img src="https://math.now.sh?inline=x%5E%7B%28j%29%7D" style="display:inline-block;margin: 0;"/>和它取的特征值 <img src="https://math.now.sh?inline=s" style="display:inline-block;margin: 0;"/>, 作为切分变量（splitting variable）和切分点 (splitting point)，并定义两个区域</p>
+<p style=""><img src="https://math.now.sh?from=R_%7B1%7D%28j%2C%20s%29%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%20%5Cleqslant%20s%5Cright%5C%7D%20%5Cquad%20%5Ctext%20%7B%20%E5%92%8C%20%7D%20%5Cquad%20R_%7B2%7D(j%2C%20s)%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%3Es%5Cright%5C%7D%0A" /></p><p>在一开始的选择基础上，寻找最优切分变量<img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/>和最优切分点<img src="https://math.now.sh?inline=s" style="display:inline-block;margin: 0;"/>。具体的，求解</p>
+<p style=""><img src="https://math.now.sh?from=%5Cmin%20_%7Bj%2C%20s%7D%5Cleft%5B%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%5Cright%5D%0A" /></p><ul>
+<li>(11)中，<img src="https://math.now.sh?inline=x%5E%7B%28j%29%7D" style="display:inline-block;margin: 0;"/>是第<img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/>个特征，<img src="https://math.now.sh?inline=s" style="display:inline-block;margin: 0;"/>是此特征维度上的值。<img src="https://math.now.sh?inline=x_n" style="display:inline-block;margin: 0;"/>是第<img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"/>个输入向量。<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012328159/article/details/93667566">ref</a></li>
+<li>(12)中，括号里的对于<img src="https://math.now.sh?inline=c_1%2Cc_2" style="display:inline-block;margin: 0;"/>取极小值是已知的。</li>
 <li>划分特征空间时是把高维矩形划分为2个子高维矩形。</li>
 </ul>
-<p><strong>问题2：如何确定好输出值$c_m$</strong></p>
-<p>特征空间切分好后，根据最小化平方误差准则，得到相应的最优输出值<br>
-$$<br>
-\hat{c}<em>{1}=\operatorname{ave}\left(y</em>{i} \mid x_{i} \in R_{1}(j, s)\right) \quad \text { 和 } \quad \hat{c}<em>{2}=\operatorname{ave}\left(y</em>{i} \mid x_{i} \in R_{2}(j, s)\right)<br>
-$$<br>
-**总结：**一开始，我们遍历所有输入特征，找到最优的切分特征变量$j$，构成一对$(j,s)$，根据这个构成的超平面，讲特征空间划分成2个区域。对每个子区域重复过程，直到满足停止条件。这种回归树称为最小二乘回归树(least squares regression tree)</p>
+<p><strong>问题2：如何确定好输出值<img src="https://math.now.sh?inline=c_m" style="display:inline-block;margin: 0;"/></strong></p>
+<p>特征空间切分好后，根据最小化平方误差准则，得到相应的最优输出值</p>
+<p style=""><img src="https://math.now.sh?from=%5Chat%7Bc%7D_%7B1%7D%3D%5Coperatorname%7Bave%7D%5Cleft%28y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7B1%7D(j%2C%20s%29%5Cright)%20%5Cquad%20%5Ctext%20%7B%20%E5%92%8C%20%7D%20%5Cquad%20%5Chat%7Bc%7D_%7B2%7D%3D%5Coperatorname%7Bave%7D%5Cleft(y_%7Bi%7D%20%5Cmid%20x_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%5Cright)%0A" /></p><p>**总结：**一开始，我们遍历所有输入特征，找到最优的切分特征变量<img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/>，构成一对<img src="https://math.now.sh?inline=%28j%2Cs%29" style="display:inline-block;margin: 0;"/>，根据这个构成的超平面，讲特征空间划分成2个区域。对每个子区域重复过程，直到满足停止条件。这种回归树称为最小二乘回归树(least squares regression tree)</p>
 <h5 id="6-1-1-2-Algorithm">6.1.1.2 Algorithm</h5>
 <blockquote>
 <p>算法 5.5 (最小二乘回归树生成算法)<br>
-输入: 训练数据集 $D$;<br>
-输出：回归树 $f(x)$ 。<br>
+输入: 训练数据集 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>;<br>
+输出：回归树 <img src="https://math.now.sh?inline=f%28x%29" style="display:inline-block;margin: 0;"/> 。<br>
 在训练数据集所在的输入空间中，递归地将每个区域划分为两个子区域并决定每个子区域上的输出值，构建二叉决策树:<br>
-（1）选择最优切分变量 $j$ 与切分点 $s$, 求解<br>
-$$<br>
-\min <em>{j, s}\left[\min <em>{c</em>{1}} \sum</em>{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min <em>{c</em>{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]<br>
-$$<br>
-遍历变量 $j$, 对固定的切分变量 $j$ 扫描切分点 $s$, 选择使式 (14) 达到最小值的对$(j, s)$<br>
-（2）用选定的对 $(j, s)$ 划分区域并决定相应的输出值:<br>
-$$<br>
-\begin{array}{c}<br>
-R_{1}(j, s)=\left{x \mid x^{(j)} \leqslant s\right}, \quad R_{2}(j, s)=\left{x \mid x^{(j)}&gt;s\right} \<br>
-\hat{c}<em>{m}=\frac{1}{N</em>{m}} \sum_{x_{i} \in R_{m}(j, s)} y_{i}, \quad x \in R_{m}, \quad m=1,2<br>
-\end{array}<br>
-$$<br>
-（3）继续对两个子区域调用步骤 $(1),(2),$ 直至满足停止条件。<br>
-（4）将输入空间划分为 $M$ 个区域 $R_{1}, R_{2}, \cdots, R_{M},$ 生成决策树:<br>
-$$<br>
-f(x)=\sum_{m=1}^{M} \hat{c}<em>{m} I\left(x \in R</em>{m}\right)<br>
-$$</p>
-</blockquote>
+（1）选择最优切分变量 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 与切分点 <img src="https://math.now.sh?inline=s" style="display:inline-block;margin: 0;"/>, 求解</p>
+<p style=""><img src="https://math.now.sh?from=%5Cmin%20_%7Bj%2C%20s%7D%5Cleft%5B%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%5Cright%5D%0A" /></p><p>遍历变量 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/>, 对固定的切分变量 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"/> 扫描切分点 <img src="https://math.now.sh?inline=s" style="display:inline-block;margin: 0;"/>, 选择使式 (14) 达到最小值的对<img src="https://math.now.sh?inline=%28j%2C%20s%29" style="display:inline-block;margin: 0;"/><br>
+（2）用选定的对 <img src="https://math.now.sh?inline=%28j%2C%20s%29" style="display:inline-block;margin: 0;"/> 划分区域并决定相应的输出值:</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Barray%7D%7Bc%7D%0AR_%7B1%7D%28j%2C%20s%29%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%20%5Cleqslant%20s%5Cright%5C%7D%2C%20%5Cquad%20R_%7B2%7D(j%2C%20s)%3D%5Cleft%5C%7Bx%20%5Cmid%20x%5E%7B(j)%7D%3Es%5Cright%5C%7D%20%5C%5C%0A%5Chat%7Bc%7D_%7Bm%7D%3D%5Cfrac%7B1%7D%7BN_%7Bm%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7Bm%7D(j%2C%20s)%7D%20y_%7Bi%7D%2C%20%5Cquad%20x%20%5Cin%20R_%7Bm%7D%2C%20%5Cquad%20m%3D1%2C2%0A%5Cend%7Barray%7D%0A" /></p><p>（3）继续对两个子区域调用步骤 <img src="https://math.now.sh?inline=%281%29%2C(2)%2C" style="display:inline-block;margin: 0;"/> 直至满足停止条件。<br>
+（4）将输入空间划分为 <img src="https://math.now.sh?inline=M" style="display:inline-block;margin: 0;"/> 个区域 <img src="https://math.now.sh?inline=R_%7B1%7D%2C%20R_%7B2%7D%2C%20%5Ccdots%2C%20R_%7BM%7D%2C" style="display:inline-block;margin: 0;"/> 生成决策树:</p>
+<p style=""><img src="https://math.now.sh?from=f%28x%29%3D%5Csum_%7Bm%3D1%7D%5E%7BM%7D%20%5Chat%7Bc%7D_%7Bm%7D%20I%5Cleft(x%20%5Cin%20R_%7Bm%7D%5Cright)%0A" /></p></blockquote>
 <h5 id="6-1-1-3-Example">6.1.1.3 Example</h5>
 <table>
 <thead>
 <tr>
 <th style="text-align:center"></th>
-<th style="text-align:center">$x^1$</th>
-<th style="text-align:center">$x^2$</th>
-<th style="text-align:center">$x^3$</th>
-<th style="text-align:center">$y$</th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E1" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E3" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">$x_1$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_1" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.2</td>
 <td style="text-align:center">3</td>
 <td style="text-align:center">2.5</td>
 <td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center">$x_2$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.5</td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">3.5</td>
 <td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center">$x_3$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_3" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.6.</td>
 <td style="text-align:center">6</td>
 <td style="text-align:center">2.75</td>
 <td style="text-align:center">2</td>
 </tr>
 <tr>
-<td style="text-align:center">$x_4$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_4" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.8</td>
 <td style="text-align:center">9</td>
 <td style="text-align:center">2.25</td>
@@ -557,64 +863,64 @@ $$</p>
 <p>**Q：**对以上数据集基于最小化平方误差生成二叉回归树</p>
 <ol>
 <li>
-<p>设$j=x^1$，$s=1.5$时</p>
-<p>$c_1=1,;c_2=2.5$</p>
-<p>$\min <em>{c</em>{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min <em>{c</em>{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}=\ [(1-1)^2+(1-1)^2]+[(2-2.5)^2+(3-2.5)^2]=0.5$</p>
-<p>$(j,s)=(x^1,1.6),;0.67$</p>
-<p>$(j,s)=(x^1,1.2),;(j,s)=(x^1,1.8)$的结果一定偏大</p>
-<p>对固定$j=x^1$，$s=1.5$是最佳切分点，$error=0.5$</p>
+<p>设<img src="https://math.now.sh?inline=j%3Dx%5E1" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=s%3D1.5" style="display:inline-block;margin: 0;"/>时</p>
+<p><img src="https://math.now.sh?inline=c_1%3D1%2C%5C%3Bc_2%3D2.5" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=%5Cmin%20_%7Bc_%7B1%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B1%7D%28j%2C%20s%29%7D%5Cleft(y_%7Bi%7D-c_%7B1%7D%5Cright)%5E%7B2%7D%2B%5Cmin%20_%7Bc_%7B2%7D%7D%20%5Csum_%7Bx_%7Bi%7D%20%5Cin%20R_%7B2%7D(j%2C%20s)%7D%5Cleft(y_%7Bi%7D-c_%7B2%7D%5Cright)%5E%7B2%7D%3D%5C%5C%20%5B(1-1)%5E2%2B(1-1)%5E2%5D%2B%5B(2-2.5)%5E2%2B(3-2.5)%5E2%5D%3D0.5" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.6)%2C%5C%3B0.67" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.2)%2C%5C%3B(j%2Cs)%3D(x%5E1%2C1.8)" style="display:inline-block;margin: 0;"/>的结果一定偏大</p>
+<p>对固定<img src="https://math.now.sh?inline=j%3Dx%5E1" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=s%3D1.5" style="display:inline-block;margin: 0;"/>是最佳切分点，<img src="https://math.now.sh?inline=error%3D0.5" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>设$j=x^2$</p>
-<p>最佳切分为$(j,s)=(x^2,4),;error=0.5$</p>
+<p>设<img src="https://math.now.sh?inline=j%3Dx%5E2" style="display:inline-block;margin: 0;"/></p>
+<p>最佳切分为<img src="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E2%2C4)%2C%5C%3Berror%3D0.5" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>设$j=x^3$</p>
-<p>最佳切分为$(j,s)=(x^3,2.75),;error=2$</p>
+<p>设<img src="https://math.now.sh?inline=j%3Dx%5E3" style="display:inline-block;margin: 0;"/></p>
+<p>最佳切分为<img src="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E3%2C2.75)%2C%5C%3Berror%3D2" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
-<p>$\min _{j, s}=\min[0.5,;0.5,;2]=0.5$，选择$(j,s)=(x^1,1.5)$作为最优划分。划分后的子集$R_1,;R_2$为</p>
+<p><img src="https://math.now.sh?inline=%5Cmin%20_%7Bj%2C%20s%7D%3D%5Cmin%5B0.5%2C%5C%3B0.5%2C%5C%3B2%5D%3D0.5" style="display:inline-block;margin: 0;"/>，选择<img src="https://math.now.sh?inline=%28j%2Cs%29%3D(x%5E1%2C1.5)" style="display:inline-block;margin: 0;"/>作为最优划分。划分后的子集<img src="https://math.now.sh?inline=R_1%2C%5C%3BR_2" style="display:inline-block;margin: 0;"/>为</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:center"><strong>$R_1$左分支</strong></th>
-<th style="text-align:center">$x^1$</th>
-<th style="text-align:center">$x^2$</th>
-<th style="text-align:center">$x^3$</th>
-<th style="text-align:center">$y$</th>
+<th style="text-align:center"><strong><img src="https://math.now.sh?inline=R_1" style="display:inline-block;margin: 0;"/>左分支</strong></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E1" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=x%5E3" style="display:inline-block;margin: 0;"/></th>
+<th style="text-align:center"><img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">$x_1$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_1" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.2</td>
 <td style="text-align:center">3</td>
 <td style="text-align:center">2.5</td>
 <td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center">$x_2$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.5</td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">3.5</td>
 <td style="text-align:center">1</td>
 </tr>
 <tr>
-<td style="text-align:center"><strong>$R_2$右分支</strong></td>
-<td style="text-align:center">$x^1$</td>
-<td style="text-align:center">$x^2$</td>
-<td style="text-align:center">$x^3$</td>
-<td style="text-align:center">$y$</td>
+<td style="text-align:center"><strong><img src="https://math.now.sh?inline=R_2" style="display:inline-block;margin: 0;"/>右分支</strong></td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x%5E1" style="display:inline-block;margin: 0;"/></td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"/></td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x%5E3" style="display:inline-block;margin: 0;"/></td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/></td>
 </tr>
 <tr>
-<td style="text-align:center">$x_3$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_3" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.6.</td>
 <td style="text-align:center">6</td>
 <td style="text-align:center">2.75</td>
 <td style="text-align:center">2</td>
 </tr>
 <tr>
-<td style="text-align:center">$x_4$</td>
+<td style="text-align:center"><img src="https://math.now.sh?inline=x_4" style="display:inline-block;margin: 0;"/></td>
 <td style="text-align:center">1.8</td>
 <td style="text-align:center">9</td>
 <td style="text-align:center">2.25</td>
@@ -622,7 +928,7 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<p>$\hat{c}_1=1,;\hat{c}_2=2.5$</p>
+<p><img src="https://math.now.sh?inline=%5Chat%7Bc%7D_1%3D1%2C%5C%3B%5Chat%7Bc%7D_2%3D2.5" style="display:inline-block;margin: 0;"/></p>
 </li>
 <li>
 <p>对左右分支继续迭代1-4的步骤，直到满足停止条件</p>
@@ -632,29 +938,14 @@ $$</p>
 <p>分类树用基尼指数选择最优特征，同时决定该特征的最优二值切分点。</p>
 <h5 id="6-1-2-1-Gini-Index">6.1.2.1 Gini Index</h5>
 <blockquote>
-<p>定义 5.4 (基尼指数) $\quad$ 分类问题中，假设有 $K$ 个类，样本点属于第 $k$ 类的概率<br>
-为 $p_{k}$, 则棍率分布的基尼指数定义为<br>
-$$<br>
-\operatorname{Gini}§=\sum_{k=1}^{K} p_{k}\left(1-p_{k}\right)=1-\sum_{k=1}^{K} p_{k}^{2}<br>
-$$<br>
-对于二类分类问题, 若样本点属于第 1 个类的概率是 $p,$ 则概率分布的基尼指数为<br>
-$$<br>
-\operatorname{Gini}§=2 p(1-p)<br>
-$$<br>
-对于给定的样本集合 $D,$ 其基尼指数为<br>
-$$<br>
-\operatorname{Gini}(D)=1-\sum_{k=1}^{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)^{2}<br>
-$$<br>
-这里, $C_{k}$ 是 $D$ 中属于第 $k$ 类的样本子集， $K$ 是类的个数。</p>
-<p>如果样本集合 $D$ 根据<strong>特征 $A$</strong> 是否取某一可能值 $a$ 被分割成 $D_{1}$ 和 $D_{2}$ 两部分，即<br>
-$$<br>
-D_{1}={(x, y) \in D \mid A(x)=a}, \quad D_{2}=D-D_{1}\nonumber<br>
-$$<br>
-则在特征 $A$ 的条件下，集合 $D$ 的基尼指数定义为<br>
-$$<br>
-\operatorname{Gini}(D, A)=\frac{\left|D_{1}\right|}{|D|} \operatorname{Gini}\left(D_{1}\right)+\frac{\left|D_{2}\right|}{|D|} \operatorname{Gini}\left(D_{2}\right)<br>
-$$</p>
-</blockquote>
+<p>定义 5.4 (基尼指数) <img src="https://math.now.sh?inline=%5Cquad" style="display:inline-block;margin: 0;"/> 分类问题中，假设有 <img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"/> 个类，样本点属于第 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 类的概率<br>
+为 <img src="https://math.now.sh?inline=p_%7Bk%7D" style="display:inline-block;margin: 0;"/>, 则棍率分布的基尼指数定义为</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28p%29%3D%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20p_%7Bk%7D%5Cleft(1-p_%7Bk%7D%5Cright)%3D1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%20p_%7Bk%7D%5E%7B2%7D%0A" /></p><p>对于二类分类问题, 若样本点属于第 1 个类的概率是 <img src="https://math.now.sh?inline=p%2C" style="display:inline-block;margin: 0;"/> 则概率分布的基尼指数为</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28p%29%3D2%20p(1-p)%0A" /></p><p>对于给定的样本集合 <img src="https://math.now.sh?inline=D%2C" style="display:inline-block;margin: 0;"/> 其基尼指数为</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28D%29%3D1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%5Cleft(%5Cfrac%7B%5Cleft%7CC_%7Bk%7D%5Cright%7C%7D%7B%7CD%7C%7D%5Cright)%5E%7B2%7D%0A" /></p><p>这里, <img src="https://math.now.sh?inline=C_%7Bk%7D" style="display:inline-block;margin: 0;"/> 是 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 中属于第 <img src="https://math.now.sh?inline=k" style="display:inline-block;margin: 0;"/> 类的样本子集， <img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"/> 是类的个数。</p>
+<p>如果样本集合 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 根据<strong>特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/></strong> 是否取某一可能值 <img src="https://math.now.sh?inline=a" style="display:inline-block;margin: 0;"/> 被分割成 <img src="https://math.now.sh?inline=D_%7B1%7D" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=D_%7B2%7D" style="display:inline-block;margin: 0;"/> 两部分，即</p>
+<p style=""><img src="https://math.now.sh?from=D_%7B1%7D%3D%5C%7B%28x%2C%20y%29%20%5Cin%20D%20%5Cmid%20A(x)%3Da%5C%7D%2C%20%5Cquad%20D_%7B2%7D%3DD-D_%7B1%7D%5Cnonumber%0A" /></p><p>则在特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 的条件下，集合 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 的基尼指数定义为</p>
+<p style=""><img src="https://math.now.sh?from=%5Coperatorname%7BGini%7D%28D%2C%20A%29%3D%5Cfrac%7B%5Cleft%7CD_%7B1%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Coperatorname%7BGini%7D%5Cleft(D_%7B1%7D%5Cright)%2B%5Cfrac%7B%5Cleft%7CD_%7B2%7D%5Cright%7C%7D%7B%7CD%7C%7D%20%5Coperatorname%7BGini%7D%5Cleft(D_%7B2%7D%5Cright)%0A" /></p></blockquote>
 <ul>
 <li>基尼指数表示集合的不确定性。基尼指数越大，集合的不确定性越大。和熵相似。</li>
 <li>二元分类中基尼指数、单位比特熵和分类误差的关系。x轴：概率p。y轴：损失。<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%9F%BA%E5%B0%BC%E3%80%81%E7%86%B5%E4%B8%8E%E5%88%86%E7%B1%BB%E8%AF%AF%E5%B7%AE.png" alt="image-20201208142218988" style="zoom:50%;" /></li>
@@ -662,11 +953,11 @@ $$</p>
 <h5 id="6-1-2-2-Algorithm">6.1.2.2 Algorithm</h5>
 <blockquote>
 <p>算法 5.6 (CART 生成算法)</p>
-<p>输入: 训练数据集 $D,$ 停止计算的条件;<br>
+<p>输入: 训练数据集 <img src="https://math.now.sh?inline=D%2C" style="display:inline-block;margin: 0;"/> 停止计算的条件;<br>
 输出: CART 决策树。</p>
 <p>根据训练数据集，从根结点开始，递归地对每个结点进行以下操作，构建二叉决策树:<br>
-（1） 设结点的训练数据集为 $D$, 计算现有特征对该数据集的基尼指数。此时，对每一个特征 $A,$ 对其可能取的每个值 $a,$ 根据样本点对 $A=a$ 的测试为“是”或“否”，将$D$ 分割成 $D_{1}$ 和 $D_{2}$ 两部分，利用式 (20) 计算 $A=a$ 时的基尼指数。<br>
-（2）在所有可能的特征 $A$ 以及它们所有可能的切分点 $a$ 中，选择基尼指数最小的<br>
+（1） 设结点的训练数据集为 <img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/>, 计算现有特征对该数据集的基尼指数。此时，对每一个特征 <img src="https://math.now.sh?inline=A%2C" style="display:inline-block;margin: 0;"/> 对其可能取的每个值 <img src="https://math.now.sh?inline=a%2C" style="display:inline-block;margin: 0;"/> 根据样本点对 <img src="https://math.now.sh?inline=A%3Da" style="display:inline-block;margin: 0;"/> 的测试为“是”或“否”，将<img src="https://math.now.sh?inline=D" style="display:inline-block;margin: 0;"/> 分割成 <img src="https://math.now.sh?inline=D_%7B1%7D" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=D_%7B2%7D" style="display:inline-block;margin: 0;"/> 两部分，利用式 (20) 计算 <img src="https://math.now.sh?inline=A%3Da" style="display:inline-block;margin: 0;"/> 时的基尼指数。<br>
+（2）在所有可能的特征 <img src="https://math.now.sh?inline=A" style="display:inline-block;margin: 0;"/> 以及它们所有可能的切分点 <img src="https://math.now.sh?inline=a" style="display:inline-block;margin: 0;"/> 中，选择基尼指数最小的<br>
 持征及其对应的切分点作为最优特征与最优切分点。依最优特征与最优切分点，从现<br>
 结点生成两个子结点，将训练数据集依特征分配到两个子结点中去。<br>
 （3）对两个子结点递归地调用 ( 1 )， (2) , 直至满足停止条件。<br>
@@ -675,93 +966,66 @@ $$</p>
 <h3 id="6-2-CART的剪枝">6.2 CART的剪枝</h3>
 <p><strong>步骤：</strong></p>
 <ol>
-<li>对生成算法产生的决策树$T_0$底端开始不断剪枝，直到$T_0$的根结点，形成子树序列$\left{T_{0}, T_{1}, \cdots, T_{n}\right}$</li>
+<li>对生成算法产生的决策树<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>底端开始不断剪枝，直到<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>的根结点，形成子树序列<img src="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/></li>
 <li>通过交叉验证法，在独立的验证数据集上对字数序列进行测试，选择最优子书。</li>
 </ol>
 <h4 id="6-2-1-剪枝成一个子树序列">6.2.1 剪枝成一个子树序列</h4>
-<p>子树的损失函数为<br>
-$$<br>
-C_{\alpha}(T)=C(T)+\alpha|T|\nonumber<br>
-$$</p>
-<ul>
+<p>子树的损失函数为</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%28T%29%3DC(T)%2B%5Calpha%7CT%7C%5Cnonumber%0A" /></p><ul>
 <li>
-<p>$C(T)=\sum_{t=1}^{|T|} N_{t}\left(1-\sum_{k=1}^{K}\left(\frac{N_{t k}}{N_{t}}\right)^{2}\right),|T|$ 是叶结点个数，$K$ 是类别个数</p>
+<p><img src="https://math.now.sh?inline=C%28T%29%3D%5Csum_%7Bt%3D1%7D%5E%7B%7CT%7C%7D%20N_%7Bt%7D%5Cleft(1-%5Csum_%7Bk%3D1%7D%5E%7BK%7D%5Cleft(%5Cfrac%7BN_%7Bt%20k%7D%7D%7BN_%7Bt%7D%7D%5Cright)%5E%7B2%7D%5Cright)%2C%7CT%7C" style="display:inline-block;margin: 0;"/> 是叶结点个数，<img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"/> 是类别个数</p>
 </li>
 <li>
 <p>定义推导同(5)-(8)</p>
 </li>
 <li>
-<p>对固定$\alpha$，<strong>唯一存在</strong>最优子树$T_{\alpha}$，使得损失函数$C_{\alpha}(T)$最小。</p>
+<p>对固定<img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>，<strong>唯一存在</strong>最优子树<img src="https://math.now.sh?inline=T_%7B%5Calpha%7D" style="display:inline-block;margin: 0;"/>，使得损失函数<img src="https://math.now.sh?inline=C_%7B%5Calpha%7D%28T%29" style="display:inline-block;margin: 0;"/>最小。</p>
 <ul>
 <li>此处“最优”的意义是指使得损失函数最小</li>
-<li>$\alpha$越大，最优子树$T_{\alpha}$越小。当 $\alpha \rightarrow \infty$ 时，叶结点不断被剪，根结点组成的单结点树是最优的。</li>
+<li><img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>越大，最优子树<img src="https://math.now.sh?inline=T_%7B%5Calpha%7D" style="display:inline-block;margin: 0;"/>越小。当 <img src="https://math.now.sh?inline=%5Calpha%20%5Crightarrow%20%5Cinfty" style="display:inline-block;margin: 0;"/> 时，叶结点不断被剪，根结点组成的单结点树是最优的。</li>
 </ul>
 </li>
 </ul>
-<p>对一个整体树$T_0$，它的子树是<strong>有限个</strong>的。因此，对一个连续参数$\alpha$，我们得到了最优子树$T’(\alpha)$。$\alpha$不断增大，在增大到**跳跃点$\alpha’$**之前，$T’(\alpha)$依然是最优子树。即$T’(\alpha)=T’(\alpha+\Delta\alpha)$。再跳跃点之后，易知最优子树$T’(\alpha’)\in T’(\alpha)$。</p>
-<p>上面可以表述为：将 $\alpha$ 从小增大, $0=\alpha_{0}&lt;$$\alpha_{1}&lt;\cdots&lt;\alpha_{n}&lt;+\infty,$ 产生一系列的区间 $\left[\alpha_{i}, \alpha_{i+1}\right), i=0,1, \cdots, n ;$ 剪枝得到的子树序列对应着区间 $\alpha \in\left[\alpha_{i}, \alpha_{i+1}\right), i=0,1, \cdots, n$ 的最优子树序列 $\left{T_{0}, T_{1}, \cdots, T_{n}\right},$ <strong>序列中的子树是嵌套的</strong>。</p>
-<p>具体来说，从整体树$T_0$，$\alpha=0$开始剪枝。对$T_0$内的任意内部结点$t$：</p>
-<p>以$t$为单结点树的损失函数为<br>
-$$<br>
-C_{\alpha}(t)=C(t)+\alpha<br>
-$$<br>
-以 $t$ 为根结点的子树 $T_{t}$ 的损失函数为<br>
-$$<br>
-C_{\alpha}\left(T_{t}\right)=C\left(T_{t}\right)+\alpha\left|T_{t}\right|<br>
-$$<br>
-当 $\alpha=0$ 及 $\alpha$ 充分小时，有不等式<br>
-$$<br>
-C_{\alpha}\left(T_{t}\right)&lt;C_{\alpha}(t)<br>
-$$<br>
-当 $\alpha$ 增大时，在某一 $\alpha$ 有<br>
-$$<br>
-\begin{align}<br>
-C_{\alpha}\left(T_{t}\right) &amp;=C_{\alpha}(t)\<br>
-\alpha &amp;=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1}<br>
-\end{align}<br>
-$$</p>
-<p>**此时$T_t$和$t$有相同的损失函数值，因为$t$的结点更少，所以取$t$，剪去以 $t$ 为根结点的子树 $T_{t}$ **</p>
+<p>对一个整体树<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>，它的子树是<strong>有限个</strong>的。因此，对一个连续参数<img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>，我们得到了最优子树<img src="https://math.now.sh?inline=T'%28%5Calpha%29" style="display:inline-block;margin: 0;"/>。<img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>不断增大，在增大到**跳跃点<img src="https://math.now.sh?inline=%5Calpha'" style="display:inline-block;margin: 0;"/>**之前，<img src="https://math.now.sh?inline=T'%28%5Calpha%29" style="display:inline-block;margin: 0;"/>依然是最优子树。即<img src="https://math.now.sh?inline=T'%28%5Calpha%29%3DT'(%5Calpha%2B%5CDelta%5Calpha)" style="display:inline-block;margin: 0;"/>。再跳跃点之后，易知最优子树<img src="https://math.now.sh?inline=T'%28%5Calpha%E2%80%99%29%5Cin%20T'(%5Calpha)" style="display:inline-block;margin: 0;"/>。</p>
+<p>上面可以表述为：将 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 从小增大, <img src="https://math.now.sh?inline=0%3D%5Calpha_%7B0%7D%3C" style="display:inline-block;margin: 0;"/><img src="https://math.now.sh?inline=%5Calpha_%7B1%7D%3C%5Ccdots%3C%5Calpha_%7Bn%7D%3C%2B%5Cinfty%2C" style="display:inline-block;margin: 0;"/> 产生一系列的区间 <img src="https://math.now.sh?inline=%5Cleft%5B%5Calpha_%7Bi%7D%2C%20%5Calpha_%7Bi%2B1%7D%5Cright%29%2C%20i%3D0%2C1%2C%20%5Ccdots%2C%20n%20%3B" style="display:inline-block;margin: 0;"/> 剪枝得到的子树序列对应着区间 <img src="https://math.now.sh?inline=%5Calpha%20%5Cin%5Cleft%5B%5Calpha_%7Bi%7D%2C%20%5Calpha_%7Bi%2B1%7D%5Cright%29%2C%20i%3D0%2C1%2C%20%5Ccdots%2C%20n" style="display:inline-block;margin: 0;"/> 的最优子树序列 <img src="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D%2C" style="display:inline-block;margin: 0;"/> <strong>序列中的子树是嵌套的</strong>。</p>
+<p>具体来说，从整体树<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>，<img src="https://math.now.sh?inline=%5Calpha%3D0" style="display:inline-block;margin: 0;"/>开始剪枝。对<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>内的任意内部结点<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>：</p>
+<p>以<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>为单结点树的损失函数为</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%28t%29%3DC(t)%2B%5Calpha%0A" /></p><p>以 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 为根结点的子树 <img src="https://math.now.sh?inline=T_%7Bt%7D" style="display:inline-block;margin: 0;"/> 的损失函数为</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%3DC%5Cleft(T_%7Bt%7D%5Cright)%2B%5Calpha%5Cleft%7CT_%7Bt%7D%5Cright%7C%0A" /></p><p>当 <img src="https://math.now.sh?inline=%5Calpha%3D0" style="display:inline-block;margin: 0;"/> 及 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 充分小时，有不等式</p>
+<p style=""><img src="https://math.now.sh?from=C_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%3CC_%7B%5Calpha%7D(t)%0A" /></p><p>当 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 增大时，在某一 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 有</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Balign%7D%0AC_%7B%5Calpha%7D%5Cleft%28T_%7Bt%7D%5Cright%29%20%26%3DC_%7B%5Calpha%7D(t)%5C%5C%0A%5Calpha%20%26%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%0A%5Cend%7Balign%7D%0A" /></p><p>**此时<img src="https://math.now.sh?inline=T_t" style="display:inline-block;margin: 0;"/>和<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>有相同的损失函数值，因为<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>的结点更少，所以取<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>，剪去以 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 为根结点的子树 <img src="https://math.now.sh?inline=T_%7Bt%7D" style="display:inline-block;margin: 0;"/> **</p>
 <p>根据这个性质，我们可以找到系列区间以及对应的最优子树序列</p>
-<p>对$T_0$的每一个内部节点$t$，计算<br>
-$$<br>
-g(t)=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1}<br>
-$$<br>
-$g(t)$表示剪枝后整体损失函数减小的程度。在 $T_{0}$ 中剪去 $g(t)$ 最小的 $T_{t},$ 将得到的子树作为 $T_{1},$ 同时将最小的 $g(t)$ 设为 $\alpha_{1}$。$ T_{1}$ 为区间 $\left[\alpha_{1}, \alpha_{2}\right)$ 的最优子树。循环直到得到根结点。</p>
+<p>对<img src="https://math.now.sh?inline=T_0" style="display:inline-block;margin: 0;"/>的每一个内部节点<img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/>，计算</p>
+<p style=""><img src="https://math.now.sh?from=g%28t%29%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%0A" /></p><p><img src="https://math.now.sh?inline=g%28t%29" style="display:inline-block;margin: 0;"/>表示剪枝后整体损失函数减小的程度。在 <img src="https://math.now.sh?inline=T_%7B0%7D" style="display:inline-block;margin: 0;"/> 中剪去 <img src="https://math.now.sh?inline=g%28t%29" style="display:inline-block;margin: 0;"/> 最小的 <img src="https://math.now.sh?inline=T_%7Bt%7D%2C" style="display:inline-block;margin: 0;"/> 将得到的子树作为 <img src="https://math.now.sh?inline=T_%7B1%7D%2C" style="display:inline-block;margin: 0;"/> 同时将最小的 <img src="https://math.now.sh?inline=g%28t%29" style="display:inline-block;margin: 0;"/> 设为 <img src="https://math.now.sh?inline=%5Calpha_%7B1%7D" style="display:inline-block;margin: 0;"/>。$ T_{1}$ 为区间 <img src="https://math.now.sh?inline=%5Cleft%5B%5Calpha_%7B1%7D%2C%20%5Calpha_%7B2%7D%5Cright%29" style="display:inline-block;margin: 0;"/> 的最优子树。循环直到得到根结点。</p>
 <ul>
-<li>在这个过程中，$g(t)=\alpha$是不断增大的？</li>
+<li>在这个过程中，<img src="https://math.now.sh?inline=g%28t%29%3D%5Calpha" style="display:inline-block;margin: 0;"/>是不断增大的？</li>
 </ul>
 <h4 id="6-2-2-交叉验证">6.2.2 交叉验证</h4>
-<p>利用独立的验证数据集，测试子树序列 $\left{T_{0}, T_{1}, \cdots, T_{n}\right}$中每个子树的平方误差/基尼指数，选择最优决策树$T_{\alpha}$。</p>
+<p>利用独立的验证数据集，测试子树序列 <img src="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/>中每个子树的平方误差/基尼指数，选择最优决策树<img src="https://math.now.sh?inline=T_%7B%5Calpha%7D" style="display:inline-block;margin: 0;"/>。</p>
 <ul>
-<li>子树序列 $\left{T_{0}, T_{1}, \cdots, T_{n}\right}$在剪枝的时候是对应$\alpha$的最优子序列</li>
+<li>子树序列 <img src="https://math.now.sh?inline=%5Cleft%5C%7BT_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D%5Cright%5C%7D" style="display:inline-block;margin: 0;"/>在剪枝的时候是对应<img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/>的最优子序列</li>
 </ul>
 <h4 id="6-2-3-Algorithm">6.2.3 Algorithm</h4>
 <blockquote>
 <p>算法 5.7 (CART 剪枝算法)<br>
-输入: CART 算法生成的决策树 $T_{0}$;<br>
-输出：最优决策树 $T_{\alpha \circ}$<br>
-(1) 设 $k=0, T=T_{0}$ 。<br>
-(2) 设 $\alpha=+\infty$ 。<br>
-(3) 自下而上地对各内部结点 $t$ 计算 $C\left(T_{t}\right),\left|T_{t}\right|$ 以及<br>
-$$<br>
-\begin{aligned}</p>
-<p>g(t) &amp;=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1} \<br>
-\alpha &amp;=\min (\alpha, g(t))<br>
-\end{aligned}<br>
-$$<br>
-这里, $T_{t}$ 表示以 $t$ 为根结点的子树, $C\left(T_{t}\right)$ 是对训练数据的预测误差, $\left|T_{t}\right|$ 是 $T_{t}$的叶结点个数。<br>
-(4) 对 $g(t)=\alpha$ 的内部结点 $t$ 进行剪枝，并对叶结点 $t$ 以多数表决法决定其类，得到树 $T$ 。<br>
-(5) 设 $k=k+1, \alpha_{k}=\alpha, T_{k}=T_{\circ}$<br>
-(6) 如果 $T_{k}$ 不是由根结点及两个叶结点构成的树，则回到步骤 (2)$;$ 否则令 $T_{k}=T_{n}$<br>
-(7) 采用交义验证法在子树序列 $T_{0}, T_{1}, \cdots, T_{n}$ 中选取最优子树 $T_{\alpha^{\circ}}$</p>
+输入: CART 算法生成的决策树 <img src="https://math.now.sh?inline=T_%7B0%7D" style="display:inline-block;margin: 0;"/>;<br>
+输出：最优决策树 <img src="https://math.now.sh?inline=T_%7B%5Calpha%20%5Ccirc%7D" style="display:inline-block;margin: 0;"/><br>
+(1) 设 <img src="https://math.now.sh?inline=k%3D0%2C%20T%3DT_%7B0%7D" style="display:inline-block;margin: 0;"/> 。<br>
+(2) 设 <img src="https://math.now.sh?inline=%5Calpha%3D%2B%5Cinfty" style="display:inline-block;margin: 0;"/> 。<br>
+(3) 自下而上地对各内部结点 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 计算 <img src="https://math.now.sh?inline=C%5Cleft%28T_%7Bt%7D%5Cright%29%2C%5Cleft%7CT_%7Bt%7D%5Cright%7C" style="display:inline-block;margin: 0;"/> 以及</p>
+<p style=""><img src="https://math.now.sh?from=%5Cbegin%7Baligned%7D%0A%0Ag%28t%29%20%26%3D%5Cfrac%7BC(t)-C%5Cleft(T_%7Bt%7D%5Cright)%7D%7B%5Cleft%7CT_%7Bt%7D%5Cright%7C-1%7D%20%5C%5C%0A%5Calpha%20%26%3D%5Cmin%20(%5Calpha%2C%20g(t))%0A%5Cend%7Baligned%7D%0A" /></p><p>这里, <img src="https://math.now.sh?inline=T_%7Bt%7D" style="display:inline-block;margin: 0;"/> 表示以 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 为根结点的子树, <img src="https://math.now.sh?inline=C%5Cleft%28T_%7Bt%7D%5Cright%29" style="display:inline-block;margin: 0;"/> 是对训练数据的预测误差, <img src="https://math.now.sh?inline=%5Cleft%7CT_%7Bt%7D%5Cright%7C" style="display:inline-block;margin: 0;"/> 是 <img src="https://math.now.sh?inline=T_%7Bt%7D" style="display:inline-block;margin: 0;"/>的叶结点个数。<br>
+(4) 对 <img src="https://math.now.sh?inline=g%28t%29%3D%5Calpha" style="display:inline-block;margin: 0;"/> 的内部结点 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 进行剪枝，并对叶结点 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"/> 以多数表决法决定其类，得到树 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"/> 。<br>
+(5) 设 <img src="https://math.now.sh?inline=k%3Dk%2B1%2C%20%5Calpha_%7Bk%7D%3D%5Calpha%2C%20T_%7Bk%7D%3DT_%7B%5Ccirc%7D" style="display:inline-block;margin: 0;"/><br>
+(6) 如果 <img src="https://math.now.sh?inline=T_%7Bk%7D" style="display:inline-block;margin: 0;"/> 不是由根结点及两个叶结点构成的树，则回到步骤 (2)<img src="https://math.now.sh?inline=%3B" style="display:inline-block;margin: 0;"/> 否则令 <img src="https://math.now.sh?inline=T_%7Bk%7D%3DT_%7Bn%7D" style="display:inline-block;margin: 0;"/><br>
+(7) 采用交义验证法在子树序列 <img src="https://math.now.sh?inline=T_%7B0%7D%2C%20T_%7B1%7D%2C%20%5Ccdots%2C%20T_%7Bn%7D" style="display:inline-block;margin: 0;"/> 中选取最优子树 <img src="https://math.now.sh?inline=T_%7B%5Calpha%5E%7B%5Ccirc%7D%7D" style="display:inline-block;margin: 0;"/></p>
 </blockquote>
 <h2 id="7-Question">7. Question</h2>
 <ol>
-<li>为什么$C(T)$能表示模型对训练数据的预测误差</li>
+<li>为什么<img src="https://math.now.sh?inline=C%28T%29" style="display:inline-block;margin: 0;"/>能表示模型对训练数据的预测误差</li>
 <li><s>正则化的极大似然估计？</s></li>
 <li><s><strong>1.2</strong>中的’构成一个条件概率分布’，不是叶结点咋办？</s></li>
 <li><s>6.1.1 启发式算法？</s></li>
-<li>CART决策时有没有可能对一个特征二叉再接个二叉，成$2^2$个叉？</li>
+<li>CART决策时有没有可能对一个特征二叉再接个二叉，成<img src="https://math.now.sh?inline=2%5E2" style="display:inline-block;margin: 0;"/>个叉？</li>
 </ol>
 <h2 id="8-Code">8. Code</h2>
 <h3 id="8-1-ID3-create-test-visualization">8.1 ID3: create, test, visualization</h3>
