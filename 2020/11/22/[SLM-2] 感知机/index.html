@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chongfeng Ling">
+<meta property="og:url" content="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
+<meta property="og:site_name" content="Chongfeng Ling">
+<meta property="og:description" content="感知机感知机（perceptron）是二类线性分类模型。 1. Model 定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}&#x3D;{+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.1%20Novikoff.png">
+<meta property="article:published_time" content="2020-11-22T02:49:46.032Z">
+<meta property="article:modified_time" content="2020-12-19T16:04:16.546Z">
+<meta property="article:author" content="CHongfeng Ling 凌崇锋">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance">
+
+
+<link rel="canonical" href="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title> | Chongfeng Ling</title>
+  
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Chongfeng Ling</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Model"><span class="nav-number">1.1.</span> <span class="nav-text">1. Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Strategy"><span class="nav-number">1.2.</span> <span class="nav-text">2. Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E5%8F%AF%E5%88%86%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 数据可分性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%AD%A6%E4%B9%A0%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 学习策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E8%AF%AF%E5%88%86%E7%B1%BB%E7%82%B9%E6%80%BB%E6%95%B0"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.2.1 误分类点总数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E8%AF%AF%E5%88%86%E7%B1%BB%E7%82%B9%E5%88%B0%E8%B6%85%E5%B9%B3%E9%9D%A2%E7%9A%84%E6%80%BB%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.2.2 误分类点到超平面的总距离</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">3. Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%AE%97%E6%B3%95%E5%8E%9F%E5%A7%8B%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 算法原始形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%8E%9F%E5%A7%8B%E7%AE%97%E6%B3%95%E7%9A%84%E6%94%B6%E6%95%9B%E6%80%A7"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 原始算法的收敛性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%AE%97%E6%B3%95%E5%AF%B9%E5%81%B6%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 算法对偶形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Question"><span class="nav-number">1.4.</span> <span class="nav-text">4. Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Code"><span class="nav-number">1.5.</span> <span class="nav-text">5. Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Proof"><span class="nav-number">1.6.</span> <span class="nav-text">6. Proof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-Theorem-2-01"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 Theorem 2.01</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-Theorem-2-1"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2 Theorem 2.1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Reference"><span class="nav-number">1.7.</span> <span class="nav-text">7. Reference</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">CHongfeng Ling 凌崇锋</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/22/[SLM-2]%20%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CHongfeng Ling 凌崇锋">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chongfeng Ling">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-22 10:49:46" itemprop="dateCreated datePublished" datetime="2020-11-22T10:49:46+08:00">2020-11-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-20 00:04:16" itemprop="dateModified" datetime="2020-12-20T00:04:16+08:00">2020-12-20</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h1><p>感知机（perceptron）是<strong>二类线性分类</strong>模型。</p>
+<h2 id="1-Model"><a href="#1-Model" class="headerlink" title="1. Model"></a>1. Model</h2><blockquote>
+<p>定义 2.1 (感知机) $\quad$假设输入空间（特征空间 ) 是 $\mathcal{X} \subseteq \mathbf{R}^{n},$ 输出空间是 $\mathcal{Y}={+1,-1}_{\circ}$ 输入 $x \in \mathcal{X}$ 表示实例的特征向量，对应于输入空间 ( 特征空间 $)$ 的点; 输出 $y \in \mathcal{Y}$ 表示实例的类别。由输入空间到输出空间的如下函数:</p>
+<script type="math/tex; mode=display">
+f(x)=\operatorname{sign}(w \cdot x+b)</script><p>称为感知机。其中， $w$ 和 $b$ 为感知机模型参数, $w \in \mathbf{R}^{n}$ 叫作权值（weight ) 或权值向量（weight vector) $, b \in \mathbf{R}$ 叫作偏置 ( bias $), w \cdot x$ 表示 $w$ 和 $x$ 的内积。sign 是符号 函数，即</p>
+<script type="math/tex; mode=display">
+\operatorname{sign}(x)=\left\{\begin{array}{ll}
++1, & x \geqslant 0 \\
+-1, & x<0
+\end{array}\right.</script></blockquote>
+<ul>
+<li><p>假设空间：特征空间中的所有线性分类模型，即函数集合${f|f(x)=w \cdot x+b}$</p>
+</li>
+<li><p>几何解释：线性方程$w \cdot x+b=0$是特征空间$\mathbf{R}^{n}$的一个超平面$\mathbf{S}$，把特征空间分成2个部分，使得特征向量分别划入正负两类。$\mathbf{S}$也叫分离超平面（separating hyperplane)</p>
+<ul>
+<li>超平面$\mathbf{S}\subseteq \mathbf{R}^{n-1}$并且截距为0。在这需要把b当成特征而不是截距才说的通。</li>
+</ul>
+</li>
+<li>例子：<ul>
+<li>通过${房屋面积，房龄，…}$来判断房子总价是否高于价格$a$<ul>
+<li>假设数据集线性可分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Strategy"><a href="#2-Strategy" class="headerlink" title="2. Strategy"></a>2. Strategy</h2><h3 id="2-1-数据可分性"><a href="#2-1-数据可分性" class="headerlink" title="2.1 数据可分性"></a>2.1 数据可分性</h3><blockquote>
+<p>定义 2.2 (数据集的线性可分性) $\quad$ 给定一个数据集</p>
+<script type="math/tex; mode=display">
+T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}</script><p>其中， $x<em>{i} \in \mathcal{X}=\mathbf{R}^{n}, y</em>{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N,$ 如果存在某个超平面 $S$</p>
+<script type="math/tex; mode=display">
+w \cdot x+b=0</script><p>能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对所有<br>$y<em>{i}=+1$ 的实例 $i,$ 有 $w \cdot x</em>{i}+b&gt;0,$ 对所有 $y<em>{i}=-1$ 的实例 $i,$ 有 $w \cdot x</em>{i}+b&lt;0,$ 则 称数据集 $T$ 为线性可分数据集（linearly separable data set ) ; 否则，称数据集 $T$ 线性<br>不可分。</p>
+</blockquote>
+<ul>
+<li>存在超平面$\mathbf{S}\Longrightarrow $数据集线性可分</li>
+</ul>
+<h3 id="2-2-学习策略"><a href="#2-2-学习策略" class="headerlink" title="2.2 学习策略"></a>2.2 学习策略</h3><h4 id="2-2-1-误分类点总数"><a href="#2-2-1-误分类点总数" class="headerlink" title="2.2.1 误分类点总数"></a>2.2.1 误分类点总数</h4><p>把误分类点总数当成损失函数，不是参数$w,b$的连续可导函数，不易优化</p>
+<h4 id="2-2-2-误分类点到超平面的总距离"><a href="#2-2-2-误分类点到超平面的总距离" class="headerlink" title="2.2.2 误分类点到超平面的总距离"></a>2.2.2 误分类点到超平面的总距离</h4><blockquote>
+<p>定理（2.01) $\quad$空间  $\mathbf{R}^n$中任意一点$x_0$到超平面  $\mathbf{S}={x|w\cdot x+b=0}$ 的距离为</p>
+<script type="math/tex; mode=display">
+\frac{1}{\|w\|}\left|w \cdot x_{0}+b\right|</script></blockquote>
+<p>对于误分类数据$(x_i,y_i)$，M为误分类点集合，误分类点到超平面的总距离为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+D&=\frac{1}{\|w\|} \sum_{x_{i} \in M} |y_{i}\left(w \cdot x_{i}+b\right)|\nonumber\\
+&=-\frac{1}{\|w\|} \sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)\\
+L(w,b)&=-\sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)
+\end{align}</script><ul>
+<li>对误分类点$(x<em>i,y_i)$，$-y</em>{i}\left(w \cdot x_{i}+b\right) \geq0$</li>
+<li>(6)是给定数据集$T=\left{\left(x<em>{1}, y</em>{1}\right),\left(x<em>{2}, y</em>{2}\right), \cdots,\left(x<em>{N}, y</em>{N}\right)\right}$，其中$x<em>{i} \in \mathcal{X}=\mathbf{R}^{n}, y</em>{i} \in \mathcal{Y}={+1,-1}, i=1,2, \cdots, N$</li>
+<li>(7)非负函数，且对于$w,b$连续可导</li>
+<li>我们的策略是<strong>极小化损失函数</strong>，即$\min <em>{w, b} L(w, b)=-\sum</em>{x<em>{i} \in M} y</em>{i}\left(w \cdot x_{i}+b\right)$</li>
+</ul>
+<h2 id="3-Algorithm"><a href="#3-Algorithm" class="headerlink" title="3. Algorithm"></a>3. Algorithm</h2><p>求解损失函数(7)的最优化问题，通过随机梯度下降(stochastic gradient descent)</p>
+<h3 id="3-1-算法原始形式"><a href="#3-1-算法原始形式" class="headerlink" title="3.1 算法原始形式"></a>3.1 算法原始形式</h3><blockquote>
+<p>算法 2.1（感知机学习算法的原始形式）<br>输入: 训练数据集 $T=\left{\left(x<em>{1}, y</em>{1}\right),\left(x<em>{2}, y</em>{2}\right), \cdots,\left(x<em>{N}, y</em>{N}\right)\right},$ 其中 $x<em>{i} \in \mathcal{X}=\mathbf{R}^{n}, y</em>{i} \in$$\mathcal{Y}={-1,+1}, i=1,2, \cdots, N ;$ 学习率 $\eta(0&lt;\eta \leqslant 1)$;<br>输出 $: w, b ;$ 感知机模型 $f(x)=\operatorname{sign}(w \cdot x+b)$ 。<br>(1) 选取初值 $w<em>{0}, b</em>{0}$;<br>(2)在训练集中随机选取数据$\left(x<em>{i}, y</em>{i}\right)$;<br>(3) 如果 $y<em>{i}\left(w \cdot x</em>{i}+b\right) \leqslant 0$,</p>
+<script type="math/tex; mode=display">
+\begin{align}
+w& \leftarrow w+\eta y_{i} x_{i} \\
+b &\leftarrow b+\eta y_{i}
+\end{align}</script><p>(4）转至 (2)，直至训练集中没有误分类点。</p>
+</blockquote>
+<ul>
+<li><p>一次随机选取一个误分类点使其梯度下降</p>
+</li>
+<li><p><strong>随机</strong>选取一个误分类点 $\left(x<em>{i}, y</em>{i}\right),$ 对 $w, b$ 进行更新 :</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w &\leftarrow w+\eta y_{i} x_{i} \\
+b &\leftarrow b+\eta y_{i}
+\end{aligned}</script></li>
+<li><p>不同初值，不同分类点选取会影响最后的解</p>
+</li>
+</ul>
+<h3 id="3-2-原始算法的收敛性"><a href="#3-2-原始算法的收敛性" class="headerlink" title="3.2 原始算法的收敛性"></a>3.2 原始算法的收敛性</h3><p>证明对一个线性可分的数据集，感知机学习算法的原始形式在有限次迭代后能得到正确的分离超平面与感知机模型</p>
+<blockquote>
+<p><strong>定理 2.1 (Novikoff)</strong> 设训练数据集 $T=\left{\left(x<em>{1}, y</em>{1}\right),\left(x<em>{2}, y</em>{2}\right), \cdots,\left(x<em>{N}, y</em>{N}\right)\right}$ 是线 性可分的，其中 $x<em>{i} \in \mathcal{X}=\mathbf{R}^{n}, y</em>{i} \in \mathcal{Y}={-1,+1}, i=1,2, \cdots, N,$ 则<br>(1) 存在满足条件 $\left|\hat{w}<em>{\mathrm{opt}}\right|=1$ 的超平面 $\hat{w}</em>{\mathrm{opt}} \cdot \hat{x}=w<em>{\mathrm{opt}} \cdot x+b</em>{\mathrm{opt}}=0$ 将训练数据集完全正确分开; 且存在 $\gamma&gt;0,$ 对所有 $i=1,2, \cdots, N$</p>
+<script type="math/tex; mode=display">
+y_{i}\left(\hat{w}_{\mathrm{opt}} \cdot \hat{x}_{i}\right)=y_{i}\left(w_{\mathrm{opt}} \cdot x_{i}+b_{\mathrm{opt}}\right) \geqslant \gamma</script><p>(2) 令 $R=\max <em>{1 \leqslant i \leqslant N}\left|\hat{x}</em>{i}\right|,$ 则感知机算法 2.1 在训练数据集上的误分类次数 $k$ 满足不等式</p>
+<script type="math/tex; mode=display">
+k \leqslant\left(\frac{R}{\gamma}\right)^{2}</script></blockquote>
+<ul>
+<li>$\hat{w}=\left(w^{\mathrm{T}}, b\right)^{\mathrm{T}}$，$\hat{x}=\left(x^{\mathrm{T}}, 1\right)^{\mathrm{T}}$，$\hat{x} \in \mathbf{R}^{n+1}, \hat{w} \in \mathbf{R}^{n+1}$，$\hat{w} \cdot \hat{x}=w \cdot x+b$</li>
+<li>对于线性可分数据集，感知机的解存在但不唯一。</li>
+<li>在线性支持向量机中，添加超平面约束条件，从而得到唯一超平面。</li>
+</ul>
+<h3 id="3-3-算法对偶形式"><a href="#3-3-算法对偶形式" class="headerlink" title="3.3 算法对偶形式"></a>3.3 算法对偶形式</h3><p>我们假设$w,b=0$，在原始算法中，对于一个误分类点$(x_i,y_i)$，我们进行了$n_i$次更新，对于所有$N$个点，我们有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+w &=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i} =\sum_{i=1}^{N} n_i(\eta  y_{i} x_{i})\\
+b &=\sum_{i=1}^{N} \alpha_{i} y_{i}=\sum_{i=1}^{N} n_i(\eta y_i)
+\end{aligned}</script><p>我们从解w，b转化为$n_i$即第$i$个是实例点由于误分而进行更新的次数。</p>
+<p>实例点更新越多，说明距离分离超平面越近，越难分类，对结果影响大，很可能就是支持向量。</p>
+<blockquote>
+<p>算法 2.2 (感知机学习算法的对偶形式)<br>输入: 线性可分的数据集 $T=\left{\left(x<em>{1}, y</em>{1}\right),\left(x<em>{2}, y</em>{2}\right), \cdots,\left(x<em>{N}, y</em>{N}\right)\right},$ 其中 $x<em>{i} \in \mathbf{R}^{n}, y</em>{i} \in$<br>${-1,+1}, i=1,2, \cdots, N ;$ 学习率 $\eta(0&lt;\eta \leqslant 1) ;$<br>输 出: $\alpha, b ;$ 感 知机 模 型 $f(x)=\operatorname{sign}\left(\sum<em>{j=1}^{N} \alpha</em>{j} y<em>{j} x</em>{j} \cdot x+b\right),$ 其中 $\alpha=\left(\alpha<em>{1}, \alpha</em>{2}, \cdots, \alpha<em>{N}\right)^{\mathrm{T}}$<br>(1) $\alpha \leftarrow 0, b \leftarrow 0 ;$<br>(2)在训练集中选取数据 $\left(x</em>{i}, y<em>{i}\right)$;<br>(3)如果 $y</em>{i}\left(\sum<em>{j=1}^{N} \alpha</em>{j} y<em>{j} x</em>{j} \cdot x_{i}+b\right) \leqslant 0$</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+\alpha_{i} \leftarrow \alpha_{i}+\eta \\
+b \leftarrow b+\eta y_{i}
+\end{array}</script><p>(4)转至 (2)直到没有误分类数据。</p>
+</blockquote>
+<ul>
+<li>(12)当$\eta=1$，即$n_i=n_i+1$，对点更新次数加一</li>
+<li><p>对偶算法只涉及到矩阵的内积$x<em>i\cdot x_j$计算，我们可以将内积预先计算存储，即我们计算Gram矩阵$\mathbf{G}=[x_i \cdot x_j]</em>{\mathbf{N}\times\mathbf{N}}$</p>
+</li>
+<li><p>和原始形式一样，感知机学习算法的对偶形式迭代是收敛的，且存在多个解。</p>
+</li>
+</ul>
+<h2 id="4-Question"><a href="#4-Question" class="headerlink" title="4. Question"></a>4. Question</h2><ol>
+<li><p>超平面的定义是什么？</p>
+</li>
+<li><p>这么判断数据集可不可分？</p>
+<ul>
+<li><p>证明以下定理： 样本集线性可分的充分必要条件是正实例点集所构成的凸壳CD 与负实例点集所构成的凸壳互不相交。</p>
+</li>
+<li><p>设集合 $S \subset \mathbf{R}^{n}$ 是由 $\mathbf{R}^{n}$ 中的 $k$ 个点所组成的集合, 即 $S=\left{x<em>{1}, x</em>{2}, \cdots, x_{k}\right} .$ 定义 $S$ 的凸亮$\operatorname{conv}(S)$ 为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\operatorname{conv}(S)=\left\{x=\sum_{i=1}^{k} \lambda_{i} x_{i} \mid \sum_{i=1}^{k} \lambda_{i}=1, \lambda_{i} \geqslant 0, i=1,2, \cdots, k\right\}
+\end{aligned}</script></li>
+</ul>
+</li>
+</ol>
+<h2 id="5-Code"><a href="#5-Code" class="headerlink" title="5. Code"></a>5. Code</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">perceptron</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, X_train, Y_train, learning_rate=<span class="number">0.0001</span>, tol=<span class="number">0</span></span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        Parameters</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        X_train:Array, default=None</span></span><br><span class="line"><span class="string">            dataset for training</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Y_train:Array, default=None</span></span><br><span class="line"><span class="string">            labelset for training</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        learning_rate:float,default=0.0001</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        tol:int, default=0</span></span><br><span class="line"><span class="string">            the stopping criterion. When the number of misclassification </span></span><br><span class="line"><span class="string">            points small or equal to tol, stop training.</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        self.X_train=np.mat(X_train)</span><br><span class="line">        self.Y_train=np.mat(Y_train).T</span><br><span class="line">        self.m,self.n=np.shape(self.X_train)</span><br><span class="line">        self.w=np.zeros((<span class="number">1</span>,np.shape(self.X_train)[<span class="number">1</span>]))</span><br><span class="line">        self.b=<span class="number">0</span></span><br><span class="line">        self.learning_rate=learning_rate</span><br><span class="line">        self.tol=tol</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calculate</span>(<span class="params">self, x, w, b</span>):</span></span><br><span class="line">        <span class="keyword">return</span> np.dot(x,w.T)+b</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        returns</span></span><br><span class="line"><span class="string">        -------</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        w: np.mat</span></span><br><span class="line"><span class="string">            weights</span></span><br><span class="line"><span class="string">        b: np.mat</span></span><br><span class="line"><span class="string">            bias        </span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        is_wrong=<span class="literal">False</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> is_wrong:</span><br><span class="line">            wrong_count=<span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> <span class="built_in">range</span>(self.m):</span><br><span class="line">                xi=self.X_train[s]</span><br><span class="line">                yi=self.Y_train[s]</span><br><span class="line">                <span class="keyword">if</span> self.calculate(xi,self.w,self.b)*yi &lt;= <span class="number">0</span>:</span><br><span class="line">                    self.w=self.w+self.learning_rate*yi*xi</span><br><span class="line">                    self.b=self.b+self.learning_rate*yi</span><br><span class="line">                    wrong_count+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> wrong_count &lt;=self.tol:</span><br><span class="line">                is_wrong=<span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> self.w,self.b</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">plot</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ChongfengLing/Statistical-Learning-Method-Notes-Code">More details and examples</a></li>
+</ul>
+<h2 id="6-Proof"><a href="#6-Proof" class="headerlink" title="6. Proof"></a>6. Proof</h2><h3 id="6-1-Theorem-2-01"><a href="#6-1-Theorem-2-01" class="headerlink" title="6.1 Theorem 2.01"></a>6.1 Theorem 2.01</h3><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.01%20distance" alt="image-20201123163513240" style="zoom:50%;" /></p>
+<h3 id="6-2-Theorem-2-1"><a href="#6-2-Theorem-2-1" class="headerlink" title="6.2 Theorem 2.1"></a>6.2 Theorem 2.1</h3><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-2%20thm2.1%20Novikoff.png" alt="SLM-2 thm2.1 Novikoff" style="zoom:50%;" /></p>
+<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33437381/">统计学习方法（第2版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.pkudodo.com/2018/11/18/1-4/">统计学习方法|感知机原理剖析及实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26526858/answer/136577337">如何理解感知机学习算法的对偶形式？ - Zongrong Zheng的回答 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/lihang-code">fengdu78/lihang-code</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/23/%5BSLM-1%5D%20%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E5%8F%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%AE%BA/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CHongfeng Ling 凌崇锋</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+</body>
+</html>
