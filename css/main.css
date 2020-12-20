@@ -4,7 +4,7 @@
   --card-bg-color: #f5f5f5;
   --text-color: #555;
   --blockquote-color: #666;
-  --link-color: #555;
+  --link-color: #4078c0;
   --link-hover-color: #222;
   --brand-color: #fff;
   --brand-hover-color: #fff;
@@ -21,6 +21,38 @@
   --highlight-foreground: #444;
   --highlight-gutter-background: #dedede;
   --highlight-gutter-foreground: #555;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg-color: #282828;
+    --content-bg-color: #333;
+    --card-bg-color: #555;
+    --text-color: #ccc;
+    --blockquote-color: #bbb;
+    --link-color: #ccc;
+    --link-hover-color: #eee;
+    --brand-color: #ddd;
+    --brand-hover-color: #ddd;
+    --table-row-odd-bg-color: #282828;
+    --table-row-hover-bg-color: #363636;
+    --menu-item-bg-color: #555;
+    --btn-default-bg: #222;
+    --btn-default-color: #ccc;
+    --btn-default-border-color: #555;
+    --btn-default-hover-bg: #666;
+    --btn-default-hover-color: #ccc;
+    --btn-default-hover-border-color: #666;
+    --highlight-background: #1d1f21;
+    --highlight-foreground: #c5c8c6;
+    --highlight-gutter-background: #2d2f31;
+    --highlight-gutter-foreground: #b4b7b5;
+  }
+  img {
+    opacity: 0.75;
+  }
+  img:hover {
+    opacity: 0.9;
+  }
 }
 html {
   line-height: 1.15; /* 1 */
@@ -461,6 +493,84 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   font-weight: bold;
 }
 
+@media (prefers-color-scheme: dark) {
+/* Tomorrow Night Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+  color: #969896;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+  color: #cc6666;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+  color: #de935f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+  color: #f0c674;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+  color: #b5bd68;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+  color: #81a2be;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #b294bb;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: #1d1f21;
+  color: #c5c8c6;
+  padding: 0.5em;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+}
 code,
 kbd,
 figure.highlight,
@@ -1324,6 +1434,7 @@ pre code {
   border: 2px solid #333;
   max-width: 96px;
   padding: 2px;
+  border-radius: 50%;
 }
 .site-author-name {
   color: #f5f5f5;
@@ -2136,11 +2247,18 @@ pre code {
 .post-eof {
   background: #ccc;
   height: 1px;
-  margin: 80px auto 60px;
+  margin: 50px auto 50px;
   width: 8%;
 }
 .post-block:last-of-type .post-eof {
   display: none;
+}
+.post-copyright ul {
+  list-style: none;
+  padding: 0.5em 1em;
+  background: var(--card-bg-color);
+  border-left: 3px solid #ff2a2a;
+  margin: 1em 0 0;
 }
 .post-tags {
   margin-top: 40px;
@@ -2458,6 +2576,52 @@ ul.breadcrumb li:last-child {
   border-bottom-color: #111;
   color: #111;
 }
+@media (prefers-color-scheme: dark) {
+  .tag-cloud-0 {
+    border-bottom-color: #555;
+    color: #555;
+  }
+  .tag-cloud-1 {
+    border-bottom-color: #646464;
+    color: #646464;
+  }
+  .tag-cloud-2 {
+    border-bottom-color: #737373;
+    color: #737373;
+  }
+  .tag-cloud-3 {
+    border-bottom-color: #828282;
+    color: #828282;
+  }
+  .tag-cloud-4 {
+    border-bottom-color: #929292;
+    color: #929292;
+  }
+  .tag-cloud-5 {
+    border-bottom-color: #a1a1a1;
+    color: #a1a1a1;
+  }
+  .tag-cloud-6 {
+    border-bottom-color: #b0b0b0;
+    color: #b0b0b0;
+  }
+  .tag-cloud-7 {
+    border-bottom-color: #c0c0c0;
+    color: #c0c0c0;
+  }
+  .tag-cloud-8 {
+    border-bottom-color: #cfcfcf;
+    color: #cfcfcf;
+  }
+  .tag-cloud-9 {
+    border-bottom-color: #dedede;
+    color: #dedede;
+  }
+  .tag-cloud-10 {
+    border-bottom-color: #eee;
+    color: #eee;
+  }
+}
 mjx-container[jax="CHTML"][display="true"],
 .has-jax {
   overflow: auto hidden;
@@ -2634,7 +2798,7 @@ mjx-container[display="true"] + br {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff8b03;
+  background: #0dffff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2655,3 +2819,119 @@ mjx-container[display="true"] + br {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/*
+.post-body p a {
+  color: #0593d3;
+  border-bottom: none;
+  &:hover {
+    //color: #0477ab;
+    text-decoration: underline;
+  }
+}
+
+// 文章超链接样式
+.post-body a {
+    color: rgb(80, 115, 184);
+    border-bottom: none;
+    text-decoration: underline;
+}
+// 菜单超链接字体大小
+.menu .menu-item a {
+    font-size: 15px;
+}
+// 菜单超链接样式
+.menu .menu-item a:hover {
+    border-bottom-color: rgba(161, 102, 171, 0);
+}
+// 超链接样式
+a {
+    color: rgb(80, 115, 184);
+    border-bottom-color: rgb(80, 115, 184);
+}
+a:hover {
+    color: rgb(161, 102, 171);
+    border-bottom-color: rgb(161, 102, 171);
+}
+// 侧栏超链接样式（友链的样式）
+.sidebar a {
+    color: #ccc;
+    border-bottom: none;
+}
+
+// Global link color.
+$link-color = #4078c0
+
+*/
+.site-author-image {
+  opacity: 1;
+}
+code {
+  color: #ec7f00;
+}
+figcaption {
+  font-size: 14px;
+}
+.copy-btn {
+  top: initial !important;
+  bottom: 16px;
+}
+blockquote {
+  line-height: 1.6;
+  font-family: "Microsoft YaHei", Menlo, "PingFang SC", monospace;
+  border-left: 4px solid #42b983;
+}
+.header-inner {
+  padding: 100px 0 20px;
+}
+.posts-expand .post-meta {
+  margin: 10px 0 10px 0;
+}
+.posts-expand {
+  padding-top: 0px;
+}
+.post-body h1 {
+  margin: 0 0 15px 0;
+}
+.post-body p {
+  margin: 0 0 5px 0;
+}
+.pagination {
+  margin: 50px 0 40px;
+}
+.footnotes li {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.footnotes p {
+  text-indent: 0.5em;
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+}
+.footnoteTip {
+  position: absolute;
+  width: 200px;
+  text-align: center;
+  background-color: #ffffe0;
+  border: 1px solid #636363;
+  padding: 5px;
+  font-size: 12px;
+  lineHeight: 1.8;
+  border-radius: 5px;
+}
+.footnoteTip p {
+  text-indent: 0em;
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+}
+.sidebar a {
+  color: #ccc;
+}
+.sidebar a:hover {
+  color: #fff;
+}
+/* 
+// prevent text expand in post
+.posts-expand .post-body {
+    text-align: initial;
+}
+*/
