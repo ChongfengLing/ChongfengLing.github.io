@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树) \(\quad\) 分类决策树模型是一种描述对实例进行分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chongfeng Ling">
+<meta property="og:url" content="http://example.com/2020/12/02/[SLM-5]%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/index.html">
+<meta property="og:site_name" content="Chongfeng Ling">
+<meta property="og:description" content="决策树 Decision Tree 决策树是一种基本的分类与回归方法，这里主要讨论分类问题。他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。 1. Model  定义 5.1 (决策树) \(\quad\) 分类决策树模型是一种描述对实例进行分">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E5%89%AA%E6%9E%9D.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%9F%BA%E5%B0%BC%E3%80%81%E7%86%B5%E4%B8%8E%E5%88%86%E7%B1%BB%E8%AF%AF%E5%B7%AE.png">
+<meta property="article:published_time" content="2020-12-02T08:14:56.880Z">
+<meta property="article:modified_time" content="2020-12-18T08:01:49.754Z">
+<meta property="article:author" content="CHongfeng Ling 凌崇锋">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png">
+
+
+<link rel="canonical" href="http://example.com/2020/12/02/[SLM-5]%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title> | Chongfeng Ling</title>
+  
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Chongfeng Ling</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91-decision-tree"><span class="nav-number">1.</span> <span class="nav-text">决策树 Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-number">1.1.</span> <span class="nav-text">1. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8Eif-then%E8%A7%84%E5%88%99"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 决策树与if-then规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E7%BB%99%E5%AE%9A%E7%89%B9%E5%BE%81%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E7%B1%BB%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 决策树与给定特征条件下的类条件概率分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 决策树的学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9-feature-selection"><span class="nav-number">1.2.</span> <span class="nav-text">2. 特征选择 Feature Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A-information-gain"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 信息增益 Information Gain</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%86%B5-entropy%E4%BF%A1%E6%81%AF%E7%86%B5"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">2.1.1 熵 Entropy、信息熵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%86%B5-conditional-entropy"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2.1.2 条件熵 Conditional Entropy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">2.1.3 信息增益</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E6%AF%94-information-gain-ratio"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">2.1.4 信息增益比 information gain ratio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%A2%9E%E7%9B%8A%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">2.1.5 特征增益的算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id3-algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">3. ID3 Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c4.5-algorithm"><span class="nav-number">1.4.</span> <span class="nav-text">4. C4.5 Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pruning"><span class="nav-number">1.5.</span> <span class="nav-text">5. Pruning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pruning-algorithm"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 Pruning algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cart-algorithm"><span class="nav-number">1.6.</span> <span class="nav-text">6. CART Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cart%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 CART的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92%E6%A0%91%E7%94%9F%E6%88%90"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">6.1.1 回归树生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#model-1"><span class="nav-number">1.6.1.1.1.</span> <span class="nav-text">6.1.1.1 Model</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#algorithm"><span class="nav-number">1.6.1.1.2.</span> <span class="nav-text">6.1.1.2 Algorithm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#example"><span class="nav-number">1.6.1.1.3.</span> <span class="nav-text">6.1.1.3 Example</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">6.1.2 分类树的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#gini-index"><span class="nav-number">1.6.1.2.1.</span> <span class="nav-text">6.1.2.1 Gini Index</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#algorithm-1"><span class="nav-number">1.6.1.2.2.</span> <span class="nav-text">6.1.2.2 Algorithm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart%E7%9A%84%E5%89%AA%E6%9E%9D"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2 CART的剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E6%88%90%E4%B8%80%E4%B8%AA%E5%AD%90%E6%A0%91%E5%BA%8F%E5%88%97"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">6.2.1 剪枝成一个子树序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">6.2.2 交叉验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#algorithm-2"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">6.2.3 Algorithm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#question"><span class="nav-number">1.7.</span> <span class="nav-text">7. Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-number">1.8.</span> <span class="nav-text">8. Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#id3-create-test-visualization"><span class="nav-number">1.8.1.</span> <span class="nav-text">8.1 ID3: create, test, visualization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.9.</span> <span class="nav-text">9. Reference</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">CHongfeng Ling 凌崇锋</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/02/[SLM-5]%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CHongfeng Ling 凌崇锋">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chongfeng Ling">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-12-02 16:14:56" itemprop="dateCreated datePublished" datetime="2020-12-02T16:14:56+08:00">2020-12-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-18 16:01:49" itemprop="dateModified" datetime="2020-12-18T16:01:49+08:00">2020-12-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="决策树-decision-tree">决策树 Decision Tree</h1>
+<p>决策树是一种基本的分类与回归方法，这里主要讨论分类问题。<strong>他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。</strong>学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。</p>
+<h2 id="model">1. Model</h2>
+<blockquote>
+<p>定义 5.1 (决策树) <span class="math inline">\(\quad\)</span> 分类决策树模型是一种描述对实例进行分类的树形结构。决策树由结点 ( node ) 和有向边 ( directed edge ) 组成。结点有两种类型: 内部结点 ( internal node ) 和叶结,点 ( leaf node ) 。内部结点表示一个特征或属性, 叶结点表示一个类。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">		A--是--&gt;C[叶结点]</span><br><span class="line">		A((根节点))--否--&gt;B((内部结点))</span><br><span class="line">		B--是--&gt;D[叶结点]</span><br><span class="line">		B--否--&gt;E[叶结点]</span><br></pre></td></tr></table></figure>
+<h3 id="决策树与if-then规则">1.1 决策树与if-then规则</h3>
+<ul>
+<li>根结点到叶结点的每一条路径是一条规则</li>
+<li>路径上的内部节点对应规则的条件</li>
+<li>叶结点的类对应规则的结论</li>
+<li>if-then规则是<strong>互斥且完备</strong>，即每一个实例有且仅有被一条路径/规则覆盖。</li>
+</ul>
+<h3 id="决策树与给定特征条件下的类条件概率分布">1.2 决策树与给定特征条件下的类条件概率分布</h3>
+<p><strong>决策树的生成等价于对特征空间的划分(partition)</strong>，从而划分成互不相交的单元(cell)/区域(region)，再每一个单元定义一个类的概率分布就构成的一个条件概率分布。决策树所表示的条件概率分布由各个单元给定条件下类的条件概率分布组成。</p>
+<p><span class="math inline">\(P(Y|X),\;X:特征的随机变量\;\;\;\;Y:类的随机变量\)</span></p>
+<p>条件概率<span class="math inline">\(P(Y|X)\)</span>往往偏大于某一类<span class="math inline">\(y\)</span>。分类时把该节点实例强行分到条件概率大的那一类。</p>
+<p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLm-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87.png" alt="image-20201202210309048" style="zoom:50%;" /></p>
+<h3 id="决策树的学习">1.3 决策树的学习</h3>
+<p>学习本质：为训练数据集归纳出一组分类规则</p>
+<ul>
+<li>正确分类训练数据集的决策树可能有很多个，可能没有</li>
+<li>需要找到一个与训练数据集的误差较小、泛化能力高的决策树</li>
+</ul>
+<p>损失函数与策略：最小化正则化后的极大似然函数</p>
+<p>算法：递归的选择最优特征。ID3、C4.5、CART</p>
+<p>剪枝：树枝多，复杂，泛化能力低。自下而上进行剪枝。树的生成考虑局部最优，树的剪枝考虑全局最优。</p>
+<h2 id="特征选择-feature-selection">2. 特征选择 Feature Selection</h2>
+<p>通过信息增益（比）来选取具有分类能力的特征（指那些与随机分类有较大查别的特征），从而提高决策树的学习效率。</p>
+<h3 id="信息增益-information-gain">2.1 信息增益 Information Gain</h3>
+<h4 id="熵-entropy信息熵">2.1.1 熵 Entropy、信息熵</h4>
+<blockquote>
+<p>定义 5.01（熵） 熵是表示随机变量不确定性的度量。设<span class="math inline">\(X\)</span>为离散随机变量，概率分布为 <span class="math display">\[
+P\left(X=x_{i}\right)=p_{i}, \quad i=1,2, \cdots, n
+\]</span> 随机变量<span class="math inline">\(X\)</span>的熵为 <span class="math display">\[
+H(X)=H(p)=-\sum_{i=1}^{n} p_{i} \log p_{i}
+\]</span></p>
+<p><span class="math display">\[
+对p_i=0，定义0log0=0\nonumber
+\]</span></p>
+</blockquote>
+<ul>
+<li>在(2)中，对数底为2/<span class="math inline">\(e\)</span>时，熵单位为比特bit/纳特nat</li>
+<li>熵只和<span class="math inline">\(X\)</span>的分布有关，与取值<span class="math inline">\(x_i\)</span>无关</li>
+<li>熵越大，随机变量的不确定性就越大</li>
+<li><span class="math inline">\(0 \leqslant H(p) \leqslant \log n\)</span></li>
+</ul>
+<h4 id="条件熵-conditional-entropy">2.1.2 条件熵 Conditional Entropy</h4>
+<blockquote>
+<p>定义 5.02（条件熵） 对随机变量(X,Y)，联合概率分布为 <span class="math display">\[
+P\left(X=x_{i}, Y=y_{j}\right)=p_{i j}, \quad i=1,2, \cdots, n ; \quad j=1,2, \cdots, m\nonumber
+\]</span> 条件熵<span class="math inline">\(H(Y|X)\)</span>表示一直随机变量<span class="math inline">\(X\)</span>的情况下随机变量<span class="math inline">\(Y\)</span>的不确定性。<strong>定义为给定<span class="math inline">\(X\)</span>后<span class="math inline">\(Y\)</span>的条件概率分布的熵对<span class="math inline">\(X\)</span>的数学期望</strong>，即 <span class="math display">\[
+H(Y \mid X)=\sum_{i=1}^{n} p_{i} H\left(Y \mid X=x_{i}\right)\\
+p_{i}=P\left(X=x_{i}\right), i=1,2, \cdots, n
+\]</span></p>
+</blockquote>
+<p>当熵和条件熵的概率有极大似然估计得到时，对应的为经验熵(empirical entropy)和经验条件熵(empirical conditional entropy)</p>
+<h4 id="信息增益">2.1.3 信息增益</h4>
+<p><strong>信息增益表示得知特征<span class="math inline">\(X\)</span>的信息从而使得类<span class="math inline">\(Y\)</span>的信息的不确定性减少程度。</strong></p>
+<blockquote>
+<p>定义 5.2 (信息增益) <span class="math inline">\(\quad\)</span> 特征 <span class="math inline">\(A\)</span> 对训练数据集<span class="math inline">\(D\)</span>的信息增益 <span class="math inline">\(g(D, A),\)</span> 定义为集合<span class="math inline">\(D\)</span>的经验熵<span class="math inline">\(H(D)\)</span> 与特征 <span class="math inline">\(A\)</span> 给定条件下<span class="math inline">\(D\)</span>的经验条件熵 <span class="math inline">\(H(D \mid A)\)</span> 之差，即 <span class="math display">\[
+g(D, A)=H(D)-H(D \mid A)\nonumber
+\]</span></p>
+</blockquote>
+<ul>
+<li>熵和条件熵之差称为互信息 mutual information，在决策树中即为信息增益</li>
+<li><span class="math inline">\(D\)</span>一般为标签</li>
+</ul>
+<h4 id="信息增益比-information-gain-ratio">2.1.4 信息增益比 information gain ratio</h4>
+<p>在训练集里，某一个特征较多时，信息增益会偏大。因此采用信息增益比来校正。</p>
+<blockquote>
+<p>定义 5.3 $ (信息增益比) <span class="math display">\[\quad$ 特征 $A$ 对训练数据集 $D$ 的信息增益比 $g_{R}(D, A)$ 定义为其信息增益 $g(D, A)$ 与训练数据集 $D$ 关于特征 $A$ 的值的熵 $H_{A}(D)$ 之比，即
+\]</span> g_{R}(D, A)= $$ 其中 <span class="math inline">\(, H_{A}(D)=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \log _{2} \frac{\left|D_{i}\right|}{|D|}, n\)</span> 是特征 <span class="math inline">\(A\)</span> 取值的个数。</p>
+</blockquote>
+<h4 id="特征增益的算法">2.1.5 特征增益的算法</h4>
+<p>对数据集<span class="math inline">\(D\)</span>，有<span class="math inline">\(k\)</span>个类<span class="math inline">\(C_k\)</span>，对特征<span class="math inline">\(A\)</span>有<span class="math inline">\(n\)</span>个取值<span class="math inline">\(D_n\)</span>，<span class="math inline">\(D_{i k}=D_{i} \cap C_{k}\)</span>，<span class="math inline">\(|D|\)</span>为数据集中的样本个数</p>
+<blockquote>
+<p>算法 5.1 (信息增益的算法) 输入: 训练数据集 <span class="math inline">\(D\)</span> 和特征 <span class="math inline">\(A\)</span>; 输出: 特征 <span class="math inline">\(A\)</span> 对训练数据集 <span class="math inline">\(D\)</span> 的信息增益 <span class="math inline">\(g(D, A)\)</span> 。 (1) 计算数据集 <span class="math inline">\(D\)</span> 的经验熵<span class="math inline">\(H(D)\)</span> <span class="math display">\[
+H(D)=-\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|} \log _{2} \frac{\left|C_{k}\right|}{|D|}\nonumber
+\]</span> (2) 计算特征 <span class="math inline">\(A\)</span> 对数据集 <span class="math inline">\(D\)</span> 的经验条件熵 <span class="math inline">\(H(D \mid A)\)</span> <span class="math display">\[
+H(D \mid A)=\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} H\left(D_{i}\right)=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \sum_{k=1}^{K} \frac{\left|D_{i k}\right|}{\left|D_{i}\right|} \log _{2} \frac{\left|D_{i k}\right|}{\left|D_{i}\right|}\nonumber
+\]</span> (3) 计算信息增益 <span class="math display">\[
+g(D, A)=H(D)-H(D \mid A)\nonumber
+\]</span></p>
+</blockquote>
+<ul>
+<li>没有特征B！A是特征的符号</li>
+</ul>
+<h2 id="id3-algorithm">3. ID3 Algorithm</h2>
+<p>决策树各个节点熵应用信息增益准则选择特征，递归构建决策树。</p>
+<p>从根结点开始，计算所有可能的特征，选取信息增益最大的特征作为节点特征。并由该特征的不同取值点建立子节点。递归调用。</p>
+<blockquote>
+<p>算法 5.2 (ID3 算法) 输入: 训练数据集 <span class="math inline">\(D,\)</span> 特征集 <span class="math inline">\(A\)</span> 间值 <span class="math inline">\(\varepsilon ;\)</span><span class="math inline">\(\\\)</span></p>
+<p>输出：决策树 <span class="math inline">\(T\)</span> 。</p>
+<ol type="1">
+<li><p>若 <span class="math inline">\(D\)</span> 中所有实例属于同一类 <span class="math inline">\(C_{k},\)</span> 则 <span class="math inline">\(T\)</span> 为单结点树，并将类 <span class="math inline">\(C_{k}\)</span> 作为该结点 的类标记，返回 <span class="math inline">\(T\)</span>;</p></li>
+<li><p>若 <span class="math inline">\(A=\varnothing,\)</span> 则 <span class="math inline">\(T\)</span> 为单结点树，并将 <span class="math inline">\(D\)</span> 中实例数最大的类 <span class="math inline">\(C_{k}\)</span> 作为该结点的类标记，返回 <span class="math inline">\(T\)</span> :</p></li>
+<li><p>否则，按算法 5.1 计算 <span class="math inline">\(A\)</span> 中各特征对 <span class="math inline">\(D\)</span> 的信息增益，选择信息增益最大的特征 <span class="math inline">\(A_{g}\)</span> :</p></li>
+<li><p>如果 <span class="math inline">\(A_{g}\)</span> 的信息增益小于间值 <span class="math inline">\(\varepsilon,\)</span> 则置 <span class="math inline">\(T\)</span> 为单结点树，并将 <span class="math inline">\(D\)</span> 中实例数最大 的类 <span class="math inline">\(C_{k}\)</span> 作为该结点的类标记，返回 <span class="math inline">\(T\)</span> :</p></li>
+<li><p>否则，对 <span class="math inline">\(A_{g}\)</span> 的每一可能值 <span class="math inline">\(a_{i},\)</span> 依 <span class="math inline">\(A_{g}=a_{i}\)</span> 将 <span class="math inline">\(D\)</span> 分割为若干非空子集 <span class="math inline">\(D_{i},\)</span> 将 <span class="math inline">\(D_{i}\)</span> 中实例数最大的类作为标记，构建子结点，由结点及其子结点构成树 <span class="math inline">\(T,\)</span> 返回 <span class="math inline">\(T\)</span>;</p></li>
+<li><p>对第 <span class="math inline">\(i\)</span> 个子结点，以 <span class="math inline">\(D_{i}\)</span> 为训练集，以 <span class="math inline">\(A-\left\{A_{g}\right\}\)</span> 为特征集，逆归地调用步 (1)<span class="math inline">\(\sim\)</span> 步 <span class="math inline">\((5),\)</span> 得到子树 <span class="math inline">\(T_{i},\)</span> 返回 <span class="math inline">\(T_{i} \circ\)</span></p></li>
+</ol>
+</blockquote>
+<ul>
+<li>极大似然法进行概率估计？</li>
+<li>只有树的生成，没有剪枝，容易过拟合</li>
+</ul>
+<h2 id="c4.5-algorithm">4. C4.5 Algorithm</h2>
+<p>ID3算法的改进，用信息增益比来选择特征</p>
+<blockquote>
+<p>算法 5.3 (C4.5 的生成算法)</p>
+<p>输入: 训练数据集 <span class="math inline">\(D\)</span>, 特征集 <span class="math inline">\(A\)</span> 间值 <span class="math inline">\(\varepsilon\)</span>;</p>
+<p>输出：决策树 <span class="math inline">\(T\)</span> 。 (1) 如果 <span class="math inline">\(D\)</span> 中所有实例属于同一类 <span class="math inline">\(C_{k},\)</span> 则置 <span class="math inline">\(T\)</span> 为单结点树，并将 <span class="math inline">\(C_{k}\)</span> 作为该结 点的类, 返回 <span class="math inline">\(T\)</span>; (2) 如果 <span class="math inline">\(A=\varnothing,\)</span> 则置 <span class="math inline">\(T\)</span> 为单结点树，并将 <span class="math inline">\(D\)</span> 中实例数最大的类 <span class="math inline">\(C_{k}\)</span> 作为该结点 的类, 返回 <span class="math inline">\(T\)</span>; (3) 否则，按式 (5.10) 计算 <span class="math inline">\(A\)</span> 中各特征对 <span class="math inline">\(D\)</span> 的<strong><em>信息增益比</em></strong>, 选择信息增益比最大 的特征 <span class="math inline">\(A_{g}\)</span>; (4) 如果 <span class="math inline">\(A_{g}\)</span> 的信息增益比小于间值 <span class="math inline">\(\varepsilon,\)</span> 则置 <span class="math inline">\(T\)</span> 为单结点树，并将 <span class="math inline">\(D\)</span> 中实例数最 大的类 <span class="math inline">\(C_{k}\)</span> 作为该结点的类, 返回 <span class="math inline">\(T\)</span>; (5) 否则, 对 <span class="math inline">\(A_{g}\)</span> 的每一可能值 <span class="math inline">\(a_{i},\)</span> 依 <span class="math inline">\(A_{g}=a_{i}\)</span> 将 <span class="math inline">\(D\)</span> 分割为子集若干非空 <span class="math inline">\(D_{i},\)</span> 将 <span class="math inline">\(D_{i}\)</span> 中实例数最大的类作为标记，构建子结点, 由结点及其子结点构成树 <span class="math inline">\(T,\)</span> 返回 <span class="math inline">\(T\)</span>; (6) 对结点 <span class="math inline">\(i\)</span>, 以 <span class="math inline">\(D_{i}\)</span> 为训练集，以 <span class="math inline">\(A-\left\{A_{g}\right\}\)</span> 为特征集，递归地调用步 (1) 步 <span class="math inline">\((5),\)</span> 得到子树 <span class="math inline">\(T_{i},\)</span> 返回 <span class="math inline">\(T_{i}\)</span> 。</p>
+</blockquote>
+<h2 id="pruning">5. Pruning</h2>
+<p>考虑树的复杂度，对生成的决策树进行剪枝，减掉子树或叶结点</p>
+<p><strong>策略：极小化决策树的损失函数</strong>，即正则化的极大似然估计</p>
+<p>设树<span class="math inline">\(T\)</span>，叶节点个数<span class="math inline">\(|T|\)</span>，树<span class="math inline">\(T\)</span>的叶结点<span class="math inline">\(t\)</span>，此叶结点的样本点个数<span class="math inline">\(N_t\)</span>；此叶结点有<span class="math inline">\(K\)</span>类样本点的个数<span class="math inline">\(N_{tk}；\;k=1,2,...,K\)</span>；此叶结点的经验熵<span class="math inline">\(H_t(T)\)</span>，函数参数<span class="math inline">\(\alpha \geq0\)</span>。此决策树的损失函数定义为 <span class="math display">\[
+C_{\alpha}(T)=\sum_{t=1}^{|T|} N_{t} H_{t}(T)+\alpha|T|
+\]</span> 经验熵<span class="math inline">\(H_t(T)\)</span>为 <span class="math display">\[
+H_{t}(T)=-\sum_{k} \frac{N_{t k}}{N_{t}} \log \frac{N_{t k}}{N_{t}}
+\]</span> 记(6)的左边为<span class="math inline">\(C(T)\)</span> <span class="math display">\[
+C(T)=\sum_{t=1}^{|T|} N_{t} H_{t}(T)=-\sum_{t=1}^{|T|} \sum_{k=1}^{K} N_{t k} \log \frac{N_{t k}}{N_{t}}
+\]</span> 最后得到 <span class="math display">\[
+C_{\alpha}(T)=C(T)+\alpha|T|
+\]</span></p>
+<ul>
+<li><span class="math inline">\(C(T)\)</span>为样本点个数与经验熵的积，表示模型对训练数据的预测误差</li>
+<li><span class="math inline">\(|T|\)</span>为模型复杂度
+<ul>
+<li>越大说明叶结点越多，树越复杂</li>
+<li><span class="math inline">\(\alpha\)</span>越大，选择较简单的模型树</li>
+</ul></li>
+</ul>
+<h3 id="pruning-algorithm">5.1 Pruning algorithm</h3>
+<blockquote>
+<p>算法 5.4 (树的剪枝算法) 输入: 生成算法产生的整个树 <span class="math inline">\(T\)</span>, 参数 <span class="math inline">\(\alpha\)</span>; 输出：修剪后的子树 <span class="math inline">\(T_{\alpha} \circ\)</span> （1）计算每个结点的经验熵。 （2）递归地从树的叶结点向上回缩。</p>
+<figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%86%B3%E7%AD%96%E6%A0%91%E5%89%AA%E6%9E%9D.png" alt="image-20201205222057313" /><figcaption aria-hidden="true">image-20201205222057313</figcaption>
+</figure>
+<p>​ 设一组叶结点回缩到其父结点之前与之后的整体树分别为 <span class="math inline">\(T_{B}\)</span> 与 <span class="math inline">\(T_{A}\)</span>, 其对应的 损失函数值分别是 <span class="math inline">\(C_{\alpha}\left(T_{B}\right)\)</span> 与 <span class="math inline">\(C_{\alpha}\left(T_{A}\right),\)</span> 如果 <span class="math display">\[
+C_{\alpha}\left(T_{A}\right) \leqslant C_{\alpha}\left(T_{B}\right)
+\]</span> 则进行剪枝，即将父结点变为新的叶结点。 (3) 返回 ( 2 )，直至不能继续为止，得到损失函数最小的子树 <span class="math inline">\(T_{\alpha^{\circ}}\)</span></p>
+</blockquote>
+<ul>
+<li>动态规划的算法实现</li>
+</ul>
+<h2 id="cart-algorithm">6. CART Algorithm</h2>
+<p>分类与回归树(classification and regression tree)是给定随机变量<span class="math inline">\(X\)</span>的条件下给出随机变量<span class="math inline">\(Y\)</span>的条件概率分布的学习方法。决策树是二叉树，左分支是“是”分支，右否。<strong>通过递归的二分每个特征，使得特征空间划分成有限个单元</strong>，在这些单元上确定概率分布。</p>
+<h3 id="cart的生成">6.1 CART的生成</h3>
+<h4 id="回归树生成">6.1.1 回归树生成</h4>
+<h5 id="model-1">6.1.1.1 Model</h5>
+<p>用<strong>平方误差最小化准则</strong>，进行特征选择，递归的构建二叉决策树。</p>
+<p>对数据集<span class="math inline">\(D=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}\)</span>，<span class="math inline">\(Y\)</span>是连续变量，生成回归树。</p>
+<p>回归树对应的是<strong>特征空间的划分</strong>以及<strong>划分单元上的输出值</strong>。</p>
+<blockquote>
+<p>定义 5.03 （回归树模型）</p>
+<p>假设已将输入空间划分为 <span class="math inline">\(M\)</span> 个单元 <span class="math inline">\(R_{1}, R_{2}, \cdots, R_{M},\)</span> 并且在每个单元 <span class="math inline">\(R_{m}\)</span> 上 有一个固定的输出值 <span class="math inline">\(c_{m},\)</span> 于是回归树模型可表示为 <span class="math display">\[
+f(x)=\sum_{m=1}^{M} c_{m} I\left(x \in R_{m}\right)
+\]</span></p>
+</blockquote>
+<ul>
+<li><p><span class="math inline">\(x\)</span>是特征向量</p></li>
+<li><p>当输入空间划分确定，利用平方误差最小准则可以确定<span class="math inline">\(c_m\)</span>的最优值</p>
+<ul>
+<li><p>平方误差定义为<span class="math inline">\(\sum_{x_{i} \in R_{m}}\left(y_{i}-f\left(x_{i}\right)\right)^{2}\)</span>。注意<span class="math inline">\(x_i\in R_m\)</span></p></li>
+<li><p>利用平方误差最小原则，单元 <span class="math inline">\(R_{m}\)</span> 上的 <span class="math inline">\(c_{m}\)</span> 的最优值 <span class="math inline">\(\hat{c}_{m}\)</span> 是 <span class="math inline">\(R_{m}\)</span> 上的所有输入实例 <span class="math inline">\(x_{i}\)</span> 对应的输出 <span class="math inline">\(y_{i}\)</span> 的均值，即 <span class="math display">\[
+\hat{c}_{m}=\operatorname{ave}\left(y_{i} \mid x_{i} \in R_{m}\right)\nonumber
+\]</span></p></li>
+</ul></li>
+</ul>
+<p><strong>问题1：如何划分特征空间，即选择划分点</strong></p>
+<p>通过启发式算法，选择第 <span class="math inline">\(j\)</span> 个变量 <span class="math inline">\(x^{(j)}\)</span>和它取的特征值 <span class="math inline">\(s\)</span>, 作为切分变量（splitting variable）和切分点 (splitting point)，并定义两个区域 <span class="math display">\[
+R_{1}(j, s)=\left\{x \mid x^{(j)} \leqslant s\right\} \quad \text { 和 } \quad R_{2}(j, s)=\left\{x \mid x^{(j)}&gt;s\right\}
+\]</span> 在一开始的选择基础上，寻找最优切分变量<span class="math inline">\(j\)</span>和最优切分点<span class="math inline">\(s\)</span>。具体的，求解 <span class="math display">\[
+\min _{j, s}\left[\min _{c_{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min _{c_{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]
+\]</span></p>
+<ul>
+<li>(11)中，<span class="math inline">\(x^{(j)}\)</span>是第<span class="math inline">\(j\)</span>个特征，<span class="math inline">\(s\)</span>是此特征维度上的值。<span class="math inline">\(x_n\)</span>是第<span class="math inline">\(n\)</span>个输入向量。<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012328159/article/details/93667566">ref</a></li>
+<li>(12)中，括号里的对于<span class="math inline">\(c_1,c_2\)</span>取极小值是已知的。</li>
+<li>划分特征空间时是把高维矩形划分为2个子高维矩形。</li>
+</ul>
+<p><strong>问题2：如何确定好输出值<span class="math inline">\(c_m\)</span></strong></p>
+<p>特征空间切分好后，根据最小化平方误差准则，得到相应的最优输出值 <span class="math display">\[
+\hat{c}_{1}=\operatorname{ave}\left(y_{i} \mid x_{i} \in R_{1}(j, s)\right) \quad \text { 和 } \quad \hat{c}_{2}=\operatorname{ave}\left(y_{i} \mid x_{i} \in R_{2}(j, s)\right)
+\]</span> <strong>总结：</strong>一开始，我们遍历所有输入特征，找到最优的切分特征变量<span class="math inline">\(j\)</span>，构成一对<span class="math inline">\((j,s)\)</span>，根据这个构成的超平面，讲特征空间划分成2个区域。对每个子区域重复过程，直到满足停止条件。这种回归树称为最小二乘回归树(least squares regression tree)</p>
+<h5 id="algorithm">6.1.1.2 Algorithm</h5>
+<blockquote>
+<p>算法 5.5 (最小二乘回归树生成算法) 输入: 训练数据集 <span class="math inline">\(D\)</span>; 输出：回归树 <span class="math inline">\(f(x)\)</span> 。 在训练数据集所在的输入空间中，递归地将每个区域划分为两个子区域并决定每个子区域上的输出值，构建二叉决策树: （1）选择最优切分变量 <span class="math inline">\(j\)</span> 与切分点 <span class="math inline">\(s\)</span>, 求解 <span class="math display">\[
+\min _{j, s}\left[\min _{c_{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min _{c_{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}\right]
+\]</span> 遍历变量 <span class="math inline">\(j\)</span>, 对固定的切分变量 <span class="math inline">\(j\)</span> 扫描切分点 <span class="math inline">\(s\)</span>, 选择使式 (14) 达到最小值的对<span class="math inline">\((j, s)\)</span> （2）用选定的对 <span class="math inline">\((j, s)\)</span> 划分区域并决定相应的输出值: <span class="math display">\[
+\begin{array}{c}
+R_{1}(j, s)=\left\{x \mid x^{(j)} \leqslant s\right\}, \quad R_{2}(j, s)=\left\{x \mid x^{(j)}&gt;s\right\} \\
+\hat{c}_{m}=\frac{1}{N_{m}} \sum_{x_{i} \in R_{m}(j, s)} y_{i}, \quad x \in R_{m}, \quad m=1,2
+\end{array}
+\]</span> （3）继续对两个子区域调用步骤 <span class="math inline">\((1),(2),\)</span> 直至满足停止条件。 （4）将输入空间划分为 <span class="math inline">\(M\)</span> 个区域 <span class="math inline">\(R_{1}, R_{2}, \cdots, R_{M},\)</span> 生成决策树: <span class="math display">\[
+f(x)=\sum_{m=1}^{M} \hat{c}_{m} I\left(x \in R_{m}\right)
+\]</span></p>
+</blockquote>
+<h5 id="example">6.1.1.3 Example</h5>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><span class="math inline">\(x^1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x^2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x^3\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_1\)</span></td>
+<td style="text-align: center;">1.2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_2\)</span></td>
+<td style="text-align: center;">1.5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_3\)</span></td>
+<td style="text-align: center;">1.6.</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">2.75</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_4\)</span></td>
+<td style="text-align: center;">1.8</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">2.25</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Q：</strong>对以上数据集基于最小化平方误差生成二叉回归树</p>
+<ol type="1">
+<li><p>设<span class="math inline">\(j=x^1\)</span>，<span class="math inline">\(s=1.5\)</span>时</p>
+<p><span class="math inline">\(c_1=1,\;c_2=2.5\)</span></p>
+<p><span class="math inline">\(\min _{c_{1}} \sum_{x_{i} \in R_{1}(j, s)}\left(y_{i}-c_{1}\right)^{2}+\min _{c_{2}} \sum_{x_{i} \in R_{2}(j, s)}\left(y_{i}-c_{2}\right)^{2}=\\ [(1-1)^2+(1-1)^2]+[(2-2.5)^2+(3-2.5)^2]=0.5\)</span></p>
+<p><span class="math inline">\((j,s)=(x^1,1.6),\;0.67\)</span></p>
+<p><span class="math inline">\((j,s)=(x^1,1.2),\;(j,s)=(x^1,1.8)\)</span>的结果一定偏大</p>
+<p>对固定<span class="math inline">\(j=x^1\)</span>，<span class="math inline">\(s=1.5\)</span>是最佳切分点，<span class="math inline">\(error=0.5\)</span></p></li>
+<li><p>设<span class="math inline">\(j=x^2\)</span></p>
+<p>最佳切分为<span class="math inline">\((j,s)=(x^2,4),\;error=0.5\)</span></p></li>
+<li><p>设<span class="math inline">\(j=x^3\)</span></p>
+<p>最佳切分为<span class="math inline">\((j,s)=(x^3,2.75),\;error=2\)</span></p></li>
+<li><p><span class="math inline">\(\min _{j, s}=\min[0.5,\;0.5,\;2]=0.5\)</span>，选择<span class="math inline">\((j,s)=(x^1,1.5)\)</span>作为最优划分。划分后的子集<span class="math inline">\(R_1,\;R_2\)</span>为</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong><span class="math inline">\(R_1\)</span>左分支</strong></th>
+<th style="text-align: center;"><span class="math inline">\(x^1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x^2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x^3\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_1\)</span></td>
+<td style="text-align: center;">1.2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_2\)</span></td>
+<td style="text-align: center;">1.5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><span class="math inline">\(R_2\)</span>右分支</strong></td>
+<td style="text-align: center;"><span class="math inline">\(x^1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(x^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(x^3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x_3\)</span></td>
+<td style="text-align: center;">1.6.</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">2.75</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x_4\)</span></td>
+<td style="text-align: center;">1.8</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">2.25</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\hat{c}_1=1,\;\hat{c}_2=2.5\)</span></p></li>
+<li><p>对左右分支继续迭代1-4的步骤，直到满足停止条件</p></li>
+</ol>
+<h4 id="分类树的生成">6.1.2 分类树的生成</h4>
+<p>分类树用基尼指数选择最优特征，同时决定该特征的最优二值切分点。</p>
+<h5 id="gini-index">6.1.2.1 Gini Index</h5>
+<blockquote>
+<p>定义 5.4 (基尼指数) <span class="math inline">\(\quad\)</span> 分类问题中，假设有 <span class="math inline">\(K\)</span> 个类，样本点属于第 <span class="math inline">\(k\)</span> 类的概率 为 <span class="math inline">\(p_{k}\)</span>, 则棍率分布的基尼指数定义为 <span class="math display">\[
+\operatorname{Gini}(p)=\sum_{k=1}^{K} p_{k}\left(1-p_{k}\right)=1-\sum_{k=1}^{K} p_{k}^{2}
+\]</span> 对于二类分类问题, 若样本点属于第 1 个类的概率是 <span class="math inline">\(p,\)</span> 则概率分布的基尼指数为 <span class="math display">\[
+\operatorname{Gini}(p)=2 p(1-p)
+\]</span> 对于给定的样本集合 <span class="math inline">\(D,\)</span> 其基尼指数为 <span class="math display">\[
+\operatorname{Gini}(D)=1-\sum_{k=1}^{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)^{2}
+\]</span> 这里, <span class="math inline">\(C_{k}\)</span> 是 <span class="math inline">\(D\)</span> 中属于第 <span class="math inline">\(k\)</span> 类的样本子集， <span class="math inline">\(K\)</span> 是类的个数。</p>
+<p>如果样本集合 <span class="math inline">\(D\)</span> 根据<strong>特征 <span class="math inline">\(A\)</span></strong> 是否取某一可能值 <span class="math inline">\(a\)</span> 被分割成 <span class="math inline">\(D_{1}\)</span> 和 <span class="math inline">\(D_{2}\)</span> 两部分，即 <span class="math display">\[
+D_{1}=\{(x, y) \in D \mid A(x)=a\}, \quad D_{2}=D-D_{1}\nonumber
+\]</span> 则在特征 <span class="math inline">\(A\)</span> 的条件下，集合 <span class="math inline">\(D\)</span> 的基尼指数定义为 <span class="math display">\[
+\operatorname{Gini}(D, A)=\frac{\left|D_{1}\right|}{|D|} \operatorname{Gini}\left(D_{1}\right)+\frac{\left|D_{2}\right|}{|D|} \operatorname{Gini}\left(D_{2}\right)
+\]</span></p>
+</blockquote>
+<ul>
+<li>基尼指数表示集合的不确定性。基尼指数越大，集合的不确定性越大。和熵相似。</li>
+<li>二元分类中基尼指数、单位比特熵和分类误差的关系。x轴：概率p。y轴：损失。<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-5%20%E5%9F%BA%E5%B0%BC%E3%80%81%E7%86%B5%E4%B8%8E%E5%88%86%E7%B1%BB%E8%AF%AF%E5%B7%AE.png" alt="image-20201208142218988" style="zoom:50%;" /></li>
+</ul>
+<h5 id="algorithm-1">6.1.2.2 Algorithm</h5>
+<blockquote>
+<p>算法 5.6 (CART 生成算法)</p>
+<p>输入: 训练数据集 <span class="math inline">\(D,\)</span> 停止计算的条件; 输出: CART 决策树。</p>
+<p>根据训练数据集，从根结点开始，递归地对每个结点进行以下操作，构建二叉决策树: （1） 设结点的训练数据集为 <span class="math inline">\(D\)</span>, 计算现有特征对该数据集的基尼指数。此时，对每一个特征 <span class="math inline">\(A,\)</span> 对其可能取的每个值 <span class="math inline">\(a,\)</span> 根据样本点对 <span class="math inline">\(A=a\)</span> 的测试为“是”或“否”，将<span class="math inline">\(D\)</span> 分割成 <span class="math inline">\(D_{1}\)</span> 和 <span class="math inline">\(D_{2}\)</span> 两部分，利用式 (20) 计算 <span class="math inline">\(A=a\)</span> 时的基尼指数。 （2）在所有可能的特征 <span class="math inline">\(A\)</span> 以及它们所有可能的切分点 <span class="math inline">\(a\)</span> 中，选择基尼指数最小的 持征及其对应的切分点作为最优特征与最优切分点。依最优特征与最优切分点，从现 结点生成两个子结点，将训练数据集依特征分配到两个子结点中去。 （3）对两个子结点递归地调用 ( 1 )， (2) , 直至满足停止条件。 （4）生成 CART 决策树。</p>
+</blockquote>
+<h3 id="cart的剪枝">6.2 CART的剪枝</h3>
+<p><strong>步骤：</strong></p>
+<ol type="1">
+<li>对生成算法产生的决策树<span class="math inline">\(T_0\)</span>底端开始不断剪枝，直到<span class="math inline">\(T_0\)</span>的根结点，形成子树序列<span class="math inline">\(\left\{T_{0}, T_{1}, \cdots, T_{n}\right\}\)</span></li>
+<li>通过交叉验证法，在独立的验证数据集上对字数序列进行测试，选择最优子书。</li>
+</ol>
+<h4 id="剪枝成一个子树序列">6.2.1 剪枝成一个子树序列</h4>
+<p>子树的损失函数为 <span class="math display">\[
+C_{\alpha}(T)=C(T)+\alpha|T|\nonumber
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(C(T)=\sum_{t=1}^{|T|} N_{t}\left(1-\sum_{k=1}^{K}\left(\frac{N_{t k}}{N_{t}}\right)^{2}\right),|T|\)</span> 是叶结点个数，<span class="math inline">\(K\)</span> 是类别个数</p></li>
+<li><p>定义推导同(5)-(8)</p></li>
+<li><p>对固定<span class="math inline">\(\alpha\)</span>，<strong>唯一存在</strong>最优子树<span class="math inline">\(T_{\alpha}\)</span>，使得损失函数<span class="math inline">\(C_{\alpha}(T)\)</span>最小。</p>
+<ul>
+<li>此处“最优”的意义是指使得损失函数最小</li>
+<li><span class="math inline">\(\alpha\)</span>越大，最优子树<span class="math inline">\(T_{\alpha}\)</span>越小。当 <span class="math inline">\(\alpha \rightarrow \infty\)</span> 时，叶结点不断被剪，根结点组成的单结点树是最优的。</li>
+</ul></li>
+</ul>
+<p>对一个整体树<span class="math inline">\(T_0\)</span>，它的子树是<strong>有限个</strong>的。因此，对一个连续参数<span class="math inline">\(\alpha\)</span>，我们得到了最优子树<span class="math inline">\(T&#39;(\alpha)\)</span>。<span class="math inline">\(\alpha\)</span>不断增大，在增大到<strong>跳跃点<span class="math inline">\(\alpha&#39;\)</span></strong>之前，<span class="math inline">\(T&#39;(\alpha)\)</span>依然是最优子树。即<span class="math inline">\(T&#39;(\alpha)=T&#39;(\alpha+\Delta\alpha)\)</span>。再跳跃点之后，易知最优子树<span class="math inline">\(T&#39;(\alpha’)\in T&#39;(\alpha)\)</span>。</p>
+<p>上面可以表述为：将 <span class="math inline">\(\alpha\)</span> 从小增大, <span class="math inline">\(0=\alpha_{0}&lt;\)</span><span class="math inline">\(\alpha_{1}&lt;\cdots&lt;\alpha_{n}&lt;+\infty,\)</span> 产生一系列的区间 <span class="math inline">\(\left[\alpha_{i}, \alpha_{i+1}\right), i=0,1, \cdots, n ;\)</span> 剪枝得到的子树序列对应着区间 <span class="math inline">\(\alpha \in\left[\alpha_{i}, \alpha_{i+1}\right), i=0,1, \cdots, n\)</span> 的最优子树序列 <span class="math inline">\(\left\{T_{0}, T_{1}, \cdots, T_{n}\right\},\)</span> <strong>序列中的子树是嵌套的</strong>。</p>
+<p>具体来说，从整体树<span class="math inline">\(T_0\)</span>，<span class="math inline">\(\alpha=0\)</span>开始剪枝。对<span class="math inline">\(T_0\)</span>内的任意内部结点<span class="math inline">\(t\)</span>：</p>
+<p>以<span class="math inline">\(t\)</span>为单结点树的损失函数为 <span class="math display">\[
+C_{\alpha}(t)=C(t)+\alpha
+\]</span> 以 <span class="math inline">\(t\)</span> 为根结点的子树 <span class="math inline">\(T_{t}\)</span> 的损失函数为 <span class="math display">\[
+C_{\alpha}\left(T_{t}\right)=C\left(T_{t}\right)+\alpha\left|T_{t}\right|
+\]</span> 当 <span class="math inline">\(\alpha=0\)</span> 及 <span class="math inline">\(\alpha\)</span> 充分小时，有不等式 <span class="math display">\[
+C_{\alpha}\left(T_{t}\right)&lt;C_{\alpha}(t)
+\]</span> 当 <span class="math inline">\(\alpha\)</span> 增大时，在某一 <span class="math inline">\(\alpha\)</span> 有 <span class="math display">\[
+\begin{align}
+C_{\alpha}\left(T_{t}\right) &amp;=C_{\alpha}(t)\\
+\alpha &amp;=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1}
+\end{align}
+\]</span></p>
+<p><strong>此时<span class="math inline">\(T_t\)</span>和<span class="math inline">\(t\)</span>有相同的损失函数值，因为<span class="math inline">\(t\)</span>的结点更少，所以取<span class="math inline">\(t\)</span>，剪去以 <span class="math inline">\(t\)</span> 为根结点的子树 <span class="math inline">\(T_{t}\)</span> </strong></p>
+<p>根据这个性质，我们可以找到系列区间以及对应的最优子树序列</p>
+<p>对<span class="math inline">\(T_0\)</span>的每一个内部节点<span class="math inline">\(t\)</span>，计算 <span class="math display">\[
+g(t)=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1}
+\]</span> <span class="math inline">\(g(t)\)</span>表示剪枝后整体损失函数减小的程度。在 <span class="math inline">\(T_{0}\)</span> 中剪去 <span class="math inline">\(g(t)\)</span> 最小的 <span class="math inline">\(T_{t},\)</span> 将得到的子树作为 <span class="math inline">\(T_{1},\)</span> 同时将最小的 <span class="math inline">\(g(t)\)</span> 设为 <span class="math inline">\(\alpha_{1}\)</span>。$ T_{1}$ 为区间 <span class="math inline">\(\left[\alpha_{1}, \alpha_{2}\right)\)</span> 的最优子树。循环直到得到根结点。</p>
+<ul>
+<li>在这个过程中，<span class="math inline">\(g(t)=\alpha\)</span>是不断增大的？</li>
+</ul>
+<h4 id="交叉验证">6.2.2 交叉验证</h4>
+<p>利用独立的验证数据集，测试子树序列 <span class="math inline">\(\left\{T_{0}, T_{1}, \cdots, T_{n}\right\}\)</span>中每个子树的平方误差/基尼指数，选择最优决策树<span class="math inline">\(T_{\alpha}\)</span>。</p>
+<ul>
+<li>子树序列 <span class="math inline">\(\left\{T_{0}, T_{1}, \cdots, T_{n}\right\}\)</span>在剪枝的时候是对应<span class="math inline">\(\alpha\)</span>的最优子序列</li>
+</ul>
+<h4 id="algorithm-2">6.2.3 Algorithm</h4>
+<blockquote>
+算法 5.7 (CART 剪枝算法) 输入: CART 算法生成的决策树 <span class="math inline">\(T_{0}\)</span>; 输出：最优决策树 <span class="math inline">\(T_{\alpha \circ}\)</span> (1) 设 <span class="math inline">\(k=0, T=T_{0}\)</span> 。 (2) 设 <span class="math inline">\(\alpha=+\infty\)</span> 。 (3) 自下而上地对各内部结点 <span class="math inline">\(t\)</span> 计算 <span class="math inline">\(C\left(T_{t}\right),\left|T_{t}\right|\)</span> 以及 $$
+<span class="math display">\[\begin{aligned}
+
+g(t) &amp;=\frac{C(t)-C\left(T_{t}\right)}{\left|T_{t}\right|-1} \\
+\alpha &amp;=\min (\alpha, g(t))
+\end{aligned}\]</span>
+<p>$$ 这里, <span class="math inline">\(T_{t}\)</span> 表示以 <span class="math inline">\(t\)</span> 为根结点的子树, <span class="math inline">\(C\left(T_{t}\right)\)</span> 是对训练数据的预测误差, <span class="math inline">\(\left|T_{t}\right|\)</span> 是 <span class="math inline">\(T_{t}\)</span>的叶结点个数。 (4) 对 <span class="math inline">\(g(t)=\alpha\)</span> 的内部结点 <span class="math inline">\(t\)</span> 进行剪枝，并对叶结点 <span class="math inline">\(t\)</span> 以多数表决法决定其类，得到树 <span class="math inline">\(T\)</span> 。 (5) 设 <span class="math inline">\(k=k+1, \alpha_{k}=\alpha, T_{k}=T_{\circ}\)</span> (6) 如果 <span class="math inline">\(T_{k}\)</span> 不是由根结点及两个叶结点构成的树，则回到步骤 (2)<span class="math inline">\(;\)</span> 否则令 <span class="math inline">\(T_{k}=T_{n}\)</span> (7) 采用交义验证法在子树序列 <span class="math inline">\(T_{0}, T_{1}, \cdots, T_{n}\)</span> 中选取最优子树 <span class="math inline">\(T_{\alpha^{\circ}}\)</span></p>
+</blockquote>
+<h2 id="question">7. Question</h2>
+<ol type="1">
+<li>为什么<span class="math inline">\(C(T)\)</span>能表示模型对训练数据的预测误差</li>
+<li><del>正则化的极大似然估计？</del></li>
+<li><del><strong>1.2</strong>中的'构成一个条件概率分布'，不是叶结点咋办？</del></li>
+<li><del>6.1.1 启发式算法？</del></li>
+<li>CART决策时有没有可能对一个特征二叉再接个二叉，成<span class="math inline">\(2^2\)</span>个叉？</li>
+</ol>
+<h2 id="code">8. Code</h2>
+<h3 id="id3-create-test-visualization">8.1 ID3: create, test, visualization</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecisionTree</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model</span>):</span></span><br><span class="line">        self.model = model</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">CARTClassification</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">CARTRegression</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ID3_create</span>(<span class="params">self, train_set, features, labels, tol=[<span class="number">0.1</span>, <span class="number">2</span>], visible=<span class="literal">False</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        create ID3 tree</span></span><br><span class="line"><span class="string">        :param train_set: m*n ndarray. m: samples, n: features</span></span><br><span class="line"><span class="string">        :param features: n size vector</span></span><br><span class="line"><span class="string">        :param labels: m size ndarray</span></span><br><span class="line"><span class="string">        :param tol: tolerate for pre-pruning</span></span><br><span class="line"><span class="string">        :return: ID3 tree in dict type</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        three conditions to stop iteration:</span></span><br><span class="line"><span class="string">          1. all labelss are the same</span></span><br><span class="line"><span class="string">          2. no feature</span></span><br><span class="line"><span class="string">          3. info_gain &lt; tol[0], samples &gt; tol[1]. pre-pruning</span></span><br><span class="line"><span class="string">          4. same training values but different labels</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        train_set = np.array(train_set)</span><br><span class="line">        labels = np.array(labels)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(np.unique(labels)) == <span class="number">1</span>:  <span class="comment"># condition 1</span></span><br><span class="line">            <span class="keyword">return</span> labels[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> train_set.shape[<span class="number">1</span>] == <span class="number">0</span>:  <span class="comment"># condition 2</span></span><br><span class="line">            <span class="keyword">return</span> np.sort(labels)[-<span class="number">1</span>]  <span class="comment"># return the most frequency value</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># condition 3 &amp; 4</span></span><br><span class="line">        <span class="comment"># not finished</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment"># get best feature</span></span><br><span class="line">        best_feature_index, best_info_gain = self.ID3_best_feature(train_set, labels)</span><br><span class="line">        best_feature_name = features[best_feature_index]</span><br><span class="line">        print(<span class="string">&#x27;best selected feature is &#x27;</span>, best_feature_name, <span class="string">&#x27;, its information gain is &#x27;</span>, best_info_gain)</span><br><span class="line"></span><br><span class="line">        ID3Tree = &#123;best_feature_name: &#123;&#125;&#125;  <span class="comment"># return feature name as a dict key</span></span><br><span class="line">        <span class="comment"># return unique values under the feature and as the node(key)</span></span><br><span class="line">        tree_nodes = np.unique(train_set.T[best_feature_index])</span><br><span class="line">        <span class="comment"># small feature set for dealing feature set depending on its index</span></span><br><span class="line">        features = np.delete(features, best_feature_index)</span><br><span class="line">        <span class="comment"># iteration in these nodes</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> tree_nodes:</span><br><span class="line">            train_sample_index = train_set.T[best_feature_index] == node</span><br><span class="line">            node_labels = labels[train_sample_index]</span><br><span class="line">            <span class="comment"># small train set with node feature&#x27;s column equal node value</span></span><br><span class="line">            node_train_set = self.spilt_dataset(train_set, best_feature_index, node)</span><br><span class="line">            <span class="comment"># small train set without node feature</span></span><br><span class="line">            node_train_set = np.delete(node_train_set, best_feature_index, axis=<span class="number">1</span>)</span><br><span class="line">            <span class="comment"># iteration</span></span><br><span class="line">            ID3Tree[best_feature_name][node] = self.ID3_create(node_train_set, features, node_labels)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> visible <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">            treePlotter.ID3_Tree(ID3Tree)</span><br><span class="line">        <span class="keyword">return</span> ID3Tree</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">entropy</span>(<span class="params">array</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        calculate bit entropy</span></span><br><span class="line"><span class="string">        :param array: 1-D numpy array</span></span><br><span class="line"><span class="string">        :return: entropy in bit</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        count_array = np.unique(array, return_counts=<span class="literal">True</span>)[<span class="number">1</span>]  <span class="comment"># unique values and its occurrences</span></span><br><span class="line">        probability = count_array / array.size  <span class="comment"># probability of values</span></span><br><span class="line">        h_p = np.dot(-probability, np.log2(probability))  <span class="comment"># entropy</span></span><br><span class="line">        <span class="keyword">return</span> h_p</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conditional_entropy</span>(<span class="params">Y, X</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        get conditional entropy H(Y|X)</span></span><br><span class="line"><span class="string">        :param Y: random variable, 1-D numpy array</span></span><br><span class="line"><span class="string">        :param X: given random variable, 1-D numpy array</span></span><br><span class="line"><span class="string">        :return: conditional entropy of Y given X, H(Y|X)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        Y = np.array(Y)</span><br><span class="line">        X = np.array(X)</span><br><span class="line">        hY_X = <span class="number">0</span>  <span class="comment"># initialization</span></span><br><span class="line">        X_value, X_count = np.unique(X, return_counts=<span class="literal">True</span>)  <span class="comment"># unique values and its occurrences</span></span><br><span class="line">        <span class="keyword">for</span> xi <span class="keyword">in</span> X_value:</span><br><span class="line">            index = np.argwhere(X == xi)  <span class="comment"># get index of X=xi</span></span><br><span class="line">            p_xi = index.size / X.size  <span class="comment"># P(X=xi)</span></span><br><span class="line">            Yi = Y[index]  <span class="comment"># get yi given xi</span></span><br><span class="line">            hYi_xi = DecisionTree.entropy(np.array(Yi))  <span class="comment"># H(Y|X=xi)</span></span><br><span class="line">            hY_X += p_xi * hYi_xi</span><br><span class="line">        <span class="keyword">return</span> hY_X</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">info_gain</span>(<span class="params">Y, X</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        get information gain G(Y,X)</span></span><br><span class="line"><span class="string">        :param Y: random variable, 1-D numpy array</span></span><br><span class="line"><span class="string">        :param X: given random variable, 1-D numpy array</span></span><br><span class="line"><span class="string">        :return: information gain of Y given X, G(Y|X)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> DecisionTree.entropy(Y) - DecisionTree.conditional_entropy(Y, X)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">spilt_dataset</span>(<span class="params">dataset, colume, value</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        dataset with small samples</span></span><br><span class="line"><span class="string">        :param dataset: m*n ndarray</span></span><br><span class="line"><span class="string">        :param colume:  axis</span></span><br><span class="line"><span class="string">        :param value: compared value</span></span><br><span class="line"><span class="string">        :return: l*n ndarray, l&lt;m</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        dataset = pd.DataFrame(dataset)</span><br><span class="line">        df = dataset[dataset[colume] == value]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> np.array(df)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ID3_best_feature</span>(<span class="params">train_set, labels</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        return the feature with the highest infomation gain</span></span><br><span class="line"><span class="string">        :param train_set: m*n ndarray. m: samples, n: features</span></span><br><span class="line"><span class="string">        :param labels: m size ndarray.</span></span><br><span class="line"><span class="string">        :return: best feature index and its infomation gain</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        features = train_set.shape[<span class="number">1</span>]  <span class="comment"># number of features</span></span><br><span class="line">        tmp = np.ones(features) * -<span class="number">1</span>  <span class="comment"># store info gain</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(features):  <span class="comment"># calculate info gain of each features</span></span><br><span class="line">            feature_list = train_set.T[i]</span><br><span class="line">            gain = DecisionTree.info_gain(labels, feature_list)</span><br><span class="line">            tmp[i] = gain</span><br><span class="line">            print(<span class="string">&quot;the info gain of %d th feature in ID3 is: %.3f&quot;</span> % (i, gain))</span><br><span class="line">        best_feature = np.argmax(tmp)</span><br><span class="line">        best_info_gain = tmp[best_feature]</span><br><span class="line">        <span class="keyword">return</span> best_feature, best_info_gain</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">classify</span>(<span class="params">tree, sample, features</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        :param tree: dict</span></span><br><span class="line"><span class="string">        :param sample: 1-d ndarray</span></span><br><span class="line"><span class="string">        :param features: 1-d ndarray</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        first_str = <span class="built_in">list</span>(tree.keys())[<span class="number">0</span>] <span class="comment"># root name</span></span><br><span class="line">        small_tree = tree[first_str] <span class="comment">#</span></span><br><span class="line">        feature_index = features.index(first_str)</span><br><span class="line">        label = <span class="string">&#x27;None&#x27;</span></span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> small_tree.keys():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">str</span>(sample[feature_index]) == key:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">type</span>(small_tree[key]).__name__ == <span class="string">&#x27;dict&#x27;</span>:</span><br><span class="line">                    label = DecisionTree.classify(small_tree[key], sample, features)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    label = small_tree[key]</span><br><span class="line">        <span class="keyword">return</span> label</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ChongfengLing/Statistical-Learning-Method-Notes-Code">More details and examples</a></li>
+</ul>
+<h2 id="reference">9. Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012328159/article/details/93667566">分类与回归树（classification and regression tree，CART）之回归</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101721467">回归树</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012328159/article/details/93667566">分类与回归树（classification and regression tree，CART）之回归</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Erikfather/Decision_tree-python">Erikfather/Decision_tree-python</a></p>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33437381/">统计学习方法（第2版）</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/27/%5BSLM-4%5D%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/11/%5BSLM-7%5D%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%20SVM/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CHongfeng Ling 凌崇锋</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

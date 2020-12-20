@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem \[ \underbrace{P(X|Y)}_{posterior}&#x3D;\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}_{evidence}}&#x3D;\f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chongfeng Ling">
+<meta property="og:url" content="http://example.com/2020/11/27/[SLM-4]%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/index.html">
+<meta property="og:site_name" content="Chongfeng Ling">
+<meta property="og:description" content="朴素贝叶斯 Naive Bayes 基于Bayes Theorem和特征条件独立假设的分类方法。 0. Bayes Theorem \[ \underbrace{P(X|Y)}_{posterior}&#x3D;\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}_{evidence}}&#x3D;\f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-4%20Proof%201.png">
+<meta property="article:published_time" content="2020-11-26T16:11:26.197Z">
+<meta property="article:modified_time" content="2020-12-07T08:11:16.612Z">
+<meta property="article:author" content="CHongfeng Ling 凌崇锋">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-4%20Proof%201.png">
+
+
+<link rel="canonical" href="http://example.com/2020/11/27/[SLM-4]%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title> | Chongfeng Ling</title>
+  
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Chongfeng Ling</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF-naive-bayes"><span class="nav-number">1.</span> <span class="nav-text">朴素贝叶斯 Naive Bayes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bayes-theorem"><span class="nav-number">1.1.</span> <span class="nav-text">0. Bayes Theorem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-number">1.2.</span> <span class="nav-text">1. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83pxy"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 学习联合概率分布\(P(X,Y)\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%90%8E%E9%AA%8C%E5%88%86%E5%B8%83"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 计算后验分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.3 后验概率最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1.3.1 含义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.4 朴素贝叶斯法中的参数估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">1.4.1 极大似然估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">1.4.2 贝叶斯估计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trick"><span class="nav-number">1.3.</span> <span class="nav-text">3. Trick</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#log-function"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Log function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coding"><span class="nav-number">1.4.</span> <span class="nav-text">4. Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proof"><span class="nav-number">1.5.</span> <span class="nav-text">5. Proof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E6%B3%95%E6%8E%A8%E5%87%BA%E7%AD%89%E5%BC%8F10"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 用极大似然法推出等式(10)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.6.</span> <span class="nav-text">6. Reference</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">CHongfeng Ling 凌崇锋</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/27/[SLM-4]%20%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%20Naive%20Bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CHongfeng Ling 凌崇锋">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chongfeng Ling">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-27 00:11:26" itemprop="dateCreated datePublished" datetime="2020-11-27T00:11:26+08:00">2020-11-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-07 16:11:16" itemprop="dateModified" datetime="2020-12-07T16:11:16+08:00">2020-12-07</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="朴素贝叶斯-naive-bayes">朴素贝叶斯 Naive Bayes</h1>
+<p>基于Bayes Theorem和特征条件独立假设的分类方法。</p>
+<h2 id="bayes-theorem">0. Bayes Theorem</h2>
+<p><span class="math display">\[
+\underbrace{P(X|Y)}_{posterior}=\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{P(Y)}_{evidence}}=\frac{\overbrace{P(Y|X)}^{likelihood}\overbrace{P(X)}^{prior}}{\underbrace{\sum\limits_x P(Y|X)P(X)}_{evidence}}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(P(X)\)</span>：先验概率prior</li>
+<li><span class="math inline">\(P(X|Y)\)</span>：后验概率posterior</li>
+<li><span class="math inline">\(P(Y|X)\)</span>：似然likelihood。</li>
+</ul>
+<h2 id="model">1. Model</h2>
+<ul>
+<li><p>输入空间<span class="math inline">\(\mathcal{X} \subseteq \mathbf{R}^{n}\)</span> 为 <span class="math inline">\(n\)</span> 维向量的集合，输出空间为类集合<span class="math inline">\(\mathcal{Y}=\left\{c_{1}, c_{2}, \cdots, c_{K}\right\}\)</span></p></li>
+<li><p>输入特征向量<span class="math inline">\(x\)</span>，输出类标记<span class="math inline">\(y\)</span></p></li>
+<li><p><span class="math inline">\(X\)</span>是输入空间上的随机向量，<span class="math inline">\(Y\)</span>是输出空间上的随机变量</p></li>
+<li><p>训练数据集 <span class="math display">\[
+\begin{aligned}
+T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}
+\end{aligned}
+\]</span> 由 <span class="math inline">\(P(X, Y)\)</span> 独立同分布产生。</p>
+<ul>
+<li>这边的独立指的是向量<span class="math inline">\(x_1\)</span>与<span class="math inline">\(x_2\)</span>等之间的独立，不是特征条件独立。</li>
+</ul></li>
+</ul>
+<h3 id="学习联合概率分布pxy">1.1 学习联合概率分布<span class="math inline">\(P(X,Y)\)</span></h3>
+<ol type="1">
+<li><p><span class="math inline">\(P(X, Y)=P(Y) P(X \mid Y)=P(X) P(Y \mid X)\)</span>，用第一个等式</p></li>
+<li><p><strong>先验概率分布</strong> <span class="math display">\[
+P\left(Y=c_{k}\right), \quad k=1,2, \cdots, K
+\]</span></p>
+<ul>
+<li>由测试集可知，有多少概率/比例的<span class="math inline">\(c_1\)</span>标签</li>
+</ul></li>
+<li><p><strong>条件概率分布</strong> <span class="math display">\[
+P\left(X=x \mid Y=c_{k}\right)=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} \mid Y=c_{k}\right),\\ \quad k=1,2, \cdots, K
+\]</span></p>
+<ul>
+<li><p>特征向量相等<span class="math inline">\(\Longrightarrow\)</span>每一维度上都相等</p></li>
+<li><p>朴素贝叶斯法对条件概率做条件独立性假设，即 <span class="math display">\[
+\begin{align}
+P\left(X=x \mid Y=c_{k}\right) &amp;=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} \mid Y=c_{k}\right)\nonumber \\
+&amp;=\prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)
+\end{align}
+\]</span></p></li>
+<li><p>如果不加独立分布假设，那么(1,1,1,1)和(1,1,1,2)独立，没有可以利用的信息。需要更大的测试集。</p></li>
+</ul></li>
+<li><p><strong>重复“词语”的处理</strong></p>
+<p>我们得到一个垃圾邮件向量<span class="math inline">\(x=[&#39;发票&#39;，‘发票’，‘发票‘，‘充值’，’购物‘]\)</span>，如何处理出现3次的“发票”</p>
+<ol type="1">
+<li>多项式模型
+<ul>
+<li>每一个“发票”都是独立的，统计多次，即<span class="math inline">\(P(X=(&#39;发票&#39;，‘发票’，‘发票‘)|Y=c_k)=P^3(&#39;发票|Y=c_k&#39;)\)</span></li>
+</ul></li>
+<li>伯努利模型
+<ul>
+<li>只分成出现，不出现的二元情况，即<span class="math inline">\(P(X=(&#39;发票&#39;，‘发票’，‘发票‘)|Y=c_k)=P(&#39;发票|Y=c_k&#39;)\)</span></li>
+</ul></li>
+<li>混合模型
+<ul>
+<li>计算单一句子的概率时用伯努利模型</li>
+<li>计算全文词语的概率时用多项式模型</li>
+</ul></li>
+<li>高斯模型
+<ul>
+<li>适用于连续变量</li>
+<li>假设：在给定一个类别<span class="math inline">\(c_k\)</span>后，各个特征符合正态分布</li>
+<li><span class="math inline">\(P\left(x^{(i)} \mid y=c_k\right)=\frac{1}{\sqrt{2 \pi \sigma_{y}^{2}}} \exp \left(-\frac{\left(x^{(i)}-\mu_{y}\right)^{2}}{2 \sigma_{y}^{2}}\right)\)</span>
+<ul>
+<li><span class="math inline">\(\mu_y:\)</span> 在类别为 <span class="math inline">\(y\)</span> 的样本中，特征 <span class="math inline">\(x^{(i)}\)</span> 的均值。 <span class="math inline">\(\sigma_{y}:\)</span> 在类别为 <span class="math inline">\(y\)</span> 的样本中，特征 <span class="math inline">\(x^{(i)}\)</span> 的标准差。</li>
+</ul></li>
+</ul></li>
+</ol></li>
+</ol>
+<h3 id="计算后验分布">1.2 计算后验分布</h3>
+<p>通过贝叶斯定理，得到在给定了一个特征向量的情况下，标签为<span class="math inline">\(c_k\)</span>的概率。 <span class="math display">\[
+\begin{align}
+P(Y \mid X)&amp;=\frac{P(X, Y)}{P(X)}=\frac{P(Y) P(X \mid Y)}{\sum_{Y} P(Y) P(X \mid Y)}\\
+P\left(Y=c_{k} \mid X=x\right)&amp;=\frac{P\left(X=x \mid Y=c_{k}\right) P\left(Y=c_{k}\right)}{\sum_{k} P\left(X=x \mid Y=c_{k}\right) P\left(Y=c_{k}\right)}\\
+&amp;=\frac{P\left(Y=c_{k}\right) \prod P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)}{\sum_{k} (P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right))}, \quad k=1,2, \cdots, K
+\end{align}
+\]</span></p>
+<ul>
+<li>把(2)带入到(5)，得到等式(6)</li>
+</ul>
+<h3 id="后验概率最大化">1.3 后验概率最大化</h3>
+<p>得到了概率表达式之后，我们便去寻找使得概率<span class="math inline">\(P\left(Y=c_{k} \mid X=x\right)\)</span>最大的标签<span class="math inline">\(c_k\)</span></p>
+<p>朴素贝叶斯分类器： <span class="math display">\[
+\begin{array}{l}
+y=f(x)=\arg \max _{c_{k}} \frac{P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right) \\ }{\sum_{k} P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)}
+\end{array}
+\]</span> (7)中的分母本质上为<span class="math inline">\(P(X=x)\)</span>，与<span class="math inline">\(c_k\)</span>的取值无关，故(7)可表示成 <span class="math display">\[
+y=\arg \max _{c_{k}} P\left(Y=c_{k}\right) \prod_{j} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)
+\]</span></p>
+<h4 id="含义">1.3.1 含义</h4>
+<ul>
+<li>后验概率最大化等价于期望风险最小化</li>
+</ul>
+<h3 id="朴素贝叶斯法中的参数估计">1.4 朴素贝叶斯法中的参数估计</h3>
+<p>为了学习朴素贝叶斯法中的<span class="math inline">\(P\left(Y=c_{k}\right)\)</span>与<span class="math inline">\(P\left(X=x \mid Y=c_{k}\right)\)</span></p>
+<h4 id="极大似然估计">1.4.1 极大似然估计</h4>
+<p>核心思想为根据以有的测试数据集，得到每一类的频率，即为概率</p>
+<blockquote>
+<p>算法 4.1 (朴素贝叶斯算法 (Naive Bayes algorithm) )</p>
+<p>输入: 训练数据 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots,\right.\)</span> <span class="math inline">\(\left.x_{i}^{(n)}\right)^{\mathrm{T}}, x_{i}^{(j)}\)</span> 是第 <span class="math inline">\(i\)</span> 个样本的第 <span class="math inline">\(j\)</span> 个特征, <span class="math inline">\(x_{i}^{(j)} \in\left\{a_{j 1}, a_{j 2}, \cdots, a_{j S_{j}}\right\}, a_{j l}\)</span> 是第 <span class="math inline">\(j\)</span> 个特 征可能取的第 <span class="math inline">\(l\)</span> 个值, <span class="math inline">\(j=1,2, \cdots, n, l=1,2, \cdots, S_{j}, y_{i} \in\left\{c_{1}, c_{2}, \cdots, c_{K}\right\} ;\)</span> 实例 <span class="math inline">\(x\)</span>; 输出：实例 <span class="math inline">\(x\)</span> 的分类。 （1）计算先验概率及条件概率 <span class="math display">\[
+P\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}{N}, \quad k=1,2, \cdots, K
+\]</span></p>
+<p><span class="math display">\[
+\begin{array}{c}
+P\left(X^{(j)}=a_{j l} \mid Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(x_{i}^{(j)}=a_{j l}, y_{i}=c_{k}\right) }{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)} \\
+j=1,2, \cdots, n ; \quad l=1,2, \cdots, S_{j} ; \quad k=1,2, \cdots, K
+\end{array}
+\]</span> （2）对于给定的实例 <span class="math inline">\(x=\left(x^{(1)}, x^{(2)}, \cdots, x^{(n)}\right)^{\mathrm{T}},\)</span> 计算 <span class="math display">\[
+P\left(Y=c_{k}\right) \prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right), \quad k=1,2, \cdots, K
+\]</span> （3）确定实例 <span class="math inline">\(x\)</span> 的类 <span class="math display">\[
+y=\arg \max _{c_{k}} P\left(Y=c_{k}\right) \prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)
+\]</span></p>
+</blockquote>
+<h4 id="贝叶斯估计">1.4.2 贝叶斯估计</h4>
+<p><strong>问题</strong>：通过极大似然估计，可能会出现(8)中的几个<span class="math inline">\(P\left(X^{(j)}=x^{(j)} \mid Y=c_{k}\right)\)</span>为0（我们把“发票”当成了一个特征，但句子中没有出现“发票”这一词），这个情况很常见</p>
+<p><strong>原因</strong>：训练集太少，没有满足大数定律。</p>
+<p><strong>解决</strong>：</p>
+<p>给定先验概率，赋值为<span class="math inline">\(\lambda \ge0\)</span></p>
+<ul>
+<li>在一个训练集中，对一个本应该为0 的概率赋予一个较小值，那么就会降低其他词语的概率</li>
+<li><span class="math inline">\(\lambda=0\)</span>：极大似然估计</li>
+<li><span class="math inline">\(\lambda=1\)</span>：Laplace Smoothing</li>
+<li>”加上“基础的概率<span class="math inline">\(1/K,\;1/S_j\)</span></li>
+</ul>
+<p><strong>算法</strong>：</p>
+<ul>
+<li><p>计算先验概率的等式(10)变成 <span class="math display">\[
+P_{\lambda}\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)+\lambda}{N+K \lambda}
+\]</span></p></li>
+<li><p>计算条件概率的等式(11)变成 <span class="math display">\[
+P_{\lambda}(X^{(j)}=a_{jl}|Y=c_k)=\frac{\sum\limits_{i=1}^NI(x_i^{j}=a_{jl},y_j=c_k)+\lambda}{\sum\limits_{i=1}^NI(y_j=c_k)+S_j\lambda}
+\]</span></p></li>
+</ul>
+<h2 id="trick">3. Trick</h2>
+<h3 id="log-function">3.1 Log function</h3>
+<p>在等式(12)中，我们可以取对数，把乘法运算转化为加法运算，提高计算速度。</p>
+<h2 id="coding">4. Coding</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NaiveBayes</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model=<span class="string">&#x27;Naive Bayes&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, Py, Pxi_y, x</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :param Py: 先验概率</span></span><br><span class="line"><span class="string">        :param Pxi_y: 条件概率</span></span><br><span class="line"><span class="string">        :param x: test array</span></span><br><span class="line"><span class="string">        :return: 通过极大似然法得出最大概率的标签</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        (labelNumber,featureNumber,features)=Pxi_y.shape</span><br><span class="line">        <span class="comment"># p存放所有的似然</span></span><br><span class="line">        p=Py</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(labelNumber):</span><br><span class="line">            <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(featureNumber):</span><br><span class="line">                <span class="built_in">sum</span> += Pxi_y[i][j][x[j]] <span class="comment"># 因为转化成了log，所以累乘变累加</span></span><br><span class="line">            p[i] += <span class="built_in">sum</span></span><br><span class="line">        <span class="keyword">return</span> np.argmax(p)</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getAllProbability</span>(<span class="params">self, labelArray, labelNumber, trainArray, featureNumber, features, para=<span class="number">1</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :param labelArray: [int,int,...,int] 1*n</span></span><br><span class="line"><span class="string">        :param labelNumber: 一共有N个标签</span></span><br><span class="line"><span class="string">        :param trainArray: train data, ~*m</span></span><br><span class="line"><span class="string">        :param featureNumber: 一共有m个特征标签</span></span><br><span class="line"><span class="string">        :param features: int k, 对第m个特征标签，有k_m个特征。</span></span><br><span class="line"><span class="string">        :param para: lambda</span></span><br><span class="line"><span class="string">        :return: 先验概率Py, 条件概率Pxi_y</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        目前（没有完善load function）对于输入的形式非常的苛刻，也出现了重复的参数，日后完善。</span></span><br><span class="line"><span class="string">        example:</span></span><br><span class="line"><span class="string">        trainArray=[[0,0],[0,1],[0,1],[0,0],[0,0],[1,0],[1,1],[1,1],[1,2],[1,2],[2,2],[2,1],[2,1],[2,2],[2,2]]</span></span><br><span class="line"><span class="string">        trainArray=np.asarray(trainArray)</span></span><br><span class="line"><span class="string">        featureNumber=2</span></span><br><span class="line"><span class="string">        features=3</span></span><br><span class="line"><span class="string">        labelArray=[0,0,1,1,0,0,0,1,1,1,1,1,1,1,0]</span></span><br><span class="line"><span class="string">        labelArray=np.asarray(labelArray)</span></span><br><span class="line"><span class="string">        labelNumber=2</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        <span class="comment"># 一共有N个标签</span></span><br><span class="line">        Py = np.zeros((labelNumber, <span class="number">1</span>))</span><br><span class="line">        <span class="comment"># 对标签为y，特征为m，第？个特征取值</span></span><br><span class="line">        Pxi_y = np.zeros((labelNumber, featureNumber, features))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算先验概率Py</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(labelNumber):</span><br><span class="line">            numerator = np.<span class="built_in">sum</span>(labelArray==i) + para</span><br><span class="line">            denominator = <span class="built_in">len</span>(labelArray) + para * labelNumber</span><br><span class="line">            Py[i] = numerator/denominator</span><br><span class="line">        Py = np.log(Py) <span class="comment"># 取对数加快运算</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算条件概率Pxi_y</span></span><br><span class="line">        (a,b) = trainArray.shape <span class="comment"># a:几条数据  b:几个特征</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(a): <span class="comment"># 第几条数据，选取他们的label和train data array</span></span><br><span class="line">            label = labelArray[i]</span><br><span class="line">            x=trainArray[i]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(featureNumber): <span class="comment"># 对x的每一个标签上的值，出现一次加一次</span></span><br><span class="line">                Pxi_y[label][j][x[j]] +=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> label <span class="keyword">in</span> <span class="built_in">range</span>(labelNumber): <span class="comment"># 得到次数后计算概念</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(featureNumber):</span><br><span class="line">                denominator = np.<span class="built_in">sum</span>(Pxi_y[label][i]) + features * para</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(features):</span><br><span class="line">                    numerator = Pxi_y[label][i][j] + para</span><br><span class="line">                    Pxi_y[label][i][j]=np.log(numerator/denominator)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Py, Pxi_y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loadData</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">modelTest</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ChongfengLing/Statistical-Learning-Method-Notes-Code">More details and examples</a></li>
+</ul>
+<h2 id="proof">5. Proof</h2>
+<h3 id="用极大似然法推出等式10">5.1 用极大似然法推出等式(10)</h3>
+<figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-4%20Proof%201.png" alt="253e0884011c7a303fda71c8962cfa6" /><figcaption aria-hidden="true">253e0884011c7a303fda71c8962cfa6</figcaption>
+</figure>
+<h2 id="reference">6. Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33437381/">统计学习方法（第2版）</a><a target="_blank" rel="noopener" href="https://github.com/Dod-o/Statistical-Learning-Method_Code">Dod-o/Statistical-Learning-Method_Code</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Dod-o/Statistical-Learning-Method_Code">Dod-o/Statistical-Learning-Method_Code</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/han_xiaoyang/article/details/50629608">NLP系列(4)_朴素贝叶斯实战与进阶</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/lihang-code">fengdu78/lihang-code</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SmirkCao/Lihang">SmirkCao, Lihang, (2018), GitHub repository</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/23/%5BSLM-3%5D%20K%E8%BF%91%E9%82%BB%E6%B3%95/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/02/%5BSLM-5%5D%20%E5%86%B3%E7%AD%96%E6%A0%91%20Decision%20Tree/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CHongfeng Ling 凌崇锋</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>
