@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[统计学习方法] 3.K近邻法 KNN">
+<meta property="og:url" content="http://example.com/slm003/index.html">
+<meta property="og:site_name" content="Chongfeng Ling">
+<meta property="og:description" content="k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。k值的选择、距离度量、分类决策规则是KNN的3个基本要素。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+<meta property="article:published_time" content="2020-11-26T18:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-22T06:33:48.597Z">
+<meta property="article:author" content="Chongfeng Ling 凌崇锋">
+<meta property="article:tag" content="KNN">
+<meta property="article:tag" content="kd tree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png">
+
+
+<link rel="canonical" href="http://example.com/slm003/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[统计学习方法] 3.K近邻法 KNN | Chongfeng Ling</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Chongfeng Ling</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-统计数学方法">
+
+    <a href="/SLM/" rel="section"><i class="far fa-chart-bar fa-fw"></i>统计数学方法</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-text">1. Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-text">2. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-text">2.1 距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k%E5%80%BC%E9%80%89%E6%8B%A9"><span class="nav-text">2.2 k值选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99"><span class="nav-text">2.3 分类决策规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#implement-kd-tree"><span class="nav-text">3. Implement: kd tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kd%E6%A0%91%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-text">3.1 kd树的构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1kd%E6%A0%91"><span class="nav-text">3.1.1平衡kd树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kd%E6%A0%91%E7%9A%84%E6%90%9C%E7%B4%A2"><span class="nav-text">3.2 kd树的搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#k1"><span class="nav-text">3.2.1 \(k&#x3D;1\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k1-1"><span class="nav-text">3.2.2 \(k&gt;1\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary"><span class="nav-text">3.3 Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#question"><span class="nav-text">4. Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-text">5. Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">6. Reference</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Chongfeng Ling 凌崇锋"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">Chongfeng Ling 凌崇锋</p>
+  <div class="site-description" itemprop="description">description</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ChongfengLing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ChongfengLing" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yourname@gmail.com" title="E-Mail → mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blog/" rel="tag">Blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual/" rel="tag">Dual</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo-NexT/" rel="tag">Hexo-NexT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KNN/" rel="tag">KNN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kd-tree/" rel="tag">kd tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA-Perception/" rel="tag">感知机 Perception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7/" rel="tag">线性可分性</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/slm003/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Chongfeng Ling 凌崇锋">
+      <meta itemprop="description" content="description">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chongfeng Ling">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [统计学习方法] 3.K近邻法 KNN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-27 02:00:00" itemprop="dateCreated datePublished" datetime="2020-11-27T02:00:00+08:00">2020-11-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-22 14:33:48" itemprop="dateModified" datetime="2020-12-22T14:33:48+08:00">2020-12-22</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/study/" itemprop="url" rel="index"><span itemprop="name">study</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/study/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《统计学习方法》</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/slm003/" class="post-meta-item leancloud_visitors" data-flag-title="[统计学习方法] 3.K近邻法 KNN" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/slm003/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/slm003/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+
+          
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。<strong>k值的选择、距离度量、分类决策规则</strong>是KNN的3个基本要素。 <a id="more"></a></p>
+<h2 id="algorithm">1. Algorithm</h2>
+<blockquote>
+<p><strong>算法 <span class="math inline">\(3.1(k\)</span> 近邻法 <span class="math inline">\()\)</span></strong> 输入: 训练数据集 <span class="math display">\[
+\begin{aligned}
+T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}
+\end{aligned}
+\]</span> 其中， <span class="math inline">\(x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}\)</span> 为实例的特征向量, <span class="math inline">\(y_{i} \in \mathcal{Y}=\left\{c_{1}, c_{2}, \cdots, c_{K}\right\}\)</span> 为实例的类别， <span class="math inline">\(i=1,2, \cdots, N ;\)</span> 实例特征向量 <span class="math inline">\(x\)</span>; 输出：实例 <span class="math inline">\(x\)</span> 所属的类 <span class="math inline">\(y\)</span>。 (1) 根据给定的距离度量，在训练集 <span class="math inline">\(T\)</span> 中找出与 <span class="math inline">\(x\)</span> 最邻近的 <span class="math inline">\(k\)</span> 个点，涵盖这 <span class="math inline">\(k\)</span> 个点的 <span class="math inline">\(x\)</span> 的邻域记作 <span class="math inline">\(N_{k}(x)\)</span>; (2) 在 <span class="math inline">\(N_{k}(x)\)</span> 中根据分类决策规则 (如多数表决) 决定 <span class="math inline">\(x\)</span> 的类别 <span class="math inline">\(y\)</span> : <span class="math display">\[
+y=\arg \max _{c_{j}} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right), \quad i=1,2, \cdots, N ; j=1,2, \cdots, K
+\]</span> 式 (1) 中， <span class="math inline">\(I\)</span> 为指示函数，即当 <span class="math inline">\(y_{i}=c_{j}\)</span> 时 <span class="math inline">\(I\)</span> 为 <span class="math inline">\(1,\)</span> 否则 <span class="math inline">\(I\)</span> 为 0 。</p>
+</blockquote>
+<ul>
+<li>算法没有显式的学习过程。</li>
+<li>例子：
+<ol type="1">
+<li>S市划分成住宅区、商业区、工业区（K=3），每个区域都有各自地标建筑，共N座。你的坐标为x，选取离你最近的k个地标建筑，k中包括哪类地标建筑最多，你就位于哪个区。</li>
+</ol></li>
+</ul>
+<h2 id="model">2. Model</h2>
+<ul>
+<li><p>KNN的模型对应于对特征空间的划分。</p></li>
+<li><p>在训练集、距离度量、k值、分类决策鬼册确定后，对任意新输入实例，所属类别唯一。</p></li>
+<li><p>每一个训练实例点<span class="math inline">\(x_i\)</span>，存在一个单元cell，在单元内到此<span class="math inline">\(x_i\)</span>的距离最小。所有实例点的单元划分了特征空间。</p></li>
+</ul>
+<h3 id="距离度量">2.1 距离度量</h3>
+<p>计算特征空间中两点的距离。</p>
+<p><span class="math inline">\(L_{p}\)</span> (Minkowski) distance <span class="math display">\[
+L_{p}\left(x_{i}, x_{j}\right)=\left(\sum_{l=1}^{n}\left|x_{i}^{(l)}-x_{j}^{(l)}\right|^{p}\right)^{\frac{1}{p}}
+\]</span></p>
+<ul>
+<li><ul>
+<li>设特征空间 <span class="math inline">\(\mathcal{X}\)</span> 是 <span class="math inline">\(n\)</span> 维实数向量空间 <span class="math inline">\(x_{i}, x_{j} \in \mathbf{R}^{n}, x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(n)}\right)^{\mathrm{T}},\)</span> <span class="math inline">\(x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}\)</span></li>
+<li><span class="math inline">\(p\geq1\)</span></li>
+</ul></li>
+<li><span class="math inline">\(p=1\)</span>，Manhattan distance</li>
+<li><span class="math inline">\(p=2\)</span>， Euclidean distance</li>
+<li><span class="math inline">\(p=\infin\)</span>，'Max' distance</li>
+</ul>
+<h3 id="k值选择">2.2 k值选择</h3>
+<p>选取一些较小k值，通过<strong>交叉验证法</strong>选取最优k值。</p>
+<ul>
+<li>小k：
+<ul>
+<li>近似误差减小，估计误差增大。对近邻实例点非常敏感</li>
+<li>模型更复杂，容易过拟合。</li>
+</ul></li>
+<li>大k：
+<ul>
+<li>近似误差增大，估计误差减小。较远错误标签实例点也能造成影响。</li>
+<li>模型更简单。</li>
+<li><span class="math inline">\(k=N\)</span>时，则为测试集最多类。</li>
+</ul></li>
+</ul>
+<h3 id="分类决策规则">2.3 分类决策规则</h3>
+<p>一般为<strong>多数表决(majority voting rule)</strong></p>
+<p>对给定的实例<span class="math inline">\(x\)</span>，最近邻的<span class="math inline">\(k\)</span>个训练实例点存在<span class="math inline">\(c\)</span>个类别。为了使得分类错误的概率最小，所以选取类别中最多的那一类。</p>
+<h2 id="implement-kd-tree">3. Implement: kd tree</h2>
+<p>线性扫描 (linear scan) 要计算实例与每一个训练实例的距离，耗时。</p>
+<h3 id="kd树的构造">3.1 kd树的构造</h3>
+<p>选取一个训练实例点，构造一个垂直于某一轴的超平面，使得特征空间被分成左右两个子空间（左小右大）。在2个特征子空间中重复，直到子空间中没有训练实例点。</p>
+<h4 id="平衡kd树">3.1.1平衡kd树</h4>
+<ul>
+<li>训练实例点的选取为选定坐标轴上的中位数。</li>
+<li>效率不一定最优。</li>
+</ul>
+<blockquote>
+<p>算法 3.2 (构造平衡 <span class="math inline">\(k d\)</span> 树）</p>
+<p>输入: <span class="math inline">\(k\)</span> 维空间数据集 <span class="math inline">\(T=\left\{x_{1}, x_{2}, \cdots, x_{N}\right\},\)</span> 其中 <span class="math inline">\(x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(k)}\right)^{\mathrm{T}},\)</span> <span class="math inline">\(i=1,2, \cdots, N\)</span> 输出: <span class="math inline">\(k d\)</span> 树。</p>
+<p>（1）开始：构造根结点，根结点对应于包含 <span class="math inline">\(T\)</span> 的 <span class="math inline">\(k\)</span> 维空间的超矩形区域。 选择 <span class="math inline">\(x^{(1)}\)</span> 为坐标轴，以 <span class="math inline">\(T\)</span> 中所有实例的 <span class="math inline">\(x^{(1)}\)</span> 坐标的中位数为切分点，将根结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 <span class="math inline">\(x^{(1)}\)</span> 垂直的超平面实现。&gt; 由根结点生成深度为 1 的左、右子结点: <strong>左子结点对应坐标 <span class="math inline">\(x^{(1)}\)</span> 小于切分点的子 区域，右子结点对应于坐标 <span class="math inline">\(x^{(1)}\)</span> 大于切分点的子区域</strong>。 将落在切分超平面上的实例点保存在根结点。</p>
+<p>（2）重复: 对深度为 <span class="math inline">\(j\)</span> 的结点，选择 <span class="math inline">\(x^{(l)}\)</span> 为切分的坐标轴， <span class="math inline">\(l=j(\bmod k)+1,\)</span> 以该结点的区域中所有实例的 <span class="math inline">\(x^{(l)}\)</span> 坐标的中位数为切分点，将该结点对应的超矩形区域切分为两个子区域。切分由通过切分点并与坐标轴 <span class="math inline">\(x^{(l)}\)</span> 垂直的超平面实现。 由该结点生成深度为 <span class="math inline">\(j+1\)</span> 的左、右子结点: 左子结点对应坐标 <span class="math inline">\(x^{(l)}\)</span> 小于切分点 的子区域，右子结点对应坐标 <span class="math inline">\(x^{(l)}\)</span> 大于切分点的子区域。 将落在切分超平面上的实例点保存在该结点。</p>
+<p>（3）直到两个子区域没有实例存在时停止。从而形成 <span class="math inline">\(k d\)</span> 树的区域划分.</p>
+</blockquote>
+<p><strong>构造过程图示</strong>：</p>
+<figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png" alt="SLM-3 平衡kd树图示" /><figcaption aria-hidden="true">SLM-3 平衡kd树图示</figcaption>
+</figure>
+<ul>
+<li>按照黄、绿、蓝、红，垂直x，y，x，y的顺序切分。</li>
+<li>左右节点确定：根据在第<span class="math inline">\(l\)</span>维度上2个子节点对应坐标大小确定，小左大右。</li>
+<li><span class="math inline">\(l=j(\bmod k)+1\)</span>：在k维方向都按顺序切上之后，回过头在循环切。
+<ul>
+<li>公式细节因初始根节点的深度是0或1而有不同</li>
+</ul></li>
+<li>停止条件：所有实例点都位于一个超平面上。</li>
+<li>偶数个数的中位数：自己确定，代码上别忘了。</li>
+</ul>
+<h3 id="kd树的搜索">3.2 kd树的搜索</h3>
+<h4 id="k1">3.2.1 <span class="math inline">\(k=1\)</span></h4>
+<blockquote>
+<p>算法 3.3 (用 <span class="math inline">\(k d\)</span> 树的最近邻搜索) 输入: 已构造的 <span class="math inline">\(k d\)</span> 树，目标点 <span class="math inline">\(x\)</span>; 输出: <span class="math inline">\(x\)</span> 的最近邻，<span class="math inline">\(k=1\)</span>。 (1) 在 <span class="math inline">\(k d\)</span> 树中找出包含目标点 <span class="math inline">\(x\)</span> 的叶结点: 从根结点出发，递归地向下访问 <span class="math inline">\(k d\)</span> 树。若目标点 <span class="math inline">\(x\)</span> 当前维的坐标小于切分点的坐标，则移动到左子结点，否则移动到右子结点。直到子结点为叶结点为止。 (2) 以此叶结点为“当前最近点”。 (3) 递归地向上回退，在每个结点进行以下操作: (a）如果该结点保存的实例点比当前最近点距离目标点更近，则以该实例点 为“当前最近点”。 (b）当前最近点一定存在于该结点一个子结点对应的区域。检查该子结点的父结点的另一子结点对应的区域是否有更近的点。具体地，检查另一子结点对应的区域是否与以目标点为球心、以目标点与“当前最近点”问的距离为半径的超球体相交。</p>
+<p>​ 如果相交，可能在另一个子结点对应的区域内存在距目标点更近的点，移动到另一个子结点。接着，递归地进行最近邻搜索; ​ 如果不相交，向上回退。 (4）当回退到根结点时，搜索结束。最后的“当前最近点"即为 <span class="math inline">\(x\)</span> 的最近邻点。</p>
+</blockquote>
+<h4 id="k1-1">3.2.2 <span class="math inline">\(k&gt;1\)</span></h4>
+<blockquote>
+<p>算法 3.04 (用 <span class="math inline">\(k d\)</span> 树的最近邻搜索) 输入: 已构造的 <span class="math inline">\(k d\)</span> 树，目标点 <span class="math inline">\(x\)</span>; 输出: <span class="math inline">\(x\)</span> 的k最近邻。</p>
+<ol type="1">
+<li><p>根据p的坐标和kd树的结点向下进行搜索 (如果树的结点是以 <span class="math inline">\(x^{(l)}=c\)</span> 来切分的, 那么如果p的 <span class="math inline">\(x^{(l)}\)</span> 坐标小于c, 则走左子结点, 否则走右子结点)</p></li>
+<li><p>到达叶子结点时，将其标记为已访问。如果S中不足k个点, 则将该结点加入到S中; 如果S不空且当前结点与p点的距离小于S中最长的距离，则用当前结点替换S中离p最远的点</p></li>
+<li><p>如果当前结点不是根节点, 执行（a）; 否则，结束算法</p></li>
+</ol>
+<p>(a). 回退到当前结点的父结点, 此时的结点为当前结点 (回退之后的结点) ，将当前结点标 记为已访问, 执行 (b) 和（c) ; 如果当前结点已经被访过, 再次执行（a）。</p>
+<p>(b). 如果此时S中不足k个点, 则将当前结点加入到S中; 如果S中已有k个点, 且当前结点与p 点的距离小于S中最长距离，则用当前结点替换S中距离最远的点。</p>
+<p>(c). 计算p点和当前结点切分线的距离。如果该距离大于等于S中距离p最远的距离并且S中已 有k个点, 执行3; 如果该距离小于S中最远的距离或S中没有k个点, 从当前结点的另一子节点开始执行1; 如果当前结点没有另一子结点, 执行3。</p>
+</blockquote>
+<p><strong>算法3.04 (用 <span class="math inline">\(k d\)</span> 树的最近邻搜索)搜索过程</strong>：目标点P（-1，-5），k=3，S：存储k个近邻点。初始所有点=[0, 0] ，即 [未访问, 不在S中]</p>
+<figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-3%20%E5%B9%B3%E8%A1%A1kd%E6%A0%91%E5%9B%BE%E7%A4%BA.png" alt="SLM-3 平衡kd树图示" /><figcaption aria-hidden="true">SLM-3 平衡kd树图示</figcaption>
+</figure>
+<blockquote>
+<ol type="1">
+<li>执行算法1：
+<ul>
+<li>(-1,-5)的-1与A点(6,5)的6小，往左到B</li>
+<li>-5&lt;-3，往左到D</li>
+<li>D子节点唯一，到H</li>
+</ul></li>
+<li>执行算法2：
+<ul>
+<li>H=[1, 0]，H=[1, 1]</li>
+</ul></li>
+<li>执行算法3：
+<ul>
+<li>执行(a)，到D。D=[1, 0]</li>
+<li>执行(b)，D=[1, 1]</li>
+<li>执行(c)，P到D的切分线<span class="math inline">\(x^1=-6\)</span>距离为5。S未满。D没有另一子节点。</li>
+</ul></li>
+<li>执行算法3：
+<ul>
+<li>执行(a)，到B。B=[1, 0]</li>
+<li>执行(b)，B=[1,1]，S={H, D, B}</li>
+<li>执行(c)，P到B的切分线<span class="math inline">\(x^2=-3\)</span>距离为2，小于S的最大距离。从B另一子节点E执行算法1.</li>
+</ul></li>
+<li>执行算法1：
+<ul>
+<li>-1&gt;-2，往右到J</li>
+</ul></li>
+<li>执行算法2：
+<ul>
+<li>J=[1,0]，d(J, P)大于S的最大距离。不加入</li>
+</ul></li>
+<li>执行算法3：
+<ul>
+<li>执行(a)，到E，E=[1, 0]</li>
+<li>执行(b)，d(E,P)小于S的最大距离。E=[1, 1]，H=[1, 0]，S={E, D, B}</li>
+<li>执行(c)，P到E的切分线<span class="math inline">\(x^1=-2\)</span>距离为1，小于S的最大距离。从E另一子节点I执行算法1.</li>
+</ul></li>
+<li>执行算法1：
+<ul>
+<li>I是子节点，到I</li>
+</ul></li>
+<li>执行算法2：
+<ul>
+<li>I=[1, 0]，d(I, P)大于S的最大距离。不加入。</li>
+</ul></li>
+<li>执行算法3：
+<ul>
+<li>执行若干(a)，到A，A=[1, 0]</li>
+<li>执行(b)，d(A, P)大于S的最大距离。</li>
+<li>执行(c)，P到E的切分线<span class="math inline">\(x^1=6\)</span>距离为7，大于最长距离。不加入。</li>
+</ul></li>
+<li>执行算法3：
+<ul>
+<li>A是根节点。算法结束。已按顺序访问{H, D, B, J, E, I, A}，最终结果S={E, D, B}</li>
+</ul></li>
+</ol>
+</blockquote>
+<h3 id="summary">3.3 Summary</h3>
+<ol type="1">
+<li><p>kd Tree的平均复杂度<span class="math inline">\(O(logN)\)</span>, <span class="math inline">\(N\)</span>为训练实例数。适合训练实例数远大于空间维数的KNN。</p></li>
+<li><p>把k维大空间多次对半分成k维小空间。</p></li>
+<li><p>目标点与实例点的距离<span class="math inline">\(\geq\)</span>目标点与该实例点对应切分超平面的距离。因此：</p>
+<ol type="1">
+<li>当此实例点当前应该替换S中某点从而加入到S集合中时，另一半空间存在子空间，子空间的点到目标点的距离小于实例点到目标点的距离。
+<ol type="1">
+<li>此时如果存在实例点位于子空间，那么应该继续循环（例子中没有体现）。</li>
+<li>没有实例点在此子空间，那么另一半的空间的实例点都不会加入到集合S中。</li>
+</ol></li>
+<li>这个实例点不应该加入到S中，情况如2.1.2</li>
+</ol></li>
+<li><p>动态规划DP的思想？</p></li>
+<li><p>别人笔记的原话：</p>
+<p>1、找到叶子结点，看能不能加入到S中</p>
+<p>2、回退到父结点，看父结点能不能加入到S中</p>
+<p>3、看目标点和回退到的父结点切分线的距离，判断另一子结点能不能加入到S中</p></li>
+</ol>
+<h2 id="question">4. Question</h2>
+<ol type="1">
+<li>kd方差的代码！
+<ul>
+<li>有点点难搞-_-</li>
+</ul></li>
+<li>非平衡/方差kd树
+<ul>
+<li>同上，难搞</li>
+</ul></li>
+</ol>
+<h2 id="code">5. Code</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KNN</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, train_set, label_set</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :param train_set: m*n ndarray, m:dims, n:train points</span></span><br><span class="line"><span class="string">        :param label_set: 1*n int ndarray and from 0 to n-1</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.train_set = train_set</span><br><span class="line">        self.label_set = label_set</span><br><span class="line">        self.m, self.n = self.train_set.shape</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">knn_naive</span>(<span class="params">self, test_set, k=<span class="number">1</span>,p=<span class="number">2</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :param test_set: m*n ndarray, m:dims, n:test points</span></span><br><span class="line"><span class="string">        :param k: k nearest neighbor</span></span><br><span class="line"><span class="string">        :param p: order of norm</span></span><br><span class="line"><span class="string">        :return: 1*n list for n points</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        (m,n)=test_set.shape</span><br><span class="line">        <span class="comment"># 有几个点，输出对于shape的list</span></span><br><span class="line">        final=[-<span class="number">1</span>]*n</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="comment"># 转置后取点再转置</span></span><br><span class="line">            test_point=test_set.T[i].T</span><br><span class="line">            <span class="comment"># 有些可能是(m,)的ndarray</span></span><br><span class="line">            test_point=test_point.reshape([m,<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 计算距离</span></span><br><span class="line">            distance=np.linalg.norm(self.train_set-test_point,<span class="built_in">ord</span>=p,axis=<span class="number">0</span>)</span><br><span class="line">            <span class="comment"># 最近k个点的index</span></span><br><span class="line">            nearestK=np.argsort(distance)[:k]</span><br><span class="line">            <span class="comment"># label是0，1，2，...的顺序，存储对应label出现的总次数</span></span><br><span class="line">            labelList=[<span class="number">0</span>]*(<span class="built_in">max</span>(self.label_set) + <span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> index <span class="keyword">in</span> nearestK:</span><br><span class="line">                labelList[<span class="built_in">int</span>(self.label_set[index])] +=<span class="number">1</span></span><br><span class="line">                point_label=labelList.index(<span class="built_in">max</span>(labelList))</span><br><span class="line">            final[i]=point_label</span><br><span class="line">        <span class="keyword">return</span> final</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">knn_kdtree</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">plot</span>(<span class="params">self, points=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        画不同k从而分割成不同子%tb域的图</span></span><br><span class="line"><span class="string">        画结果图</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> self.m != <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Unable to draw a picture&quot;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ChongfengLing/Statistical-Learning-Method-Notes-Code">More details and examples</a></li>
+<li>Github求start！！！^_^</li>
+</ul>
+<h2 id="reference">6. Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33437381/">统计学习方法（第2版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zzpzm/article/details/88565645">KNN算法和kd树详解（例子+图示）</a></p>
+<p><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier.predict">sklearn</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/lihang-code">fengdu78/lihang-code</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Dod-o/Statistical-Learning-Method_Code">Dod-o/Statistical-Learning-Method_Code</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/KNN/" rel="tag"><i class="fa fa-tag"></i> KNN</a>
+              <a href="/tags/kd-tree/" rel="tag"><i class="fa fa-tag"></i> kd tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/slm002/" rel="prev" title="[统计数学方法] 2.感知机 Perception">
+                  <i class="fa fa-chevron-left"></i> [统计数学方法] 2.感知机 Perception
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/4a17b156/" rel="next" title="Hello World">
+                  Hello World <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chongfeng Ling 凌崇锋</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">59k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">54 mins.</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.0/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el  : '#valine-comments',
+      path: "/slm003/",
+    }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
