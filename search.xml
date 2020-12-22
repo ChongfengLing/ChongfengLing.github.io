@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>[How to-2] Hexo+Github+NexT</title>
-    <url>/7d86104c/</url>
-    <content><![CDATA[<blockquote>
-<p>Hexo: v5.3.0</p>
-<p>npm: v6.14.9</p>
-<p>NexT: v8.0</p>
-</blockquote>
-<a id="more"></a>
-<h1 id="基本配置">1. 基本配置</h1>
-<h1 id="功能与优化">2. 功能与优化</h1>
-<h2 id="字数统计">字数统计</h2>
-<h2 id="讨论">讨论</h2>
-<h2 id="去除table-of-content的自动编号">去除Table of Content的自动编号</h2>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Automatically add list number to toc.</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<h2 id="菜单栏添加自定义菜单">菜单栏添加自定义菜单</h2>
-<ol type="1">
-<li>tags, categories 要设置<kbd>type: tags</kbd>, <kbd>type: categories</kbd></li>
-<li>tagcloud字体设置在 _data.styl, line48</li>
-</ol>
-<h2 id="已运行的时间">已运行的时间</h2>
-<h2 id="文末添加结束语">文末添加结束语</h2>
-]]></content>
-      <categories>
-        <category>How to</category>
-      </categories>
-      <tags>
-        <tag>Hexo-NexT</tag>
-        <tag>Blog</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/4a17b156/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>. <a id="more"></a></p>
@@ -49,6 +18,37 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>[How to-2] Hexo+Github+NexT</title>
+    <url>/7d86104c/</url>
+    <content><![CDATA[<blockquote>
+<p>Hexo: v5.3.0</p>
+<p>npm: v6.14.9</p>
+<p>NexT: v8.0</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="基本配置">1. 基本配置</h2>
+<h3 id="功能与优化">2. 功能与优化</h3>
+<h3 id="字数统计">字数统计</h3>
+<h3 id="讨论">讨论</h3>
+<h3 id="去除table-of-content的自动编号">去除Table of Content的自动编号</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Automatically add list number to toc.</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<h3 id="菜单栏添加自定义菜单">菜单栏添加自定义菜单</h3>
+<ol type="1">
+<li>tags, categories 要设置<code>type: tags</code>, <code>type: categories</code></li>
+<li>tagcloud字体设置在<code>\source\ _data\styles.styl, line48</code></li>
+</ol>
+<h3 id="已运行的时间">已运行的时间</h3>
+<h3 id="文末添加结束语">文末添加结束语</h3>
+]]></content>
+      <categories>
+        <category>How to</category>
+      </categories>
+      <tags>
+        <tag>Hexo-NexT</tag>
+        <tag>Blog</tag>
+      </tags>
   </entry>
   <entry>
     <title>[SLM-6] 逻辑回归LR和最大熵模型MEM</title>
