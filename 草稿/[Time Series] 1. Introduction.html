@@ -24,18 +24,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Always on the bridge.">
+  <meta name="description" content="A time series is a series of data points indexed (or listed or graphed) in time order. Most commonly, a time series is a sequence taken at successive equally spaced points in time. Thus it is a sequ">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LIng&#39;s Blog">
-<meta property="og:url" content="http://example.com/categories/study/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/index.html">
+<meta property="og:title" content="[Time Series] 1. Introduction">
+<meta property="og:url" content="http://example.com/%E8%8D%89%E7%A8%BF/[Time%20Series]%201.%20Introduction.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Always on the bridge.">
+<meta property="og:description" content="A time series is a series of data points indexed (or listed or graphed) in time order. Most commonly, a time series is a sequence taken at successive equally spaced points in time. Thus it is a sequ">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-23T07:56:20.000Z">
+<meta property="article:modified_time" content="2021-01-02T14:32:22.060Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/categories/study/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/">
+<link rel="canonical" href="http://example.com/%E8%8D%89%E7%A8%BF/[Time%20Series]%201.%20Introduction">
 
 
 <script class="page-configurations">
@@ -48,7 +50,8 @@
   };
 </script>
 
-  <title>Category: 《统计学习方法》 | LIng's Blog</title>
+  <title>[Time Series] 1. Introduction | LIng's Blog
+</title>
   
 
 
@@ -201,7 +204,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -213,6 +216,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#conditions"><span class="nav-text">Conditions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#stationary-process"><span class="nav-text">1. Stationary process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a.-strict-sense-stationarity"><span class="nav-text">a. Strict-sense stationarity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b.-weak-or-wide-sense-stationarity"><span class="nav-text">b. Weak or wide-sense stationarity</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#definition"><span class="nav-text">Definition</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c.-check"><span class="nav-text">c. Check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d.-exchange-from-non-stationary-to-stationary"><span class="nav-text">d. Exchange from non-stationary to stationary</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ergodic-process"><span class="nav-text">2. Ergodic process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1"><span class="nav-text">Definition</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#a.-ar-%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-text">a. AR 自回归模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b.-ma"><span class="nav-text">b. MA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c.-arma"><span class="nav-text">c. ARMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d.-arima-ar-i-ma"><span class="nav-text">d. ARIMA (AR &amp; I &amp; MA)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#derivation"><span class="nav-text">Derivation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ar-in-pf"><span class="nav-text">AR in PF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#appendix"><span class="nav-text">Appendix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -298,158 +302,124 @@
 </noscript>
 
 
-    <div class="main-inner category posts-collapse">
+    <div class="main-inner page posts-expand">
       
+  
+  
 
       
 
+    
+    
+    
+    <div class="post-block" lang="en">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">[Time Series] 1. Introduction
+</h1>
+
+<div class="post-meta-container">
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">《统计学习方法》
-          <small>Category</small>
-        </h2>
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <blockquote>
+<p><em>A <strong>time series</strong> is a series of data points indexed (or listed or graphed) in <strong>time order</strong>. Most commonly, a time series is a sequence taken at successive equally spaced points in time. Thus it is a sequence of <strong>discrete-time</strong> data.</em> ————Wikipedia</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="conditions">Conditions</h2>
+<p>There are two sets of conditions under which much of the theory is built:</p>
+<h3 id="stationary-process">1. Stationary process</h3>
+<h4 id="a.-strict-sense-stationarity">a. Strict-sense stationarity</h4>
+<h4 id="b.-weak-or-wide-sense-stationarity">b. Weak or wide-sense stationarity</h4>
+<h5 id="definition">Definition</h5>
+<ul>
+<li>WSS random processes only require that 1st moment (i.e. the mean) and auto covariance do not vary with respect to time and that the 2nd moment is finite for all times.</li>
+</ul>
+<h4 id="c.-check">c. Check</h4>
+<p>ADF检验</p>
+<h4 id="d.-exchange-from-non-stationary-to-stationary">d. Exchange from non-stationary to stationary</h4>
+<ul>
+<li>一阶差分 <span class="math inline">\(\nabla X_T=X_T-X_{T-1}\)</span> to exclude non-stationary</li>
+<li>二阶差分 <span class="math inline">\(\nabla X_T-\nabla X_{T-1}=(X_T-X_{T-1})-(X_{T-1}-X_{T-2})\)</span></li>
+<li>k步差分 <span class="math inline">\(X_T-X_{T-k}\)</span> to exclude seasonality</li>
+</ul>
+<h3 id="ergodic-process">2. Ergodic process</h3>
+<h4 id="definition-1">Definition</h4>
+<ul>
+<li>Its statistical properties can be deduced from a single, sufficiently long, random sample of the process.</li>
+</ul>
+<h2 id="model">Model</h2>
+<h3 id="a.-ar-自回归模型">a. AR 自回归模型</h3>
+<p><span class="math display">\[
+AR(p): X_t=\alpha_1X_{t-1}+\alpha_2X_{t-2}+...+\alpha_p X_{t-p}+e_t,\,\,e_t\sim N(o,\sigma^2)
+\]</span></p>
+<ul>
+<li><p>过去<span class="math inline">\(p\)</span>期对当前值的影响</p></li>
+<li><p>没有趋势性，有相关性、随机性</p></li>
+</ul>
+<h3 id="b.-ma">b. MA</h3>
+<p><span class="math display">\[
+MA(q):X_t=e_t+\beta_1e_{t-1}+\beta_2e_{t-2}+...+\beta_qe_{t-q}，\,\,e_t\sim N(o,\sigma^2)
+\]</span></p>
+<ul>
+<li>过去<span class="math inline">\(q\)</span>阶白噪声对当前值的影响</li>
+<li>没有趋势性，有相关性、随机性</li>
+</ul>
+<h3 id="c.-arma">c. ARMA</h3>
+<p><span class="math display">\[
+X_t=\alpha_1X_{t-1}+\alpha_2X_{t-2}+...+\alpha_p X_{t-p}+\beta_1e_{t-1}+\beta_2e_{t-2}+...+\beta_qe_{t-q}+e_t，\,\,e_t\sim N(o,\sigma^2)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(ARMA(p,q)=AR(p)+MA(q)-e_t\)</span></li>
+<li>没有趋势性，有相关性、随机性</li>
+</ul>
+<h3 id="d.-arima-ar-i-ma">d. ARIMA (AR &amp; I &amp; MA)</h3>
+<h4 id="derivation">Derivation</h4>
+<p>by <span class="math inline">\(ARMA(p&#39;,q)\)</span>, <span class="math display">\[
+X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1}+\beta_2e_{t-2}+...+\beta_qe_{t-q}+e_t，(1)\;\;e_t\sim N(o,\sigma^2)
+\]</span> let <span class="math inline">\(L^iz_t=z_{t-i}\)</span> be the lag operator. <span class="math display">\[
+(1-\sum_{i=1}^{p&#39;}{\alpha_iL^i})X_t=(1+\sum_{i=1}^{q}{\beta_iL^i})e_t
+\]</span> <span class="math inline">\(assume\; (1-L)^d\;is\;the\;root\;of\;(1-\sum_{i=1}^{p&#39;}{\alpha_iL^i})\)</span>, left part of (5) becomes: <span class="math display">\[
+(1-\sum_{i=1}^{p&#39;}{\alpha_iL^i})X_t=(1-\sum_{i=1}^{p&#39;-d}{\alpha_iL^i})(1-L)^dX_t
+\]</span> (5) becomes <span class="math inline">\(ARIMA(p,d,q)\)</span>: <span class="math display">\[
+(1-\sum_{i=1}^{p}{\alpha_iL^i})(1-L)^dX_t=(1+\sum_{i=1}^{q}{\beta_iL^i})e_t
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\alpha\)</span>: coefficients of the autoregressive models</li>
+<li><span class="math inline">\(\epsilon:\)</span> white noise</li>
+<li><span class="math inline">\(d:\)</span> order of integrated, controls the level of differencing</li>
+<li>趋势性、相关性、随机性</li>
+</ul>
+<h2 id="ar-in-pf">AR in PF</h2>
+<p><span class="math inline">\(\begin{cases} x_k=x_{k-1}+v_{k-1}&amp;(A)\;\; system\;equation\\z_k=H_kx_k+w_k&amp;(B)\;\;measurement\;equation \end{cases}\)</span></p>
+<p><span class="math inline">\(H_k=[z_{k-1}\;z_{k-2}\;...\;z_{k-p}]\)</span></p>
+<p><span class="math inline">\(x_k=[\varphi_{1,k}\;\varphi_{2,k}\;...\;\varphi_{p,k}]^T\)</span>: time-varying autoregression coefficients</p>
+<h2 id="appendix">Appendix</h2>
+<p>Chapman-Kolmogorov equation</p>
+<p><span class="math inline">\(p(y \mid x)=\int p(y \mid x, z) p(z \mid x) d z\)</span> Proof: <span class="math inline">\(p(y \mid x)=\frac{p(x, y)}{p(x)}=\frac{\int p\left(x, y_{1} z\right) d z}{p(x)}=\frac{\int p(x) p(z \mid x) p(y \mid x, z) d z}{p(x)}=\int p(y \mid x, z) p(z \mid x) d z\)</span></p>
+<h2 id="reference">Reference</h2>
+
       </div>
-
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+      
+      
     </div>
+    
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-12-22T13:33:10+08:00"
-              content="2020-12-22">
-          12-22
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm007/" itemprop="url">
-            <span itemprop="name">[统计数学方法] 7. 支持向量机 SVM</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-12-19T23:59:20+08:00"
-              content="2020-12-19">
-          12-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm006/" itemprop="url">
-            <span itemprop="name">[统计数学方法] 6. 逻辑回归LR和最大熵模型MEM</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-12-11T00:00:00+08:00"
-              content="2020-12-11">
-          12-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm005/" itemprop="url">
-            <span itemprop="name">[统计数学方法] 5. 决策树 Decision Tree</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-12-07T00:00:00+08:00"
-              content="2020-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm004/" itemprop="url">
-            <span itemprop="name">[统计数学方法] 4. 朴素贝叶斯 Naive Bayes</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-11-27T02:00:00+08:00"
-              content="2020-11-27">
-          11-27
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm003/" itemprop="url">
-            <span itemprop="name">[统计学习方法] 3. K近邻法 KNN</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2020-11-23T15:56:20+08:00"
-              content="2020-11-23">
-          11-23
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/slm002/" itemprop="url">
-            <span itemprop="name">[统计数学方法] 2. 感知机 Perception</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-    </div>
-  </div>
-  
-  
-  
-
-  
-
+    
+    
+    
 
 
       
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -596,7 +566,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/categories/study/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/",
+      path: "/%E8%8D%89%E7%A8%BF/%5BTime%20Series%5D%201.%20Introduction.html",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);

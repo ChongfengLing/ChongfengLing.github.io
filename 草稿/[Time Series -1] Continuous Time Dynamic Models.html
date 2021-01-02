@@ -24,20 +24,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Undergraduate in Applied Mathematics, XJTLU. Contact Email: chongfeng.zero@gmail.com &#x2F; Chongfeng.Ling17@student.xjtlu.edu.cn GitHub: https:&#x2F;&#x2F;github.com&#x2F;chongfengling Blog: www.chongfeng-ling.com">
+  <meta name="description" content="动态模型  HMM. Discrete. LDS. Continuous. linear. Filtering problem. PF. Continuous. Nonlinear. Filtering problem.  Assumption  齐次 Markov 假设（未来只依赖于当前）：  \(i\): true states \(o\): observations">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Chongfeng Ling 凌崇锋">
-<meta property="og:url" content="http://example.com/about/index.html">
+<meta property="og:title" content="LIng&#39;s Blog">
+<meta property="og:url" content="http://example.com/%E8%8D%89%E7%A8%BF/[Time%20Series%20-1]%20Continuous%20Time%20Dynamic%20Models.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Undergraduate in Applied Mathematics, XJTLU. Contact Email: chongfeng.zero@gmail.com &#x2F; Chongfeng.Ling17@student.xjtlu.edu.cn GitHub: https:&#x2F;&#x2F;github.com&#x2F;chongfengling Blog: www.chongfeng-ling.com">
+<meta property="og:description" content="动态模型  HMM. Discrete. LDS. Continuous. linear. Filtering problem. PF. Continuous. Nonlinear. Filtering problem.  Assumption  齐次 Markov 假设（未来只依赖于当前）：  \(i\): true states \(o\): observations">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-22T09:24:18.000Z">
-<meta property="article:modified_time" content="2020-12-27T10:55:44.982Z">
+<meta property="og:image" content="c:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg">
+<meta property="og:image" content="c:%5Ctypora%5Cfigures%5Cf%20q%20p.png">
+<meta property="article:published_time" content="2021-01-02T13:40:39.352Z">
+<meta property="article:modified_time" content="2021-01-02T13:40:39.352Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg">
 
 
-<link rel="canonical" href="http://example.com/about/">
+<link rel="canonical" href="http://example.com/%E8%8D%89%E7%A8%BF/[Time%20Series%20-1]%20Continuous%20Time%20Dynamic%20Models">
 
 
 <script class="page-configurations">
@@ -50,7 +53,7 @@
   };
 </script>
 
-  <title>Chongfeng Ling 凌崇锋 | LIng's Blog
+  <title> | LIng's Blog
 </title>
   
 
@@ -216,7 +219,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#contact"><span class="nav-text">Contact</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#core-course"><span class="nav-text">Core-Course</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#publication"><span class="nav-text">Publication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#working-experience"><span class="nav-text">Working Experience</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#education"><span class="nav-text">Education</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="nav-text">动态模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#assumption"><span class="nav-text">Assumption</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#two-equations"><span class="nav-text">Two equations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#filtering-problem"><span class="nav-text">Filtering problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process"><span class="nav-text">Process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-dynamical-system"><span class="nav-text">Linear Dynamical System</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#linearly"><span class="nav-text">Linearly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#idea"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#derivation"><span class="nav-text">Derivation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process-1"><span class="nav-text">Process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#particle-filter"><span class="nav-text">Particle Filter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#is-importance-sampling"><span class="nav-text">IS (Importance Sampling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sis-sequential-importance-sampling"><span class="nav-text">SIS (Sequential Importance Sampling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#problem"><span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz"><span class="nav-text">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + \(q(z)&#x3D;q&#39;(z)\))</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#resampling"><span class="nav-text">resampling:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#sir"><span class="nav-text">SIR:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coding"><span class="nav-text">Coding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -315,7 +318,7 @@
     <div class="post-block" lang="en">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">Chongfeng Ling 凌崇锋
+<h1 class="post-title" itemprop="name headline">
 </h1>
 
 <div class="post-meta-container">
@@ -329,50 +332,179 @@
       
       
       <div class="post-body">
-          <p>Undergraduate in Applied Mathematics, <a target="_blank" rel="noopener" href="https://www.xjtlu.edu.cn/en/">XJTLU</a>.</p>
-<h2 id="contact">Contact</h2>
-<p>Email: <a href="mailto:chongfeng.zero@gmail.com">chongfeng.zero@gmail.com</a> / <a href="mailto:Chongfeng.Ling17@student.xjtlu.edu.cn">Chongfeng.Ling17@student.xjtlu.edu.cn</a></p>
-<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/chongfengling">https://github.com/chongfengling</a></p>
-<p>Blog: <a href="www.chongfeng-ling.com">www.chongfeng-ling.com</a></p>
-<h2 id="core-course">Core-Course</h2>
-<p>Campus</p>
+          <h2 id="动态模型">动态模型</h2>
+<ol type="1">
+<li>HMM. Discrete.</li>
+<li>LDS. Continuous. linear. Filtering problem.</li>
+<li>PF. Continuous. Nonlinear. Filtering problem.</li>
+</ol>
+<h4 id="assumption">Assumption</h4>
+<ol type="1">
+<li><p>齐次 Markov 假设（未来只依赖于当前）：</p>
 <ul>
-<li>Linear Algebra</li>
-<li>Numerical Analysis</li>
-<li>Probability &amp; Statistics</li>
-<li>Operations Research</li>
-<li>Differential Equation</li>
+<li><span class="math inline">\(i\)</span>: true states</li>
+<li><span class="math inline">\(o\)</span>: observations</li>
 </ul>
-<p>Coursera</p>
+<p><span class="math display">\[
+p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
+\]</span></p></li>
+<li><p>观测独立假设： <span class="math display">\[
+p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
+\]</span></p></li>
+</ol>
+<h4 id="two-equations">Two equations</h4>
+<ol type="1">
+<li>状态方程 system equation
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www.coursera.org/account/accomplishments/specialization/certificate/2Q6G49NRWQUH">[Specialization] Python for Everybody</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.coursera.org/account/accomplishments/certificate/CE4D3NBG6ES5">Introduction to Data Science in Python</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.coursera.org/account/accomplishments/certificate/RSNFMABZXL9S">Applied Plotting, Charting &amp; Data Representation in Python</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.coursera.org/account/accomplishments/certificate/9NKSKEL8HU69">Machine Learning</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.coursera.org/account/accomplishments/records/W5UP8L6B5MDG">Algorithmic Toolbox</a></li>
-</ul>
-<h2 id="publication">Publication</h2>
-<ul>
-<li><strong><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1810.07377">XJTLUIndoorLoc: A New Fingerprinting Database for Indoor Localization and Trajectory Estimation Based on Wi-Fi RSS and Geomagnetic Field</a></strong>
-<ul>
-<li>CNN, LSTM</li>
+<li>g已知。我们操作机器人行走，过程轨迹收到地面摩擦、风力的影响。</li>
 </ul></li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+Z_t=g(Z_{t-1},u,\delta_1)
+\end{align}
+\]</span></p>
+<ol type="1">
+<li>观测方程 measurement equation</li>
+</ol>
+<p><span class="math display">\[
+X_t=f(Z_t,u,\delta_2)
+\]</span></p>
+<h4 id="filtering-problem">Filtering problem</h4>
+<ul>
+<li><p>Find <span class="math display">\[
+p(z_t|x_1,x_2,\cdots,x_t)
+\]</span></p></li>
+<li><p>online problem</p></li>
 </ul>
-<h2 id="working-experience">Working Experience</h2>
+<h4 id="process">Process</h4>
+<figure>
+<img src="C:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg" alt="动态模型" /><figcaption aria-hidden="true">动态模型</figcaption>
+</figure>
+<h2 id="linear-dynamical-system">Linear Dynamical System</h2>
+<h4 id="linearly">Linearly</h4>
 <ul>
-<li><strong>SURF</strong>: Volunteer; (2018/06 - 2018/09)
+<li>two functions are linearly.</li>
+</ul>
+<p><span class="math display">\[
+\begin{align}
+z_t&amp;=A\cdot z_{t-1}+B+\varepsilon\\
+x_t&amp;=C\cdot z_t+D+\delta\\
+\varepsilon&amp;\sim\mathcal{N}(0,Q)\\
+\delta&amp;\sim\mathcal{N}(0,R)
+\end{align}
+\]</span></p>
+<h4 id="idea">Idea</h4>
+<ol type="1">
+<li>relationship between <span class="math inline">\(p(z_t|x_{1:t})\;\&amp;\;p(z_{t-1}|x_{1:t-1})\)</span></li>
+<li>we know <span class="math inline">\(p(z_t|z_{t-1}),\;p(x_t|z_t)\)</span></li>
+</ol>
+<h4 id="derivation">Derivation</h4>
+<p>For equation (5), we have <span class="math display">\[
+p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})=Cp(x_{1:t},z_t)
+\]</span> For <span class="math inline">\(p(x_{1:t},z_t)\)</span>： <span class="math display">\[
+\begin{align}p(x_{1:t},z_t)&amp;=p(x_t|x_{1:t-1},z_t)p(x_{1:t-1},z_t)\\&amp;=p(x_t|z_t)p(x_{1:t-1},z_t)\nonumber\\
+&amp;=p(x_t|z_t)p(z_t|x_{1:t-1})p(x_{1:t-1})\\&amp;=Cp(x_t|z_t)p(z_t|x_{1:t-1})\\
+\end{align}
+\]</span> For <span class="math inline">\(p(z_{t}|x_{1:t-1})\)</span>, period probability: <span class="math display">\[
+\begin{align}
+p(z_t|x_{1:t-1})&amp;=\int_{z_{t-1}}p(z_t,z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
+&amp;=\int_{z_{t-1}}p(z_t|z_{t-1},x_{1:t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
+&amp;=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}
+\end{align}
+\]</span> In (13), it needs <span class="math inline">\(p(z_{t-1}|x_{1:t-1})\)</span>, a circuit.</p>
+<h4 id="process-1">Process</h4>
+<p>根据计算过程，我们可以分成2个过程。并由于线性高斯假设，我们可以得到解析解。</p>
+<ol type="1">
+<li><p>Prediction:</p>
 <ul>
-<li>Learn and apply Neural Networks.</li>
+<li>calculate <span class="math inline">\(p(z_{t}|x_{1:t-1})\)</span>, period probability。 <span class="math display">\[
+\begin{align}
+&amp; p(z_t|x_{1:t-1})=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}=\int_{z_{t-1}}\mathcal{N}(Az_{t-1}+B,Q)\mathcal{N}(\mu_{t-1},\Sigma_{t-1})dz_{t-1}\\
+&amp; p(z_t|x_{1:t-1})=\mathcal{N}(A\mu_{t-1}+B,Q+A\Sigma_{t-1}A^T)
+\end{align}
+\]</span></li>
 </ul></li>
-<li><strong>TuoXue</strong>: Backend development; (2019/06 - 2019/07)
+<li><p>Update：</p>
 <ul>
-<li>Come up with an idea to own a personal website.</li>
+<li><span class="math display">\[
+p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
+\]</span></li>
 </ul></li>
-</ul>
-<h2 id="education">Education</h2>
+</ol>
+<h2 id="particle-filter">Particle Filter</h2>
+<p>非线性、非高斯，我们不能得到解析解。为了确定分布(5)需要MC采样。</p>
+<h4 id="is-importance-sampling">IS (Importance Sampling)</h4>
+<p>对分布<span class="math inline">\(p(z)\)</span>求关于某个函数<span class="math inline">\(f(z)\)</span>的期望 <span class="math display">\[
+\mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)
+\]</span> 直接在分布<span class="math inline">\(p(z)\)</span>中采样比较困难，我们引入简单分布<span class="math inline">\(q(z)\)</span>，并根据<span class="math inline">\(\frac{p(z)}{q(z)}\)</span>的比值确定采样点的权重 <span class="math display">\[
+\mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\int_zf(z)\frac{p(z)}{q(z)}q(z)dz=\sum\limits_{i=1}^Nf(z_i)\frac{p(z_i)}{q(z_i)}
+\]</span> <img src="C:%5Ctypora%5Cfigures%5Cf%20q%20p.png" alt="f q p" style="zoom:50%;" /></p>
+<p>在滤波问题中，需要求解 <span class="math inline">\(p(z_t|x_{1:t})\)</span>，其权重为： <span class="math display">\[
+w_t^i=\frac{p(z_t^i|x_{1:t})}{q(z_t^i|x_{1:t})},i=1,2,\cdots,N
+\]</span></p>
+<p>It is difficult to sample N points and calculate <span class="math inline">\(p(z_t^i|x_{1:t})\)</span>.</p>
+<h4 id="sis-sequential-importance-sampling">SIS (Sequential Importance Sampling)</h4>
+<p>In SIS, we talk about probability <span class="math inline">\(p(z_{1:t}|x_{1:t})\)</span>: <span class="math display">\[
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}
+\]</span> We want to find the relationship between <span class="math inline">\(w_t^i\)</span> and <span class="math inline">\(w_{t-1}^i\)</span>.</p>
+<p>By (17), for <span class="math inline">\(p(z_{1:t}|x_{1:t})\)</span>: <span class="math display">\[
+\begin{align}p(z_{1:t}|x_{1:t})\propto p(x_{1:t},z_{1:t})&amp;=p(x_t|z_{1:t},x_{1:t-1})p(z_{1:t},x_{1:t-1})\nonumber\\
+&amp;=p(x_t|z_t)p(z_t|x_{1:t-1},z_{1:t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&amp;=p(x_t|z_t)p(z_t|z_{t-1})p(x_{1:t-1},z_{1:t-1})\nonumber\\
+&amp;\propto p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})
+\end{align}
+\]</span> For <span class="math inline">\(q(z_{1:t}|x_{1:t})\)</span>, we let <span class="math display">\[
+q(z_{1:t}|x_{1:t})=q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})
+\]</span> Then we have <span class="math display">\[
+w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})}{q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})}=\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i
+\]</span> We have distribution for <span class="math inline">\(p(x_t|z_t)\)</span> and <span class="math inline">\(p(z_t|z_{t-1})\)</span>.</p>
+<h4 id="problem">Problem</h4>
+<p>权值退化 (the degeneracy phenomenon)，权重的方差变大</p>
+<p>通过<span class="math inline">\(N_{eff}=\frac{1}{\sum_{i=1}^{N_s}(w_k^i)^2}\)</span>判断是否存在权值退化。越小越严重。</p>
+<p>sol:</p>
+<ol type="1">
+<li><p>resampling</p>
+<ol start="2" type="1">
+<li>find a proper distribution <span class="math inline">\(q(z)\)</span>, let <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})\)</span>, then <span class="math inline">\(w_t^i=p(x_t|z_t)w_{t-1}^i\)</span></li>
+</ol></li>
+</ol>
+<h4 id="sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + <span class="math inline">\(q(z)=q&#39;(z)\)</span>)</h4>
+<h6 id="resampling">resampling:</h6>
+<ol type="1">
+<li>t - 1 时刻，采样完成并计算得到权重</li>
+<li>t 时刻，根据 <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})\)</span> 进行采样得到 <span class="math inline">\(z_t^i\)</span>。然后计算得到 <span class="math inline">\(N\)</span> 个权重。</li>
+<li>最后对权重归一化。</li>
+</ol>
+<h6 id="sir">SIR:</h6>
+<p>For loop:</p>
+<ol type="1">
+<li>predict
 <ul>
-<li>Bachelor’s Degree in Applied Mathematics, <strong>Xi'an Jiaotong - Liverpool University</strong> <em>(2017 – 2021)</em></li>
-</ul>
+<li>by system equation</li>
+</ul></li>
+<li>update
+<ul>
+<li>get <span class="math inline">\(w_t^i\)</span> by <span class="math inline">\(w_{t-1}^i\)</span></li>
+</ul></li>
+<li>resampling
+<ul>
+<li>necessary when <span class="math inline">\(N_{eff}&lt;N\)</span></li>
+</ul></li>
+<li>estimate
+<ul>
+<li><span class="math inline">\(x_t=average( w_t^i*x_t^i)\)</span></li>
+</ul></li>
+</ol>
+<h4 id="coding">Coding</h4>
+<p><a target="_blank" rel="noopener" href="https://github.com/johnhw/pfilter">time series</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">robot</a></p>
+<h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aE411o7qd?p=93">【机器学习】【白板推导系列】【合集 1～23】</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/tsyw/MachineLearningNotes">Machine Learning Notes</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3d30070932a8">随机模拟-Monte Carlo积分及采样（详述直接采样、接受-拒绝采样、重要性采样）</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41217212">重要性采样（Importance Sampling）</a></p>
+<p>M. S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp, “A tutorial on particle filters for online nonlinear/non-gaussian Bayesian tracking,” IEEE Transactions on signal processing, vol. 50, no. 2, pp. 174–188, 2002.</p>
 
       </div>
       
@@ -387,6 +519,7 @@
 
 
       
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -533,7 +666,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/about/",
+      path: "/%E8%8D%89%E7%A8%BF/%5BTime%20Series%20-1%5D%20Continuous%20Time%20Dynamic%20Models.html",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);

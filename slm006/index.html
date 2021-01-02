@@ -26,7 +26,7 @@
 
   <meta name="description" content="Logistic Regression 是统计学习中的经典分类方法。最大熵是概率模型学习的一个准则，将其推广到分类问题得到最大熵模型( maximum entropy model) 。逻辑回归模型与最大熵模型都属于对数线性模型。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[统计数学方法] 6.逻辑回归LR和最大熵模型MEM">
+<meta property="og:title" content="[统计数学方法] 6. 逻辑回归LR和最大熵模型MEM">
 <meta property="og:url" content="http://example.com/slm006/index.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
 <meta property="og:description" content="Logistic Regression 是统计学习中的经典分类方法。最大熵是概率模型学习的一个准则，将其推广到分类问题得到最大熵模型( maximum entropy model) 。逻辑回归模型与最大熵模型都属于对数线性模型。">
@@ -35,10 +35,12 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-6%20%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A31.png">
 <meta property="og:image" content="https://github.com/ChongfengLing/typora-picBed/blob/main/img/SLM-6%20%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A32.png?raw=true">
 <meta property="article:published_time" content="2020-12-19T15:59:20.000Z">
-<meta property="article:modified_time" content="2020-12-27T10:32:02.505Z">
+<meta property="article:modified_time" content="2021-01-02T13:40:23.415Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
+<meta property="article:tag" content="MLE">
 <meta property="article:tag" content="Logistic model">
 <meta property="article:tag" content="Maximum Entropy Model">
+<meta property="article:tag" content="Dual Problem">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-6%20%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1.png">
 
@@ -56,7 +58,7 @@
   };
 </script>
 
-  <title>[统计数学方法] 6.逻辑回归LR和最大熵模型MEM | LIng's Blog</title>
+  <title>[统计数学方法] 6. 逻辑回归LR和最大熵模型MEM | LIng's Blog</title>
   
 
 
@@ -152,17 +154,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">2</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">2</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">7</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -221,7 +223,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#logistics-regression"><span class="nav-text">1. Logistics Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#logistic-distribution"><span class="nav-text">1.1 Logistic Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.2 二项logistic回归模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-text">1.3 参数估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.4 多项逻辑回归模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-maximum-entropy-model"><span class="nav-text">2. 最大熵模型 Maximum Entropy Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E5%8E%9F%E7%90%86"><span class="nav-text">2.1 最大熵原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">2.2 最大熵模型的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E6%9D%A5%E7%A1%AE%E5%AE%9A%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%9B%86%E5%90%88"><span class="nav-text">2.2.1 确定约束条件来确定概率模型的集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E5%88%86%E5%B8%83"><span class="nav-text">2.2.1.1 经验分布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0"><span class="nav-text">2.2.1.2 特征函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E7%9B%B8%E7%AD%89"><span class="nav-text">2.2.1.3 期望相等</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-text">2.2.2 模型的条件熵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-text">2.3 模型的学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E8%BD%AC%E5%8C%96"><span class="nav-text">2.3.1 对偶问题转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="nav-text">2.3.2 对偶问题求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E5%8C%96%E4%B8%8Emle"><span class="nav-text">2.3.3 极大化与MLE</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lr%E5%92%8Cmem%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">3. LR和MEM的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%80%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-text">4. 模型学习的最优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%B0%BA%E5%BA%A6%E7%AE%97%E6%B3%95-improved-iterative-scaling"><span class="nav-text">4.1改进的迭代尺度算法 Improved Iterative Scaling</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#logistics-regression"><span class="nav-text">1. Logistics Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#logistic-distribution"><span class="nav-text">1.1 Logistic Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.2 二项logistic回归模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-text">1.3 参数估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.4 多项逻辑回归模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-maximum-entropy-model"><span class="nav-text">2. 最大熵模型 Maximum Entropy Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E5%8E%9F%E7%90%86"><span class="nav-text">2.1 最大熵原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">2.2 最大熵模型的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E6%9D%A5%E7%A1%AE%E5%AE%9A%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%9B%86%E5%90%88"><span class="nav-text">2.2.1 确定约束条件来确定概率模型的集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E5%88%86%E5%B8%83"><span class="nav-text">2.2.1.1 经验分布</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0"><span class="nav-text">2.2.1.2 特征函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E7%9B%B8%E7%AD%89"><span class="nav-text">2.2.1.3 期望相等</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9D%A1%E4%BB%B6%E7%86%B5"><span class="nav-text">2.2.2 模型的条件熵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-text">2.3 模型的学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E8%BD%AC%E5%8C%96"><span class="nav-text">2.3.1 对偶问题转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="nav-text">2.3.2 对偶问题求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E5%8C%96%E4%B8%8Emle"><span class="nav-text">2.3.3 极大化与MLE</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lr%E5%92%8Cmem%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">3. LR和MEM的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%9C%80%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-text">4. 模型学习的最优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%B0%BA%E5%BA%A6%E7%AE%97%E6%B3%95-improved-iterative-scaling"><span class="nav-text">4.1改进的迭代尺度算法 Improved Iterative Scaling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -237,20 +239,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -282,7 +284,7 @@
     <h3 class="widget-title">标签云</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Baye-Theorem/" rel="tag">Baye Theorem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blog/" rel="tag">Blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C4-5/" rel="tag">C4.5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CART/" rel="tag">CART</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree/" rel="tag">Decision Tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual/" rel="tag">Dual</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual-Problem/" rel="tag">Dual Problem</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Entropy/" rel="tag">Entropy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gini-Index/" rel="tag">Gini Index</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo-NexT/" rel="tag">Hexo-NexT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hinge-Loss-Function/" rel="tag">Hinge Loss Function</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ID3/" rel="tag">ID3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Info-Gain/" rel="tag">Info Gain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KNN/" rel="tag">KNN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kernel-Method/" rel="tag">Kernel Method</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLE/" rel="tag">MLE</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Margin/" rel="tag">Maximum Margin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naive-Bayes/" rel="tag">Naive Bayes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kd-tree/" rel="tag">kd tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA-Perception/" rel="tag">感知机 Perception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7/" rel="tag">线性可分性</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -332,7 +334,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [统计数学方法] 6.逻辑回归LR和最大熵模型MEM
+          [统计数学方法] 6. 逻辑回归LR和最大熵模型MEM
         </h1>
 
         <div class="post-meta-container">
@@ -350,7 +352,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-12-27 18:32:02" itemprop="dateModified" datetime="2020-12-27T18:32:02+08:00">2020-12-27</time>
+        <time title="Modified: 2021-01-02 21:40:23" itemprop="dateModified" datetime="2021-01-02T21:40:23+08:00">2021-01-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -367,7 +369,7 @@
     </span>
 
   
-    <span id="/slm006/" class="post-meta-item leancloud_visitors" data-flag-title="[统计数学方法] 6.逻辑回归LR和最大熵模型MEM" title="Views">
+    <span id="/slm006/" class="post-meta-item leancloud_visitors" data-flag-title="[统计数学方法] 6. 逻辑回归LR和最大熵模型MEM" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -482,6 +484,7 @@ P(Y=0 \mid x)=\frac{1}{1+\exp (\hat{w} \cdot x)}
 P(Y=k \mid x)=\frac{\exp \left(w_{k} \cdot x\right)}{1+\sum_{k=1}^{K-1} \exp \left(w_{k} \cdot x\right)}, \quad k=1,2, \cdots, K-1
 \end{align}
 \]</span></p>
+<p><br><br></p>
 <h2 id="最大熵模型-maximum-entropy-model">2. 最大熵模型 Maximum Entropy Model</h2>
 <h3 id="最大熵原理">2.1 最大熵原理</h3>
 <p>最大熵原理是概率模型学习的一个准则。最大熵原理认为，学习概率模型时，在所有可能的概率模型（分布）中，熵最大的模型是最好的模型。通常用约束条件来确定概率模型的集合，所以，最大熵原理也可以表述为在满足约束条件的模型集合中选取熵最大的模型。</p>
@@ -588,6 +591,7 @@ L(P, w)&amp; \equiv -H(P)+w_{0}\left(1-\sum_{y} P(y \mid x)\right)+\sum_{i=1}^{n
 <h4 id="极大化与mle">2.3.3 极大化与MLE</h4>
 <p>对极小值<span class="math inline">\(\Phi\)</span>的极大化等价于对其的MLE</p>
 <p><img src='https://github.com/ChongfengLing/typora-picBed/blob/main/img/SLM-6%20%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A32.png?raw=true'></p>
+<p><br><br></p>
 <h2 id="lr和mem的关系">3. LR和MEM的关系</h2>
 <p>最大熵模型为 <span class="math display">\[
 \begin{align}
@@ -610,6 +614,7 @@ P\left(y_{0} \mid \mathbf{x}\right)&amp;=\frac{1}{1+e^{\mathbf{w}^{T} \mathbf{x}
 <li>LR的本质为二项分类下选取了某个特征函数的最大熵模型</li>
 <li>LR模型采用了Sigmoid函数以及用MLE求参数的原因</li>
 </ul>
+<p><br><br></p>
 <h2 id="模型学习的最优化算法">4. 模型学习的最优化算法</h2>
 <h3 id="改进的迭代尺度算法-improved-iterative-scaling">4.1改进的迭代尺度算法 Improved Iterative Scaling</h3>
 <p>最大熵模型 <span class="math display">\[
@@ -622,6 +627,9 @@ Z_{w}(x)&amp;=\sum_{y} \exp \left(\sum_{i=1}^{n} w_{i} f_{i}(x, y)\right)
 L(w)=\sum_{x, y} \tilde{P}(x, y) \sum_{i=1}^{n} w_{i} f_{i}(x, y)-\sum_{x} \tilde{P}(x) \log Z_{w}(x)
  \end{align}
 \]</span> 目标：求对数似然函数的极大值<span class="math inline">\(\hat{w}\)</span></p>
+<p><br><br></p>
+<h2 id="reference">Reference</h2>
+<p>待补充</p>
 
     </div>
 
@@ -631,19 +639,24 @@ L(w)=\sum_{x, y} \tilde{P}(x, y) \sum_{i=1}^{n} w_{i} f_{i}(x, y)-\sum_{x} \tild
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/MLE/" rel="tag"><i class="fa fa-tag"></i> MLE</a>
               <a href="/tags/Logistic-model/" rel="tag"><i class="fa fa-tag"></i> Logistic model</a>
               <a href="/tags/Maximum-Entropy-Model/" rel="tag"><i class="fa fa-tag"></i> Maximum Entropy Model</a>
+              <a href="/tags/Dual-Problem/" rel="tag"><i class="fa fa-tag"></i> Dual Problem</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/4a17b156/" rel="prev" title="Hello World">
-                  <i class="fa fa-chevron-left"></i> Hello World
+                <a href="/slm005/" rel="prev" title="[统计数学方法] 5. 决策树 Decision Tree">
+                  <i class="fa fa-chevron-left"></i> [统计数学方法] 5. 决策树 Decision Tree
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/howto2/" rel="next" title="[How to] 2. Hexo+Github+NexT">
+                  [How to] 2. Hexo+Github+NexT <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -691,7 +704,7 @@ L(w)=\sum_{x, y} \tilde{P}(x, y) \sum_{i=1}^{n} w_{i} f_{i}(x, y)-\sum_{x} \tild
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -702,13 +715,13 @@ L(w)=\sum_{x, y} \tilde{P}(x, y) \sum_{i=1}^{n} w_{i} f_{i}(x, y)-\sum_{x} \tild
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">7k</span>
+    <span title="Symbols count total">60k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6 mins.</span>
+    <span title="Reading time total">54 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

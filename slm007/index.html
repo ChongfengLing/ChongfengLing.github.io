@@ -25,23 +25,28 @@
   </script>
 
   <meta name="description" content="支持向量机(Support Vector Machines)是一种二元分类模型。基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。基本模型是特征空间上的间隔最大的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="[统计数学方法] 7.支持向量机 SVM">
-<meta property="og:url" content="http://example.com/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/[SLM-7]%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%20SVM.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[统计数学方法] 7. 支持向量机 SVM">
+<meta property="og:url" content="http://example.com/slm007/index.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
 <meta property="og:description" content="支持向量机(Support Vector Machines)是一种二元分类模型。基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。基本模型是特征空间上的间隔最大的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-7%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-7%20%E8%BD%AF%E9%97%B4%E9%9A%94%E5%88%86%E7%A6%BB%E5%90%91%E9%87%8F.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-7%20%E5%90%88%E9%A1%B5%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0.png">
-<meta property="article:published_time" content="2020-12-27T10:28:28.180Z">
-<meta property="article:modified_time" content="2020-12-22T06:34:12.257Z">
+<meta property="article:published_time" content="2020-12-22T05:33:10.385Z">
+<meta property="article:modified_time" content="2021-01-02T13:40:28.948Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
+<meta property="article:tag" content="Dual Problem">
+<meta property="article:tag" content="SVM">
+<meta property="article:tag" content="Kernel Method">
+<meta property="article:tag" content="Maximum Margin">
+<meta property="article:tag" content="Hinge Loss Function">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-7%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F.png">
 
 
-<link rel="canonical" href="http://example.com/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/[SLM-7]%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%20SVM">
+<link rel="canonical" href="http://example.com/slm007/">
 
 
 <script class="page-configurations">
@@ -49,13 +54,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>[统计数学方法] 7.支持向量机 SVM | LIng's Blog
-</title>
+  <title>[统计数学方法] 7. 支持向量机 SVM | LIng's Blog</title>
   
 
 
@@ -151,17 +155,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">2</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">2</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">7</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -236,20 +240,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -281,7 +285,7 @@
     <h3 class="widget-title">标签云</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Baye-Theorem/" rel="tag">Baye Theorem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blog/" rel="tag">Blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C4-5/" rel="tag">C4.5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CART/" rel="tag">CART</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree/" rel="tag">Decision Tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual/" rel="tag">Dual</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual-Problem/" rel="tag">Dual Problem</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Entropy/" rel="tag">Entropy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gini-Index/" rel="tag">Gini Index</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo-NexT/" rel="tag">Hexo-NexT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hinge-Loss-Function/" rel="tag">Hinge Loss Function</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ID3/" rel="tag">ID3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Info-Gain/" rel="tag">Info Gain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KNN/" rel="tag">KNN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kernel-Method/" rel="tag">Kernel Method</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLE/" rel="tag">MLE</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Margin/" rel="tag">Maximum Margin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naive-Bayes/" rel="tag">Naive Bayes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kd-tree/" rel="tag">kd tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA-Perception/" rel="tag">感知机 Perception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7/" rel="tag">线性可分性</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -306,42 +310,123 @@
 </noscript>
 
 
-    <div class="main-inner page posts-expand">
+    <div class="main-inner post posts-expand">
       
-  
-  
 
       
 
     
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/slm007/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Chongfeng Ling 凌崇锋">
+      <meta itemprop="description" content="Always on the bridge.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LIng's Blog">
+    </span>
+
     
     
-    <div class="post-block" lang="en">
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [统计数学方法] 7. 支持向量机 SVM
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">[统计数学方法] 7.支持向量机 SVM
-</h1>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-<div class="post-meta-container">
+      <time title="Created: 2020-12-22 13:33:10" itemprop="dateCreated datePublished" datetime="2020-12-22T13:33:10+08:00">2020-12-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-01-02 21:40:28" itemprop="dateModified" datetime="2021-01-02T21:40:28+08:00">2021-01-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/study/" itemprop="url" rel="index"><span itemprop="name">study</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/study/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《统计学习方法》</span></a>
+        </span>
+    </span>
+
   
-
+    <span id="/slm007/" class="post-meta-item leancloud_visitors" data-flag-title="[统计数学方法] 7. 支持向量机 SVM" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/slm007/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/slm007/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>13 mins.</span>
+    </span>
 </div>
 
-</header>
 
-      
-      
-      
-      <div class="post-body">
-          <p>支持向量机(Support Vector Machines)是一种<strong>二元分类</strong>模型。<strong>基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</strong>基本模型是<strong>特征空间上的间隔最大</strong>的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。 <a id="more"></a></p>
+          
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>支持向量机(Support Vector Machines)是一种<strong>二元分类</strong>模型。<strong>基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</strong>基本模型是<strong>特征空间上的间隔最大</strong>的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。 <a id="more"></a></p>
 <h2 id="线性可分支持向量机与硬间隔最大化">1. 线性可分支持向量机与硬间隔最大化</h2>
 <h3 id="model">1.1 Model</h3>
 <blockquote>
 <p>定义 7.1 (线性可分支持向量机 ) <span class="math inline">\(\quad\)</span> 给定<strong>线性可分</strong>训练数据集 <span class="math display">\[
-\begin{array}{1}
-T=\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}), \cdots,\left(x_{N}, y_{N}\right)\right\},\nonumber\\
-x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}=\{+1,-1\}, i=1,2, \cdots, N
-\end{array}
+\begin{align}
+T=&amp;\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}), \cdots,\left(x_{N}, y_{N}\right)\right\}\\
+x_{i} \in \mathcal{X}=&amp;\mathbf{R}^{n}, y_{i} \in \mathcal{Y}=\{+1,-1\}, i=1,2, \cdots, N
+\end{align}
 \]</span> 通过<strong>间隔最大化或等价地求解相应的凸二次规划问题</strong>学习得到的分离超平面为 <span class="math display">\[
 w^{*} \cdot x+b^{*}=0
 \]</span> 以及相应的分类决策函数 <span class="math display">\[
@@ -361,7 +446,9 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 <p>定义 7.2 (函数间隔) <span class="math inline">\(\quad\)</span> 对于给定的训练数据集 <span class="math inline">\(T\)</span> 和超平面 <span class="math inline">\((w, b),\)</span> 定义超平面<span class="math inline">\((w, b)\)</span> <strong>关于样本点 <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span> 的函数间隔</strong>为 <span class="math display">\[
 \hat{\gamma}_{i}=y_{i}\left(w \cdot x_{i}+b\right)
 \]</span> 定义超平面 <span class="math inline">\((w, b)\)</span> <strong>关于训练数据集 <span class="math inline">\(T\)</span> 的函数间隔</strong>为超平面 <span class="math inline">\((w, b)\)</span> 对于 <span class="math inline">\(T\)</span> 中所有样本点 <span class="math inline">\(\left(x_{i}, y_{i}\right)\)</span> 的函数间隔之最小值，即 <span class="math display">\[
+\begin{align}
 \hat{\gamma}=\min _{i=1, \cdots, N} \hat{\gamma}_{i}
+\end{align}
 \]</span></p>
 </blockquote>
 <ul>
@@ -388,33 +475,36 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 </ul>
 <h4 id="algorithm">1.3.1 Algorithm</h4>
 <p>由几何间隔的定义可知，硬间隔最大化可以表示为 <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \max _{w, b} &amp; \gamma \\
 \text { s.t. } &amp; y_{i}\left(\frac{w}{\|w\|} \cdot x_{i}+\frac{b}{\|w\|}\right) \geqslant \gamma&gt;0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span> 由几何间隔和函数间隔的定义，(7)转化成 <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \max _{u \cdot b}&amp; \frac{\hat{\gamma}}{\|w\|} \\
 \text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right) \geqslant \hat{\gamma}, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span> 我们要求<span class="math inline">\(w,\;b\)</span>，使得<span class="math inline">\(\frac{\hat{\gamma}}{\|w\|}\)</span>最大化，在这个目标函数与约束条件中，<span class="math inline">\(\hat{y}\)</span>的取值对最后的超平面没有影响。于是我们设<span class="math inline">\(\hat{y}=1\)</span>，当成单位1。同时最大化<span class="math inline">\(\frac{1}{\|w\|}\)</span> 和最小化 <span class="math inline">\(\frac{1}{2}\|w\|^{2}\)</span>等价。(8)转化成 <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \min _{w, b} &amp; \frac{1}{2}\|w\|^{2} \\
 \text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span></p>
 <ul>
-<li>(9)为凸二次规划问题convex quadratic programming</li>
+<li>(8-9)为凸二次规划问题convex quadratic programming</li>
 </ul>
-<p>求出(9)的解<span class="math inline">\(w^*,\;b^*\)</span>，我们可以得出最大间隔分离超平面<span class="math inline">\(w^{*} \cdot x+b^{*}=0\)</span> 及分类决策函数<span class="math inline">\(f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)\)</span>，即线性可分向量机模型。</p>
+<p>求出(8-9)的解<span class="math inline">\(w^*,\;b^*\)</span>，我们可以得出最大间隔分离超平面<span class="math inline">\(w^{*} \cdot x+b^{*}=0\)</span> 及分类决策函数<span class="math inline">\(f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)\)</span>，即线性可分向量机模型。</p>
 <blockquote>
-<p>算法 7.1 (线性可分支持向量机学习算法————最大间隔法) 输入: 线性可分训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}\)</span>，<span class="math inline">\(x_{i}\in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span> 输出：最大间隔分离超平面和分类决策函数。</p>
+<p>算法 7.1 (线性可分支持向量机学习算法——最大间隔法)</p>
+<p>输入: 线性可分训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}\)</span>，<span class="math inline">\(x_{i}\in \mathcal{X}=\mathbf{R}^{n}\)</span>,<span class="math inline">\(y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span></p>
+<p>输出：最大间隔分离超平面和分类决策函数。</p>
 <p>（1）构造并求解约束最优化问题: <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \min _{w, b} &amp; \frac{1}{2}\|w\|^{2} \\
 \text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
-\]</span> 求得最优解 <span class="math inline">\(w^{*}, b^{*}\)</span> 。 （2）由此得到分离超平面: <span class="math display">\[
+\end{align}
+\]</span> 求得最优解 <span class="math inline">\(w^{*}, b^{*}\)</span> 。</p>
+<p>（2）由此得到分离超平面: <span class="math display">\[
 w^{*} \cdot x+b^{*}=0
 \]</span> 分类决策函数 <span class="math display">\[
 f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
@@ -439,45 +529,45 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 <li>引入核函数</li>
 </ol>
 <h4 id="对偶问题的导出">1.4.1 对偶问题的导出</h4>
-<p>对于拘束最优化问题(10) <span class="math display">\[
-\begin{array}{ll}
+<p>对于拘束最优化问题 <span class="math display">\[
+\begin{align}
 \min _{w, b} &amp; \frac{1}{2}\|w\|^{2} \\
-\text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N\nonumber \tag{10}
-\end{array}
+\text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N
+\end{align}
 \]</span> 的每一个约束条件，我们引入一个拉格朗日乘子 Lagrange multiplier <span class="math inline">\(\alpha_{i} \geqslant 0\)</span>, <span class="math inline">\(i=1,2, \cdots, N\)</span>，定义拉格朗日函数 Generalized Lagrange Function，<span class="math inline">\(\alpha=\left(\alpha_{1}, \alpha_{2}, \cdots, \alpha_{N}\right)^{\mathrm{T}}\)</span> 为拉格朗日乘子向量。 <span class="math display">\[
 \begin{align}
 L(w, b, \alpha)&amp;=\frac{1}{2}\|w\|^{2}-\sum_{i=1}^{N} \alpha_{i}(y_{i}\left(w \cdot x_{i}+b\right)-1)\nonumber
 \\&amp;=\frac{1}{2}\|w\|^{2}-\sum_{i=1}^{N} \alpha_{i} y_{i}\left(w \cdot x_{i}+b\right)+\sum_{i=1}^{N} \alpha_{i}
 \end{align}
-\]</span> 带拘束最优化问题(10)可以变成无拘束优化问题(14) <span class="math display">\[
-\begin{array}{l}
+\]</span> 带拘束最优化问题(12-13)可以变成无拘束优化问题(15-16) <span class="math display">\[
+\begin{align}
 \min _{w, b} \max _{\lambda} \mathcal{L}(w, b, \alpha) \\
 \text { s.t. } \lambda_{i} \geqslant 0
-\end{array}
+\end{align}
 \]</span></p>
-<p>由强对偶关系，拘束问题(14)可以化为无拘束优化问题 <span class="math display">\[
-\begin{array}{l}
+<p>由强对偶关系，拘束问题(15-16)可以化为无拘束优化问题 <span class="math display">\[
+\begin{align}
 \max _{\lambda} \min _{w, b} \mathcal{L}(w, b, \alpha) \\
 \text { s.t. } \lambda_{i} \geqslant 0
-\end{array}
+\end{align}
 \]</span></p>
-<p>由上面的拉格朗日（强）对偶性可得，原始问题(10)的对偶问题是极大极小问题(15)</p>
+<p>由上面的拉格朗日（强）对偶性可得，原始问题(12-13)的对偶问题是极大极小问题(17-18)</p>
 <ul>
 <li>详细推导见：【拉格朗日对偶，等价对偶以及KKT条件】（文件没保存，有缘再续）</li>
 </ul>
 <h4 id="对偶问题的计算">1.4.2 对偶问题的计算</h4>
 <p><strong>1.4.2.1: 求<span class="math inline">\(\min _{w, b} L(w, b, \alpha)=\frac{1}{2}\|w\|^{2}-\sum_{i=1}^{N} \alpha_{i} y_{i}\left(w \cdot x_{i}+b\right)+\sum_{i=1}^{N} \alpha_{i}\)</span></strong></p>
 <p>计算<span class="math inline">\(\min _{w, b} L(w, b, \alpha)\)</span>对变量<span class="math inline">\(w,\;b\)</span>的偏导为0 <span class="math display">\[
-\begin{array}{l}
+\begin{align}
 \nabla_{w} L(w, b, \alpha)=w-\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}=0 \\
 \nabla_{b} L(w, b, \alpha)=-\sum_{i=1}^{N} \alpha_{i} y_{i}=0\nonumber\\
-\end{array}
+\end{align}
 \]</span> 得 <span class="math display">\[
-\begin{array}{l}
+\begin{align}
 w&amp;=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}\\
 \sum_{i=1}^{N} \alpha_{i} y_{i}&amp;=0
-\end{array}
-\]</span> 把(16)带入到(13)，得 <span class="math display">\[
+\end{align}
+\]</span> 把(20-21)带入到(14)，得 <span class="math display">\[
 \begin{aligned}
 L(w, b, \alpha) &amp;=\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} y_{i}\left(\left(\sum_{j=1}^{N} \alpha_{j} y_{j} x_{j}\right) \cdot x_{i}+b\right)+\sum_{i=1}^{N} \alpha_{i} \\
 &amp;=-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)+\sum_{i=1}^{N} \alpha_{i}
@@ -491,34 +581,37 @@ L(w, b, \alpha) &amp;=\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alph
 &amp; \alpha_{i} \geqslant 0, \quad i=1,2, \cdots, N
 \end{aligned}
 \]</span> 调整符号，得与原始问题等价的对偶最优化问题 <span class="math display">\[
-\begin{array}{1}
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; \alpha_{i} \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span></p>
 <ul>
-<li>$ <em>{i=1}^{N} </em>{i} y_{i}=0<span class="math inline">\(意味着很大部分的\)</span>$，即决定超平面的只是很小一部分的支持向量。</li>
+<li><span class="math inline">\(\sum_{i=1}^{N} \alpha_{i} y_{i}=0\)</span>意味着很大部分的<span class="math inline">\(\alpha=0\)</span>，即决定超平面的只是很小一部分的支持向量。</li>
 </ul>
 <h4 id="对偶问题的解">1.4.3 对偶问题的解</h4>
 <blockquote>
-<p>定理 7.2 设 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{l}^{*}\right)^{\mathrm{T}}\)</span> 是对偶最优化问题 (7.22)<span class="math inline">\(\sim(7.24)\)</span> 的解，则存在下标 <span class="math inline">\(j,\)</span> 使得 <span class="math inline">\(\alpha_{j}^{*}&gt;0,\)</span> 并可按下式求得原始最优化问题 (7.13)<span class="math inline">\(\sim(7.14)\)</span> 的解 <span class="math inline">\(w^{*}, b^{*}\)</span> : <span class="math display">\[
-\begin{array}{c}
+<p>定理 7.2 设 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{l}^{*}\right)^{\mathrm{T}}\)</span> 是对偶最优化问题的解，则存在下标 <span class="math inline">\(j,\)</span> 使得 <span class="math inline">\(\alpha_{j}^{*}&gt;0,\)</span> 并可按下式求得原始最优化问题的解 <span class="math inline">\(w^{*}, b^{*}\)</span> : <span class="math display">\[
+\begin{align}
 w^{*}=\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i} \\
 b^{*}=y_{j}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x_{i} \cdot x_{j}\right)
-\end{array}
+\end{align}
 \]</span></p>
 </blockquote>
 <p>分离超平面为<span class="math inline">\(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x \cdot x_{i}\right)+b^{*}=0\)</span></p>
 <p>分类决策函数为<span class="math inline">\(f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x \cdot x_{i}\right)+b^{*}\right)\)</span></p>
 <h4 id="algorithm-1">1.4.4 Algorithm</h4>
 <blockquote>
-<p>算法 7.2 (线性可分支持向量机学习算法) 输入: 线性可分训练集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}\)</span>, <span class="math inline">\(y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span> 输出：分离超平面和分类决策函数。 （1）构造并求解约束最优化问题 <span class="math display">\[
-\begin{array}{ll}
+<p>算法 7.2 (线性可分支持向量机学习算法)</p>
+<p>输入: 线性可分训练集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}\)</span>, <span class="math inline">\(y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span></p>
+<p>输出：分离超平面和分类决策函数。</p>
+<p>（1）构造并求解约束最优化问题 <span class="math display">\[
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; \alpha_{i} \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span> 求得最优解 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{N}^{*}\right)^{\mathrm{T}}\)</span> 。 (2) 计算 <span class="math display">\[
 w^{*}=\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i}
 \]</span> 并选择 <span class="math inline">\(\alpha^{*}\)</span> 的一个正分量 <span class="math inline">\(\alpha_{j}^{*}&gt;0,\)</span> 计算 <span class="math display">\[
@@ -529,6 +622,7 @@ w^{*} \cdot x+b^{*}=0
 f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 \]</span></p>
 </blockquote>
+<p><br><br></p>
 <h2 id="线性支持向量机与软间隔最大化">2. 线性支持向量机与软间隔最大化</h2>
 <p>对线性不可分数据集，存在一些特异点（outlier）使得不等式不能全部满足，即函数间隔大于1。</p>
 <p>因此我们引入松弛变量<span class="math inline">\(\xi_i \geq0\)</span>，使得函数间隔大于等于<span class="math inline">\(1-\xi_i\)</span>。同时对松弛变量付出一个惩罚参数。</p>
@@ -546,11 +640,11 @@ y_{i}\left(w \cdot x_{i}+b\right) \geqslant 1-\xi_{i}
 </ul>
 <h3 id="原始问题">2.1 原始问题</h3>
 <p><span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \min _{w, b, \xi} &amp; \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{N} \xi_{i} \\
 \text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right) \geqslant 1-\xi_{i}, \quad i=1,2, \cdots, N \\
 &amp; \xi_{i} \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span></p>
 <ul>
 <li>凸二次规划问题</li>
@@ -563,30 +657,34 @@ L(w, b, \xi, \alpha, \mu) \equiv \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{N} \xi_{i}-\
 \alpha_i\geq 0,\;\mu_i\geq0
 \]</span></p>
 <h3 id="对偶问题">2.3 对偶问题</h3>
-<p>原始问题(27)的对偶问题使拉格朗日函数的极大极小问题。 <span class="math display">\[
-\begin{array}{ll}
+<p>原始问题(30-32)的对偶问题使拉格朗日函数的极大极小问题。 <span class="math display">\[
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; 0 \leqslant \alpha_{i} \leqslant C, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span></p>
 <h3 id="解的等价性">2.4 解的等价性</h3>
 <blockquote>
 <p>定理 7.3 设 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{N}^{*}\right)^{\mathrm{T}}\)</span> 是对偶问题的一个解，若存在 <span class="math inline">\(\alpha^{*}\)</span> 的一个分量 <span class="math inline">\(\alpha_{j}^{*}, 0&lt;\alpha_{j}^{*}&lt;C,\)</span> 则原始问题的解 <span class="math inline">\(w^{*}, b^{*}\)</span> 可按下式 求得: <span class="math display">\[
-\begin{array}{c}
+\begin{align}
 w^{*}=\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i} \\
 b^{*}=y_{j}-\sum_{i=1}^{N} y_{i} \alpha_{i}^{*}\left(x_{i} \cdot x_{j}\right)
-\end{array}
+\end{align}
 \]</span></p>
 </blockquote>
 <blockquote>
-<p>算法 7.3 (线性支持向量机学习算法) 输入: 训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中， <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}\)</span>, <span class="math inline">\(y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span> 输出：分离超平面和分类决策函数。 （1）选择惩罚参数 <span class="math inline">\(C&gt;0,\)</span> 构造并求解凸二次规划问题 <span class="math display">\[
-\begin{array}{ll}
+<p>算法 7.3 (线性支持向量机学习算法)</p>
+<p>输入: 训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中， <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}\)</span>, <span class="math inline">\(y_{i} \in \mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span></p>
+<p>输出：分离超平面和分类决策函数。</p>
+<p>（1）选择惩罚参数 <span class="math inline">\(C&gt;0,\)</span> 构造并求解凸二次规划问题 <span class="math display">\[
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; 0 \leqslant \alpha_{i} \leqslant C, \quad i=1,2, \cdots, N
-\end{array}
-\]</span> 求得最优解 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{N}^{*}\right)^{\mathrm{T}}\)</span> （2） 计算 <span class="math inline">\(w^{*}=\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i}\)</span> 选择 <span class="math inline">\(\alpha^{*}\)</span> 的一个分量 <span class="math inline">\(\alpha_{j}^{*}\)</span> 适合条件 <span class="math inline">\(0&lt;\alpha_{j}^{*}&lt;C\)</span> ，计算 <span class="math display">\[
+\end{align}
+\]</span> 求得最优解 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{N}^{*}\right)^{\mathrm{T}}\)</span></p>
+<p>（2） 计算 <span class="math inline">\(w^{*}=\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i}\)</span> 选择 <span class="math inline">\(\alpha^{*}\)</span> 的一个分量 <span class="math inline">\(\alpha_{j}^{*}\)</span> 适合条件 <span class="math inline">\(0&lt;\alpha_{j}^{*}&lt;C\)</span> ，计算 <span class="math display">\[
 b^{*}=y_{j}-\sum_{i=1}^{N} y_{i} \alpha_{i}^{*}\left(x_{i} \cdot x_{j}\right)
 \]</span> （3）求得分离超平面 <span class="math display">\[
 w^{*} \cdot x+b^{*}=0
@@ -595,7 +693,7 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 \]</span></p>
 </blockquote>
 <ul>
-<li>(32)中，每一个合适的<span class="math inline">\(\alpha\)</span>都会得出一个<span class="math inline">\(b\)</span>，所以<span class="math inline">\(b\)</span>不唯一</li>
+<li>第二部中，每一个合适的<span class="math inline">\(\alpha\)</span>都会得出一个<span class="math inline">\(b\)</span>，所以<span class="math inline">\(b\)</span>不唯一</li>
 </ul>
 <h3 id="支持向量">2.4 支持向量</h3>
 <p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-7%20%E8%BD%AF%E9%97%B4%E9%9A%94%E5%88%86%E7%A6%BB%E5%90%91%E9%87%8F.png" alt="image-20201216151045483" style="zoom:50%;" /></p>
@@ -610,11 +708,11 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 <h3 id="合页损失函数-hinge-loss-function">2.5 合页损失函数 Hinge Loss Function</h3>
 <blockquote>
 <p>定理 7.4 线性支持向量机原始最优化问题: <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \min _{w, b, \xi} &amp; \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{N} \xi_{i} \\
 \text { s.t. } &amp; y_{i}\left(w \cdot x_{i}+b\right) \geqslant 1-\xi_{i}, \quad i=1,2, \cdots, N \\
 &amp; \xi_{i} \geqslant 0, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span> 等价于最优化问题 <span class="math display">\[
 \min _{w, b} \sum_{i=1}^{N}\left[1-y_{i}\left(w \cdot x_{i}+b\right)\right]_{+}+\lambda\|w\|^{2}
 \]</span></p>
@@ -632,6 +730,7 @@ f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)
 <li>合页损失函数是0-1损失函数的上界。<strong>线性支持向量机是优化由0-1损失函数的上界构成的目标函数</strong>。</li>
 <li>合页损失函数对学习有更高要求。不但需要分类正确，还要确信度（距离）足够高才为0损失。</li>
 </ul>
+<p><br><br></p>
 <h2 id="非线性支持向量机与核函数">3. 非线性支持向量机与核函数</h2>
 <p>对于一个非线性数据集，首先使用一个变换将原空间的数据映射到新空间；然后在新空间里用线性分类学习方法从训练数据中学习分类模型。</p>
 <p>由于特征空间是高维甚至无限维，加上对偶问题中多组高维向量计算内积。因此引入核函数减少计算量。</p>
@@ -685,12 +784,15 @@ f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} K\left(x, x_{i
 \]</span> 称为非线性支持向量机, <span class="math inline">\(K(x, z)\)</span> 是正定核涵数。</p>
 </blockquote>
 <blockquote>
-<p>算法 7.4 (非线性支持向量机学习算法) 输入: 训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in\)</span><span class="math inline">\(\mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span> 输出：分类决策函数。 （1）选取适当的核函数 <span class="math inline">\(K(x, z)\)</span> 和适当的参数 <span class="math inline">\(C,\)</span> 构造并求解最优化问题 <span class="math display">\[
-\begin{array}{1}
+<p>算法 7.4 (非线性支持向量机学习算法)</p>
+<p>输入: 训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_{i} \in\)</span><span class="math inline">\(\mathcal{Y}=\{-1,+1\}, i=1,2, \cdots, N\)</span></p>
+<p>输出：分类决策函数。</p>
+<p>（1）选取适当的核函数 <span class="math inline">\(K(x, z)\)</span> 和适当的参数 <span class="math inline">\(C,\)</span> 构造并求解最优化问题 <span class="math display">\[
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} K\left(x_{i}, x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; 0 \leqslant \alpha_{i} \leqslant C, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span> 求得最优解 <span class="math inline">\(\alpha^{*}=\left(\alpha_{1}^{*}, \alpha_{2}^{*}, \cdots, \alpha_{N}^{*}\right)^{\mathrm{T}}\)</span> 。 （2）选择 <span class="math inline">\(\alpha^{*}\)</span> 的一个正分量 <span class="math inline">\(0&lt;\alpha_{j}^{*}&lt;C,\)</span> 计算 <span class="math display">\[
 b^{*}=y_{j}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} K\left(x_{i}, x_{j}\right)
 \]</span> （3）构造决策函数: <span class="math display">\[
@@ -700,27 +802,51 @@ f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} K\left(x, x_{i
 <ul>
 <li><span class="math inline">\(K(x,z)\)</span>为正定核函数是，问题(46)是二次规划问题，解存在。</li>
 </ul>
+<p><br><br></p>
 <h2 id="smo-algorithm-sequential-minimal-optimization">4. SMO Algorithm (sequential minimal optimization)</h2>
 <p>序列最小算法用来求解凸二次规划的对偶问题 <span class="math display">\[
-\begin{array}{ll}
+\begin{align}
 \min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} K\left(x_{i}, x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} \\
 \text { s.t. } &amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
 &amp; 0 \leqslant \alpha_{i} \leqslant C, \quad i=1,2, \cdots, N
-\end{array}
+\end{align}
 \]</span></p>
+<p><br><br></p>
 <h2 id="reference">5. Reference</h2>
 <p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33437381/">统计学习方法（第2版）</a></p>
 
-      </div>
-      
-      
-      
     </div>
-    
 
     
     
     
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Dual-Problem/" rel="tag"><i class="fa fa-tag"></i> Dual Problem</a>
+              <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
+              <a href="/tags/Kernel-Method/" rel="tag"><i class="fa fa-tag"></i> Kernel Method</a>
+              <a href="/tags/Maximum-Margin/" rel="tag"><i class="fa fa-tag"></i> Maximum Margin</a>
+              <a href="/tags/Hinge-Loss-Function/" rel="tag"><i class="fa fa-tag"></i> Hinge Loss Function</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/howto2/" rel="prev" title="[How to] 2. Hexo+Github+NexT">
+                  <i class="fa fa-chevron-left"></i> [How to] 2. Hexo+Github+NexT
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
 
 
       
@@ -760,7 +886,7 @@ f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} K\left(x, x_{i
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -771,13 +897,13 @@ f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} K\left(x, x_{i
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">7k</span>
+    <span title="Symbols count total">60k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6 mins.</span>
+    <span title="Reading time total">54 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
@@ -871,7 +997,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%5BSLM-7%5D%20%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%20SVM.html",
+      path: "/slm007/",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);
