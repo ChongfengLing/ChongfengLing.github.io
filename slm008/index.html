@@ -24,23 +24,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="果然还是要从底层去理解，不然上层建筑一换，不结实的地基就很有大问题。">
+  <meta name="description" content="三个臭皮匠，顶过诸葛亮。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[How to] 2. Hexo+Github+NexT">
-<meta property="og:url" content="http://example.com/howto2/index.html">
+<meta property="og:title" content="[统计数学方法] 8. 提升方法 Boosting">
+<meta property="og:url" content="http://example.com/slm008/index.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="果然还是要从底层去理解，不然上层建筑一换，不结实的地基就很有大问题。">
+<meta property="og:description" content="三个臭皮匠，顶过诸葛亮。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-21T08:30:00.000Z">
-<meta property="article:modified_time" content="2021-01-02T14:41:47.414Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-8%20function.png">
+<meta property="article:published_time" content="2021-01-04T05:50:00.000Z">
+<meta property="article:modified_time" content="2021-01-04T14:23:49.396Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
-<meta property="article:tag" content="Hexo-NexT">
-<meta property="article:tag" content="Blog">
-<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="AdaBoost">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-8%20function.png">
 
 
-<link rel="canonical" href="http://example.com/howto2/">
+<link rel="canonical" href="http://example.com/slm008/">
 
 
 <script class="page-configurations">
@@ -53,7 +53,7 @@
   };
 </script>
 
-  <title>[How to] 2. Hexo+Github+NexT | LIng's Blog</title>
+  <title>[统计数学方法] 8. 提升方法 Boosting | LIng's Blog</title>
   
 
 
@@ -218,7 +218,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E7%9A%84%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B"><span class="nav-text">1. 博客迁移的心路历程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-text">2. 基本配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-text">3. 功能与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%9A%84%E8%BD%AC%E8%AF%91"><span class="nav-text">数学公式的转译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="nav-text">字数统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A8%E8%AE%BA"><span class="nav-text">讨论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#green_book%E5%8E%BB%E9%99%A4table-of-content%E7%9A%84%E8%87%AA%E5%8A%A8%E7%BC%96%E5%8F%B7"><span class="nav-text">:green_book:去除Table of Content的自动编号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#green_book%E8%8F%9C%E5%8D%95%E6%A0%8F%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95"><span class="nav-text">:green_book:菜单栏添加自定义菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E8%BF%90%E8%A1%8C%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-text">已运行的时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AB%E6%B7%BB%E5%8A%A0%E7%BB%93%E6%9D%9F%E8%AF%AD"><span class="nav-text">文末添加结束语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#green_book%E9%82%AE%E4%BB%B6%E9%93%BE%E6%8E%A5"><span class="nav-text">:green_book:邮件链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0emoji%E8%A1%A8%E6%83%85"><span class="nav-text">添加Emoji表情</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-text">1. 提升方法的基本思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E5%8F%AF%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BC%B1%E5%8F%AF%E5%AD%A6%E4%B9%A0"><span class="nav-text">1.1 强可学习与弱可学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adaboost%E7%AE%97%E6%B3%95"><span class="nav-text">1.2 AdaBoost算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#book-1.3-adaboost-example"><span class="nav-text">:book: 1.3 AdaBoost example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adaboost%E7%AE%97%E6%B3%95%E7%9A%84%E8%AE%AD%E7%BB%83%E8%AF%AF%E5%B7%AE%E5%88%86%E6%9E%90"><span class="nav-text">2. AdaBoost算法的训练误差分析</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -313,7 +313,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/howto2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/slm008/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -329,7 +329,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [How to] 2. Hexo+Github+NexT
+          [统计数学方法] 8. 提升方法 Boosting
         </h1>
 
         <div class="post-meta-container">
@@ -339,28 +339,26 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2020-12-21 16:30:00" itemprop="dateCreated datePublished" datetime="2020-12-21T16:30:00+08:00">2020-12-21</time>
+      <time title="Created: 2021-01-04 13:50:00 / Modified: 22:23:49" itemprop="dateCreated datePublished" datetime="2021-01-04T13:50:00+08:00">2021-01-04</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-01-02 22:41:47" itemprop="dateModified" datetime="2021-01-02T22:41:47+08:00">2021-01-02</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/How-to/" itemprop="url" rel="index"><span itemprop="name">How to</span></a>
+          <a href="/categories/study/" itemprop="url" rel="index"><span itemprop="name">study</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%8A%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《统计学习方法》</span></a>
         </span>
     </span>
 
   
-    <span id="/howto2/" class="post-meta-item leancloud_visitors" data-flag-title="[How to] 2. Hexo+Github+NexT" title="Views">
+    <span id="/slm008/" class="post-meta-item leancloud_visitors" data-flag-title="[统计数学方法] 8. 提升方法 Boosting" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -375,8 +373,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/howto2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/howto2/" itemprop="commentCount"></span>
+    <a title="valine" href="/slm008/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/slm008/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -388,22 +386,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>822</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
 
-          
-            <i class="fa fa-thumb-tack"></i>
-            <font color=7D26CD>置顶</font>
-            <span class="post-meta-divider"> </span>
           
         </div>
       </header>
@@ -412,41 +406,106 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>果然还是要从底层去理解，不然上层建筑一换，不结实的地基就很有大问题。 <a id="more"></a></p>
-<h2 id="博客迁移的心路历程">1. 博客迁移的心路历程</h2>
-<ul>
-<li><p>最近因为想魔改Wordpress的主题，又不懂php代码，只能加上一些插件，导致后台运行有点儿慢。又想到服务器要续费了，过去半年服务器就挂了个网站不太值。还是一狠心换到Github Page上了。</p></li>
-<li><p>这也导致了个问题，就是数学公式的写作。在用Wordpress的时候，自己是用Typora写md文件，然后导出成html文件，复制到Wordpress的对应格子里。用Hexo，原理是一样的，从md到html。但是因为Hexo原生转译器过于简陋+Typora过于强大，自己的一个糟糕的书写格式使得我得把文章再编辑一边才能正常显示。</p>
-<ul>
-<li>当然Typora面对字数较多时（5000+）就太弱小</li>
-</ul></li>
-<li><p>当然Hexo作为静态网页还是有些麻烦，一些功能需要修改。当然和魔改Wordpress比还是简单一些。等某一天有自己的服务器的时候，可能还是会回去。</p></li>
-<li><p>之前觉得自己还是蛮喜欢做不需要脑子的事情去消磨时间，但是重新编辑文章真是痛苦到我了。人还是多用脑子比较好。</p></li>
-</ul>
-<h2 id="基本配置">2. 基本配置</h2>
+        <p>三个臭皮匠，顶过诸葛亮。 <a id="more"></a></p>
+<h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Cs411c7Zt?p=1">【报告】Boosting 25年（2014周志华）</a></p>
+<h2 id="提升方法的基本思路">1. 提升方法的基本思路</h2>
+<p>臭皮匠易得，诸葛亮是少有的。当我们有3个臭皮匠的时候也要考虑一下到底能不能变成一个诸葛亮。这就是提升方法的理论基础。</p>
+<h3 id="强可学习与弱可学习">1.1 强可学习与弱可学习</h3>
 <blockquote>
-<p>Hexo: v5.3.0</p>
-<p>npm: v6.14.9</p>
-<p>NexT: v8.0</p>
+<p>定义1.01（强弱学习） ：在概率近似正确(probably approximately correct, PAC) 学习的框架中， 一个概念（ 一个类），如果存在一个多项式的学习算法能够学习它，并且正确率很高，那么就称这个概念是强可学习的； 一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</p>
 </blockquote>
-<h2 id="功能与优化">3. 功能与优化</h2>
-<p>:green_book:：已完成</p>
-<p>:open_book:：未完成</p>
-<h3 id="数学公式的转译">数学公式的转译</h3>
-<h3 id="字数统计">字数统计</h3>
-<h3 id="讨论">讨论</h3>
-<h3 id="green_book去除table-of-content的自动编号">:green_book:去除Table of Content的自动编号</h3>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Automatically add list number to toc.</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<h3 id="green_book菜单栏添加自定义菜单">:green_book:菜单栏添加自定义菜单</h3>
+<ul>
+<li>:book: PAC</li>
+</ul>
+<blockquote>
+<p>定理1.01（强弱学习的关系） 在PAC学习的框架下，一个概念是强可学习的充分必要条件是这个概念是弱可学习的。</p>
+</blockquote>
+<ul>
+<li>:book: Proof</li>
+</ul>
+<p><strong>提升步骤</strong>：给定一个训练数据集，反复使用弱学习算法，得到一系列的弱分类器，把这些弱分类器组合成一个强分类器。<strong>通常我们通过调整训练数据的概率分布（权值分布），调用同一个弱学习算法来学习一系列的弱分类器。</strong></p>
+<p><strong>问题</strong>：</p>
 <ol type="1">
-<li>tags, categories 要设置<code>type: tags</code>, <code>type: categories</code></li>
-<li>tagcloud字体设置在<code>\source\ _data\styles.styl, line48</code></li>
+<li>如何在每一轮中改变训练数据的概率分布？
+<ul>
+<li>AdaBoost：提高那些被前一轮弱分类器错误分类样本的权值，而降低那些被正确分类样本的权值。使得误分类的数据得到后一轮弱分类器更多的关注。使得分类问题被<strong>分而治之</strong>。</li>
+</ul></li>
+<li>如何把一系列弱分类器组合成一个强分类器？
+<ul>
+<li>AdaBoost：加权多数的表决方法。即加大分类误差率小的弱分类器的权值，使其在表决中起较人的作川；减小分类误差率大的弱分类器的权值，使其在表决中起较小的作用。</li>
+</ul></li>
 </ol>
-<h3 id="已运行的时间">已运行的时间</h3>
-<h3 id="文末添加结束语">文末添加结束语</h3>
-<h3 id="green_book邮件链接">:green_book:邮件链接</h3>
-<p>在邮件地址前要加上mailto:，点进去才是期望效果。</p>
-<h3 id="添加emoji表情">添加Emoji表情</h3>
+<h3 id="adaboost算法">1.2 AdaBoost算法</h3>
+<blockquote>
+<p>算法1.1（AdaBoost）</p>
+<p>输入：训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}, y_{i} \in\)</span> <span class="math inline">\(\mathcal{Y}=\{-1,+1\} ;\)</span> 弱学习算法;</p>
+<p>输出：最终分类器 <span class="math inline">\(G(x)\)</span> 。</p>
+<p>（1）初始化训练数据的权值分布 <span class="math display">\[
+\begin{align}
+D_{1}=\left(w_{11}, \cdots, w_{1 i}, \cdots, w_{1 N}\right), \quad w_{1 i}=\frac{1}{N}, \quad i=1,2, \cdots, N
+\end{align}
+\]</span> （2）对 <span class="math inline">\(m=1,2, \cdots, M\)</span></p>
+<p><span class="math inline">\(\quad\)</span>（a）使用具有权值分布 <span class="math inline">\(D_{m}\)</span> 的训练数据集学习，得到基本分类器 <span class="math display">\[
+\begin{align}
+G_{m}(x): \mathcal{X} \rightarrow\{-1,+1\}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span>（b）计算 <span class="math inline">\(G_{m}(x)\)</span> 在训练数据集上的分类误差率 <span class="math display">\[
+\begin{align}
+e_{m}&amp;=\sum_{i=1}^{N} P\left(G_{m}\left(x_{i}\right) \neq y_{i}\right)\\
+&amp;=\sum_{G_{m}\left(x_{i}\right) \neq y_{i}} w_{m i}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span>（c）计算 <span class="math inline">\(G_{m}(x)\)</span> 的系数 <span class="math display">\[
+\begin{align}
+\alpha_{m}=\frac{1}{2} \log \frac{1-e_{m}}{e_{m}}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>这里的对数是自然对数。</p>
+<p><span class="math inline">\(\quad\)</span>（d）更新训练数据集的权值分布 <span class="math display">\[
+\begin{align}
+D_{m+1}=\left(w_{m+1,1}, \cdots, w_{m+1, i}, \cdots, w_{m+1, N}\right) \\
+w_{m+1, i}=\frac{w_{m i}}{Z_{m}} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right), \quad i=1,2, \cdots, N
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>这里， <span class="math inline">\(Z_{m}\)</span> 是规范化因子 <span class="math display">\[
+\begin{align}
+Z_{m}=\sum_{i=1}^{N} w_{m i} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right)
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>它使 <span class="math inline">\(D_{m+1}\)</span> 成为一个概率分布。</p>
+<p>（3）构建基本分类器的线性组合 <span class="math display">\[
+\begin{align}
+f(x)=\sum_{m=1}^{M} \alpha_{m} G_{m}(x)
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>得到最终分类器 <span class="math display">\[
+\begin{align}
+G(x) &amp;=\operatorname{sign}(f(x)) \\
+&amp;=\operatorname{sign}\left(\sum_{m=1}^{M} \alpha_{m} G_{m}(x)\right)
+\end{align}
+\]</span></p>
+</blockquote>
+<ul>
+<li><p>（1）假设原始数据的每一个训练样本在基本分类器的学习中作用相同</p></li>
+<li><p>（2）一共进行<span class="math inline">\(m=M\)</span>次学习。（如何确定<span class="math inline">\(M\)</span>？没有错误的分类or因为没有过拟合所以选个偏大的数？）</p>
+<ul>
+<li><p>（a）通过<span class="math inline">\(D_m\)</span>加权得到基本分类器<span class="math inline">\(G_m(x)\)</span></p>
+<ul>
+<li>如何学习？</li>
+</ul></li>
+<li><p><strong>（b）<span class="math inline">\(G_m(x)\)</span>在加权的训练数据集的分类误差率<span class="math inline">\(e_m\)</span>是被<span class="math inline">\(G_m(x)\)</span>误分类样本的权值之和</strong></p></li>
+<li><p>（c）用分类误差率<span class="math inline">\(e_m\)</span>计算基本分类器<span class="math inline">\(G_m(x)\)</span>的系数<span class="math inline">\(\alpha_m\)</span>，用来表示<span class="math inline">\(G_m(x)\)</span>在最终分类器中的重要程度。</p></li>
+<li><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-8%20function.png" alt="slm-8 function" style="zoom:50%;" /></p>
+<p>用图可得，当 <span class="math inline">\(e_{m} \leqslant \frac{1}{2}\)</span> 时， <span class="math inline">\(\alpha_{m} \geqslant 0\)</span>，并且 <span class="math inline">\(\alpha_{m}\)</span> 随着 <span class="math inline">\(e_{m}\)</span> 的减小而增大。因此，<strong>分类误差率越小的基本分类器在最终分类器中的作用越大</strong>。</p></li>
+<li><p>（d）即问题1的解答做法。等式（7）可以写成 <span class="math display">\[
+w_{m+1, i}=\left\{\begin{array}{ll}
+\frac{w_{m i}}{Z_{m}} \mathrm{e}^{-\alpha_{m}}, &amp; G_{m}\left(x_{i}\right)=y_{i} \\
+\frac{w_{m i}}{Z_{m}} \mathrm{e}^{\alpha_{m}}, &amp; G_{m}\left(x_{i}\right) \neq y_{i}
+\end{array}\right.\nonumber
+\]</span> <strong>误分类样本的权值增大<span class="math inline">\(\mathrm{e}^{2 \alpha_{m}}=\frac{1-e_{m}}{e_{m}}\)</span>倍，正确分类样本的权值减小</strong>。在下一轮中，误分类样本起到更大的作用。<span class="math inline">\(Z_m\)</span>归一化。</p></li>
+</ul></li>
+<li><p>（3）即问题2的解答做法。所有<span class="math inline">\(\alpha_m\)</span>之和不为一。<span class="math inline">\(f(x)\)</span>符号觉得实例<span class="math inline">\(x\)</span>的类，<span class="math inline">\(|f(x)|\)</span>表示分类的确信度。</p></li>
+</ul>
+<p>:book: （d）中增大倍数，权值变化与系数<span class="math inline">\(\alpha_m\)</span>构造的关系。</p>
+<h3 id="book-1.3-adaboost-example">:book: 1.3 AdaBoost example</h3>
+<h2 id="adaboost算法的训练误差分析">2. AdaBoost算法的训练误差分析</h2>
+<p>AdaBoost 最基本的性质是它能在学习过程中不断减少训练误差，即在训练数据集上的分类误差率。</p>
 
     </div>
 
@@ -456,23 +515,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Hexo-NexT/" rel="tag"><i class="fa fa-tag"></i> Hexo-NexT</a>
-              <a href="/tags/Blog/" rel="tag"><i class="fa fa-tag"></i> Blog</a>
-              <a href="/tags/Markdown/" rel="tag"><i class="fa fa-tag"></i> Markdown</a>
+              <a href="/tags/AdaBoost/" rel="tag"><i class="fa fa-tag"></i> AdaBoost</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/slm006/" rel="prev" title="[统计数学方法] 6. 逻辑回归LR和最大熵模型MEM">
-                  <i class="fa fa-chevron-left"></i> [统计数学方法] 6. 逻辑回归LR和最大熵模型MEM
+                <a href="/slm007/" rel="prev" title="[统计数学方法] 7. 支持向量机 SVM">
+                  <i class="fa fa-chevron-left"></i> [统计数学方法] 7. 支持向量机 SVM
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/slm007/" rel="next" title="[统计数学方法] 7. 支持向量机 SVM">
-                  [统计数学方法] 7. 支持向量机 SVM <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -631,7 +685,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/howto2/",
+      path: "/slm008/",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);

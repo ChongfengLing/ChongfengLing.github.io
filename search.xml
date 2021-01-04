@@ -49,6 +49,118 @@
       </tags>
   </entry>
   <entry>
+    <title>[统计数学方法] 8. 提升方法 Boosting</title>
+    <url>/slm008/</url>
+    <content><![CDATA[<p>三个臭皮匠，顶过诸葛亮。 <a id="more"></a></p>
+<h2 id="reference">Reference</h2>
+<p><a href="https://www.bilibili.com/video/BV1Cs411c7Zt?p=1">【报告】Boosting 25年（2014周志华）</a></p>
+<h2 id="提升方法的基本思路">1. 提升方法的基本思路</h2>
+<p>臭皮匠易得，诸葛亮是少有的。当我们有3个臭皮匠的时候也要考虑一下到底能不能变成一个诸葛亮。这就是提升方法的理论基础。</p>
+<h3 id="强可学习与弱可学习">1.1 强可学习与弱可学习</h3>
+<blockquote>
+<p>定义1.01（强弱学习） ：在概率近似正确(probably approximately correct, PAC) 学习的框架中， 一个概念（ 一个类），如果存在一个多项式的学习算法能够学习它，并且正确率很高，那么就称这个概念是强可学习的； 一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</p>
+</blockquote>
+<ul>
+<li>:book: PAC</li>
+</ul>
+<blockquote>
+<p>定理1.01（强弱学习的关系） 在PAC学习的框架下，一个概念是强可学习的充分必要条件是这个概念是弱可学习的。</p>
+</blockquote>
+<ul>
+<li>:book: Proof</li>
+</ul>
+<p><strong>提升步骤</strong>：给定一个训练数据集，反复使用弱学习算法，得到一系列的弱分类器，把这些弱分类器组合成一个强分类器。<strong>通常我们通过调整训练数据的概率分布（权值分布），调用同一个弱学习算法来学习一系列的弱分类器。</strong></p>
+<p><strong>问题</strong>：</p>
+<ol type="1">
+<li>如何在每一轮中改变训练数据的概率分布？
+<ul>
+<li>AdaBoost：提高那些被前一轮弱分类器错误分类样本的权值，而降低那些被正确分类样本的权值。使得误分类的数据得到后一轮弱分类器更多的关注。使得分类问题被<strong>分而治之</strong>。</li>
+</ul></li>
+<li>如何把一系列弱分类器组合成一个强分类器？
+<ul>
+<li>AdaBoost：加权多数的表决方法。即加大分类误差率小的弱分类器的权值，使其在表决中起较人的作川；减小分类误差率大的弱分类器的权值，使其在表决中起较小的作用。</li>
+</ul></li>
+</ol>
+<h3 id="adaboost算法">1.2 AdaBoost算法</h3>
+<blockquote>
+<p>算法1.1（AdaBoost）</p>
+<p>输入：训练数据集 <span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\},\)</span> 其中 <span class="math inline">\(x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}, y_{i} \in\)</span> <span class="math inline">\(\mathcal{Y}=\{-1,+1\} ;\)</span> 弱学习算法;</p>
+<p>输出：最终分类器 <span class="math inline">\(G(x)\)</span> 。</p>
+<p>（1）初始化训练数据的权值分布 <span class="math display">\[
+\begin{align}
+D_{1}=\left(w_{11}, \cdots, w_{1 i}, \cdots, w_{1 N}\right), \quad w_{1 i}=\frac{1}{N}, \quad i=1,2, \cdots, N
+\end{align}
+\]</span> （2）对 <span class="math inline">\(m=1,2, \cdots, M\)</span></p>
+<p><span class="math inline">\(\quad\)</span>（a）使用具有权值分布 <span class="math inline">\(D_{m}\)</span> 的训练数据集学习，得到基本分类器 <span class="math display">\[
+\begin{align}
+G_{m}(x): \mathcal{X} \rightarrow\{-1,+1\}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span>（b）计算 <span class="math inline">\(G_{m}(x)\)</span> 在训练数据集上的分类误差率 <span class="math display">\[
+\begin{align}
+e_{m}&amp;=\sum_{i=1}^{N} P\left(G_{m}\left(x_{i}\right) \neq y_{i}\right)\\
+&amp;=\sum_{G_{m}\left(x_{i}\right) \neq y_{i}} w_{m i}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span>（c）计算 <span class="math inline">\(G_{m}(x)\)</span> 的系数 <span class="math display">\[
+\begin{align}
+\alpha_{m}=\frac{1}{2} \log \frac{1-e_{m}}{e_{m}}
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>这里的对数是自然对数。</p>
+<p><span class="math inline">\(\quad\)</span>（d）更新训练数据集的权值分布 <span class="math display">\[
+\begin{align}
+D_{m+1}=\left(w_{m+1,1}, \cdots, w_{m+1, i}, \cdots, w_{m+1, N}\right) \\
+w_{m+1, i}=\frac{w_{m i}}{Z_{m}} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right), \quad i=1,2, \cdots, N
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>这里， <span class="math inline">\(Z_{m}\)</span> 是规范化因子 <span class="math display">\[
+\begin{align}
+Z_{m}=\sum_{i=1}^{N} w_{m i} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right)
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>它使 <span class="math inline">\(D_{m+1}\)</span> 成为一个概率分布。</p>
+<p>（3）构建基本分类器的线性组合 <span class="math display">\[
+\begin{align}
+f(x)=\sum_{m=1}^{M} \alpha_{m} G_{m}(x)
+\end{align}
+\]</span> <span class="math inline">\(\quad\)</span><span class="math inline">\(\quad\)</span>得到最终分类器 <span class="math display">\[
+\begin{align}
+G(x) &amp;=\operatorname{sign}(f(x)) \\
+&amp;=\operatorname{sign}\left(\sum_{m=1}^{M} \alpha_{m} G_{m}(x)\right)
+\end{align}
+\]</span></p>
+</blockquote>
+<ul>
+<li><p>（1）假设原始数据的每一个训练样本在基本分类器的学习中作用相同</p></li>
+<li><p>（2）一共进行<span class="math inline">\(m=M\)</span>次学习。（如何确定<span class="math inline">\(M\)</span>？没有错误的分类or因为没有过拟合所以选个偏大的数？）</p>
+<ul>
+<li><p>（a）通过<span class="math inline">\(D_m\)</span>加权得到基本分类器<span class="math inline">\(G_m(x)\)</span></p>
+<ul>
+<li>如何学习？</li>
+</ul></li>
+<li><p><strong>（b）<span class="math inline">\(G_m(x)\)</span>在加权的训练数据集的分类误差率<span class="math inline">\(e_m\)</span>是被<span class="math inline">\(G_m(x)\)</span>误分类样本的权值之和</strong></p></li>
+<li><p>（c）用分类误差率<span class="math inline">\(e_m\)</span>计算基本分类器<span class="math inline">\(G_m(x)\)</span>的系数<span class="math inline">\(\alpha_m\)</span>，用来表示<span class="math inline">\(G_m(x)\)</span>在最终分类器中的重要程度。</p></li>
+<li><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/SLM-8%20function.png" alt="slm-8 function" style="zoom:50%;" /></p>
+<p>用图可得，当 <span class="math inline">\(e_{m} \leqslant \frac{1}{2}\)</span> 时， <span class="math inline">\(\alpha_{m} \geqslant 0\)</span>，并且 <span class="math inline">\(\alpha_{m}\)</span> 随着 <span class="math inline">\(e_{m}\)</span> 的减小而增大。因此，<strong>分类误差率越小的基本分类器在最终分类器中的作用越大</strong>。</p></li>
+<li><p>（d）即问题1的解答做法。等式（7）可以写成 <span class="math display">\[
+w_{m+1, i}=\left\{\begin{array}{ll}
+\frac{w_{m i}}{Z_{m}} \mathrm{e}^{-\alpha_{m}}, &amp; G_{m}\left(x_{i}\right)=y_{i} \\
+\frac{w_{m i}}{Z_{m}} \mathrm{e}^{\alpha_{m}}, &amp; G_{m}\left(x_{i}\right) \neq y_{i}
+\end{array}\right.\nonumber
+\]</span> <strong>误分类样本的权值增大<span class="math inline">\(\mathrm{e}^{2 \alpha_{m}}=\frac{1-e_{m}}{e_{m}}\)</span>倍，正确分类样本的权值减小</strong>。在下一轮中，误分类样本起到更大的作用。<span class="math inline">\(Z_m\)</span>归一化。</p></li>
+</ul></li>
+<li><p>（3）即问题2的解答做法。所有<span class="math inline">\(\alpha_m\)</span>之和不为一。<span class="math inline">\(f(x)\)</span>符号觉得实例<span class="math inline">\(x\)</span>的类，<span class="math inline">\(|f(x)|\)</span>表示分类的确信度。</p></li>
+</ul>
+<p>:book: （d）中增大倍数，权值变化与系数<span class="math inline">\(\alpha_m\)</span>构造的关系。</p>
+<h3 id="book-1.3-adaboost-example">:book: 1.3 AdaBoost example</h3>
+<h2 id="adaboost算法的训练误差分析">2. AdaBoost算法的训练误差分析</h2>
+<p>AdaBoost 最基本的性质是它能在学习过程中不断减少训练误差，即在训练数据集上的分类误差率。</p>
+]]></content>
+      <categories>
+        <category>study</category>
+        <category>《统计学习方法》</category>
+      </categories>
+      <tags>
+        <tag>AdaBoost</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[统计数学方法] 7. 支持向量机 SVM</title>
     <url>/slm007/</url>
     <content><![CDATA[<p>支持向量机(Support Vector Machines)是一种<strong>二元分类</strong>模型。<strong>基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</strong>基本模型是<strong>特征空间上的间隔最大</strong>的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。 <a id="more"></a></p>
@@ -725,7 +837,7 @@ L(w)=\sum_{x, y} \tilde{P}(x, y) \sum_{i=1}^{n} w_{i} f_{i}(x, y)-\sum_{x} \tild
 <blockquote>
 <p>定义 5.01（熵） 熵是表示随机变量不确定性的度量。设<span class="math inline">\(X\)</span>为离散随机变量，概率分布为 <span class="math display">\[
 \begin{align}
-P\left(X=x_{i}\right)=p_{i}, \quad i=1,2, \cdots, n
+P\left(X=x_{i}\right)=p_{i}, \quad i=1,2, \cdots, n 
 \end{align}
 \]</span> 随机变量<span class="math inline">\(X\)</span>的熵为 <span class="math display">\[
 \begin{align}
