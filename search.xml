@@ -46,6 +46,15 @@
 <li><code>\themes\next\layout\_macro</code> 中新建 <code>passage-end-tag.njk</code> 文件</li>
 <li><code>\themes\next\layout\_macro\post.njk</code>文件中，在post-body 之后，post-footer 之前<code>Line 70</code>添加代码。</li>
 </ol>
+<h3 id="绑定自己域名">绑定自己域名</h3>
+<ol type="1">
+<li>获取域名</li>
+<li>解析域名</li>
+<li>在Github上绑定域名
+<ul>
+<li>填写WWW.{}.{}和去掉www是不同的。添加上www。</li>
+</ul></li>
+</ol>
 <h2 id="reference">Reference</h2>
 <ol type="1">
 <li><a href="https://blog.csdn.net/tuckenough/article/details/107383201">hexo theme next7.8 主题美化</a></li>
@@ -2024,8 +2033,8 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>Particle Filter</tag>
         <tag>Linear Dynamical System</tag>
+        <tag>Particle Filter</tag>
         <tag>Sampling</tag>
       </tags>
   </entry>
@@ -2114,8 +2123,8 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>ARIMA</tag>
         <tag>Particle Filter</tag>
+        <tag>ARIMA</tag>
       </tags>
   </entry>
   <entry>
