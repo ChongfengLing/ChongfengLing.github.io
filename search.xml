@@ -65,8 +65,8 @@
         <category>How to</category>
       </categories>
       <tags>
-        <tag>Blog</tag>
         <tag>Hexo-NexT</tag>
+        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
@@ -2033,8 +2033,8 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>Particle Filter</tag>
         <tag>Linear Dynamical System</tag>
+        <tag>Particle Filter</tag>
         <tag>Sampling</tag>
       </tags>
   </entry>
@@ -2123,8 +2123,8 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>ARIMA</tag>
         <tag>Particle Filter</tag>
+        <tag>ARIMA</tag>
       </tags>
   </entry>
   <entry>
