@@ -41,9 +41,15 @@
 <h3 id="green_book修改新建文章的模板-1">:green_book:修改新建文章的模板 [1]</h3>
 <p>修改<code>\scaffolds\post.md</code>文件 <code>hexo n post 'new post'</code>创建新文章</p>
 <h3 id="标签云-tag-cloud特效">标签云 tag cloud特效</h3>
+<h3 id="green_book文章统一添加全文结束语-2">:green_book:文章统一添加全文结束语 [2]</h3>
+<ol type="1">
+<li><code>\themes\next\layout\_macro</code> 中新建 <code>passage-end-tag.njk</code> 文件</li>
+<li><code>\themes\next\layout\_macro\post.njk</code>文件中，在post-body 之后，post-footer 之前<code>Line 70</code>添加代码。</li>
+</ol>
 <h2 id="reference">Reference</h2>
 <ol type="1">
 <li><a href="https://blog.csdn.net/tuckenough/article/details/107383201">hexo theme next7.8 主题美化</a></li>
+<li><a href="https://segmentfault.com/a/1190000009544924">hexo的next主题个性化配置教程</a></li>
 </ol>
 ]]></content>
       <categories>
