@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/Ling.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Ling.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Ling.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -24,20 +24,27 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Why choose Numerical Analysis as the first notes series?  I am not familiar with the formula (why is it?) and error measure. Numerical Analysis is an interesting area as the combination of mathemat">
+  <meta name="description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LIng&#39;s Blog">
-<meta property="og:url" content="http://example.com/%E8%8D%89%E7%A8%BF/[Numerical%20Analysis]%200,%20Readme.html">
+<meta property="og:url" content="http://example.com/draft/[DL%204-1]%20Foundations%20of%20Convolutional%20Neural%20Networks.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Why choose Numerical Analysis as the first notes series?  I am not familiar with the formula (why is it?) and error measure. Numerical Analysis is an interesting area as the combination of mathemat">
+<meta property="og:description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-01-06T15:33:29.485Z">
-<meta property="article:modified_time" content="2021-01-06T15:33:29.484Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-2%20mul%20filters.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-5%20eg%20CNN.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-4%20summary.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-3%20eg%20figure.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-6%20whole%20example.png">
+<meta property="article:published_time" content="2021-01-06T15:29:25.379Z">
+<meta property="article:modified_time" content="2021-01-06T15:29:25.379Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png">
 
 
-<link rel="canonical" href="http://example.com/%E8%8D%89%E7%A8%BF/[Numerical%20Analysis]%200,%20Readme">
+<link rel="canonical" href="http://example.com/draft/[DL%204-1]%20Foundations%20of%20Convolutional%20Neural%20Networks">
 
 
 <script class="page-configurations">
@@ -216,7 +223,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#why-choose-numerical-analysis-as-the-first-notes-series"><span class="nav-text">Why choose Numerical Analysis as the first notes series?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#what-is-my-plan"><span class="nav-text">What is my plan?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chapters-updating"><span class="nav-text">Chapters (updating):</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#convolutional-neural-networks"><span class="nav-text">Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#foundations-of-convolutional-neural-networks"><span class="nav-text">Foundations of Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cv-problems"><span class="nav-text">CV problems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#challenges"><span class="nav-text">Challenges</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#edge-detection"><span class="nav-text">Edge detection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#padding-%E5%A1%AB%E5%85%85"><span class="nav-text">Padding 填充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#convolution-problems"><span class="nav-text">convolution problems</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process"><span class="nav-text">process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#strided-convolution"><span class="nav-text">Strided Convolution</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#cross-correlation-convolution"><span class="nav-text">cross-correlation &amp; convolution</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolutions-over-volume-cnn-in-3d-image"><span class="nav-text">Convolutions Over Volume (CNN in 3D image)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#one-filter"><span class="nav-text">One filter</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#multiple-filters"><span class="nav-text">Multiple filters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#implement-for-one-layer-of-a-convolutional-network"><span class="nav-text">Implement for one layer of a Convolutional Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#simple-convolutional-network-example"><span class="nav-text">Simple Convolutional Network Example</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#process-1"><span class="nav-text">process</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#types-of-cnn-layer"><span class="nav-text">types of CNN layer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pooling-layers"><span class="nav-text">Pooling Layers</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#max-pooling"><span class="nav-text">Max pooling</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#average-pooling"><span class="nav-text">Average pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cnn-example"><span class="nav-text">CNN example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#why-convolutions"><span class="nav-text">Why Convolutions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#much-few-parameters"><span class="nav-text">much few parameters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -329,25 +336,135 @@
       
       
       <div class="post-body">
-          <h4 id="why-choose-numerical-analysis-as-the-first-notes-series">Why choose Numerical Analysis as the first notes series?</h4>
-<ul>
-<li>I am not familiar with the formula (why is it?) and error measure.</li>
-<li>Numerical Analysis is an interesting area as the combination of mathematics and computer science.</li>
-</ul>
-<h4 id="what-is-my-plan">What is my plan?</h4>
-<ul>
-<li>Based on reference, I hope that the first review will be finished in a month.</li>
-<li>Create a personal Python Package.</li>
-</ul>
-<h4 id="chapters-updating">Chapters (updating):</h4>
+          <h1 id="convolutional-neural-networks">Convolutional Neural Networks</h1>
+<h3 id="foundations-of-convolutional-neural-networks">Foundations of Convolutional Neural Networks</h3>
+<h4 id="cv-problems">CV problems</h4>
 <ol type="1">
-<li>Solving Equation.</li>
+<li>image classification</li>
+<li>object detection</li>
+<li>neural style transfer</li>
+</ol>
+<h4 id="challenges">Challenges</h4>
+<ul>
+<li>big input</li>
+</ul>
+<h4 id="edge-detection">Edge detection</h4>
+<ul>
+<li><p>kernel (filter)</p>
+<ol type="1">
+<li><p>Vertical <span class="math display">\[
+\begin{array}{|l|l|l|}
+\hline 1 &amp; 0 &amp; -1 \\
+\hline 1 &amp; 0 &amp; -1 \\
+\hline 1 &amp; 0 &amp; -1 \\
+\hline
+\end{array}
+\]</span></p></li>
+<li><p>Horizontal <span class="math display">\[
+\begin{array}{|l|l|l|}
+\hline 1 &amp; 1 &amp; 1 \\
+\hline 0 &amp; 0 &amp; 0 \\
+\hline -1 &amp; -1 &amp; -1 \\
+\hline
+\end{array}
+\]</span></p></li>
+</ol></li>
+<li><p>different kernel and can be learn by NN</p></li>
+<li><p>convolution</p></li>
+</ul>
+<h4 id="padding-填充">Padding 填充</h4>
+<h6 id="convolution-problems">convolution problems</h6>
+<ol type="1">
+<li>shrinking output</li>
+<li>throwing away a lot of the information from the edges of the image</li>
+</ol>
+<h6 id="process">process</h6>
+<ol type="1">
+<li><p>valid convolutions <span class="math display">\[
+n \times n *f \times f \longrightarrow (n-f+1 )\times (n-f+1)
+\]</span></p></li>
+<li><p>same convolutions <span class="math inline">\((P=p)\)</span> <span class="math display">\[
+n \times n *f \times f \longrightarrow (n+2p-f+1 )\times (n+2p-f+1)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(p=\frac{f-1}{2}\)</span>, normally <span class="math inline">\(f\)</span> is odd number</li>
+</ul></li>
+</ol>
+<h4 id="strided-convolution">Strided Convolution</h4>
+<p>padding <span class="math inline">\(p\)</span> and stride <span class="math inline">\(s\)</span> <span class="math display">\[
+n \times n *f \times f \longrightarrow floor(\frac{n+2p-f}{s}+1 )\times floor(\frac{n+2p-f}{s}+1)
+\]</span></p>
+<ul>
+<li>rounding down means kernel will not out of the original matrix</li>
+</ul>
+<h6 id="cross-correlation-convolution">cross-correlation &amp; convolution</h6>
+<h4 id="convolutions-over-volume-cnn-in-3d-image">Convolutions Over Volume (CNN in 3D image)</h4>
+<h6 id="one-filter">One filter</h6>
+<ul>
+<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png" alt="image-20201112145817000" style="zoom:50%;" /></li>
+</ul>
+<h6 id="multiple-filters">Multiple filters</h6>
+<ul>
+<li><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-2%20mul%20filters.png" alt="image-20201112150355569" style="zoom:50%;" /></p></li>
+<li><p>idea: get information from different edges (vertical or horizontal or ...)</p></li>
+<li><p><span class="math inline">\(n_c:\)</span>filters</p></li>
+</ul>
+<h4 id="implement-for-one-layer-of-a-convolutional-network">Implement for one layer of a Convolutional Network</h4>
+<ul>
+<li><figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-5%20eg%20CNN.png" alt="image-20201112152951323" /><figcaption aria-hidden="true">image-20201112152951323</figcaption>
+</figure></li>
+<li><figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-4%20summary.png" alt="image-20201112152815089" /><figcaption aria-hidden="true">image-20201112152815089</figcaption>
+</figure></li>
+</ul>
+<h4 id="simple-convolutional-network-example">Simple Convolutional Network Example</h4>
+<h6 id="process-1">process</h6>
+<ul>
+<li><figure>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-3%20eg%20figure.png" alt="image-20201112154626139" /><figcaption aria-hidden="true">image-20201112154626139</figcaption>
+</figure></li>
+<li><p>fewer height and weight of image</p></li>
+<li><p>more channels</p></li>
+</ul>
+<h6 id="types-of-cnn-layer">types of CNN layer</h6>
+<ol type="1">
+<li>Convolution</li>
+<li>Pooling</li>
+<li>Fully connected</li>
+</ol>
+<h4 id="pooling-layers">Pooling Layers</h4>
+<h6 id="max-pooling">Max pooling</h6>
+<ul>
+<li>hypermeters (no need to learn)
+<ol type="1">
+<li><span class="math inline">\(f:\)</span> pooling filter size</li>
+<li><span class="math inline">\(s:\)</span> stride</li>
+</ol></li>
+<li>return the maximum in the matrix</li>
+</ul>
+<h6 id="average-pooling">Average pooling</h6>
+<ul>
+<li>return the average in the matrix</li>
+</ul>
+<h4 id="cnn-example">CNN example</h4>
+<ul>
+<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-6%20whole%20example.png" title="fig:" alt="image-20201112165222684" />
+<ul>
+<li>Forward</li>
+<li>hyperparameters can be learned from other literatures.</li>
+<li>one layer (has weights to be learned) includes one ConV and several pooling layers.</li>
+<li>FC: fully connected layer</li>
+</ul></li>
+</ul>
+<h4 id="why-convolutions">Why Convolutions</h4>
+<h6 id="much-few-parameters">much few parameters</h6>
+<ol type="1">
+<li><p><strong>parameter sharing</strong>: two parts of one image may be under the similar distribution.</p></li>
+<li><p><strong>sparsity of connections</strong>: each output value depends only on a small number of inputs.</p></li>
 </ol>
 <h4 id="reference">Reference</h4>
-<ul>
-<li>Timothy Sauer. (2012), <em>Numerical Analysis, 2nd edn</em>, Pearson Education.</li>
-<li>MTH208 Numerical analysis</li>
-</ul>
+<p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/1">Deep Learning in Coursera</a></p>
 
       </div>
       
@@ -415,7 +532,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:08</span>
+    <span title="Reading time total">1:09</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
@@ -509,7 +626,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/%E8%8D%89%E7%A8%BF/%5BNumerical%20Analysis%5D%200,%20Readme.html",
+      path: "/draft/%5BDL%204-1%5D%20Foundations%20of%20Convolutional%20Neural%20Networks.html",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);

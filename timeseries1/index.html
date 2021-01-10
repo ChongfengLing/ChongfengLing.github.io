@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/Ling.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Ling.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Ling.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -34,10 +34,10 @@
 <meta property="og:image" content="c:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg">
 <meta property="og:image" content="c:%5Ctypora%5Cfigures%5Cf%20q%20p.png">
 <meta property="article:published_time" content="2020-10-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-06T15:22:55.120Z">
+<meta property="article:modified_time" content="2021-01-08T10:12:10.309Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
-<meta property="article:tag" content="Linear Dynamical System">
 <meta property="article:tag" content="Particle Filter">
+<meta property="article:tag" content="Linear Dynamical System">
 <meta property="article:tag" content="Sampling">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="c:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg">
@@ -221,7 +221,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="nav-text">动态模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#two-equations"><span class="nav-text">Two equations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#filtering-problem"><span class="nav-text">Filtering problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process"><span class="nav-text">Process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-dynamical-system"><span class="nav-text">Linear Dynamical System</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#linearly"><span class="nav-text">Linearly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#idea"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#derivation"><span class="nav-text">Derivation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process-1"><span class="nav-text">Process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#particle-filter"><span class="nav-text">Particle Filter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#is-importance-sampling"><span class="nav-text">IS (Importance Sampling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sis-sequential-importance-sampling"><span class="nav-text">SIS (Sequential Importance Sampling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#problem"><span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz"><span class="nav-text">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + \(q(z)&#x3D;q&#39;(z)\))</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#resampling"><span class="nav-text">resampling:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#sir"><span class="nav-text">SIR:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coding"><span class="nav-text">Coding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B"><span class="nav-text">动态模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumption"><span class="nav-text">Assumption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#two-equations"><span class="nav-text">Two equations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filtering-problem"><span class="nav-text">Filtering problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process"><span class="nav-text">Process</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-dynamical-system"><span class="nav-text">Linear Dynamical System</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linearly"><span class="nav-text">Linearly</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#idea"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#derivation"><span class="nav-text">Derivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-1"><span class="nav-text">Process</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#particle-filter"><span class="nav-text">Particle Filter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#is-importance-sampling"><span class="nav-text">IS (Importance Sampling)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sis-sequential-importance-sampling"><span class="nav-text">SIS (Sequential Importance Sampling)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#problem"><span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz"><span class="nav-text">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + \(q(z)&#x3D;q&#39;(z)\))</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#resampling"><span class="nav-text">resampling:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sir"><span class="nav-text">SIR:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#coding"><span class="nav-text">Coding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -350,7 +350,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-01-06 23:22:55" itemprop="dateModified" datetime="2021-01-06T23:22:55+08:00">2021-01-06</time>
+        <time title="Modified: 2021-01-08 18:12:10" itemprop="dateModified" datetime="2021-01-08T18:12:10+08:00">2021-01-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -417,22 +417,25 @@
     <div class="post-body" itemprop="articleBody">
         <h2 id="动态模型">动态模型</h2>
 <ol type="1">
-<li><p>HMM. Discrete.</p></li>
-<li><p>LDS. Continuous. linear. Filtering problem.</p></li>
-<li><p>PF. Continuous. Nonlinear. Filtering problem. <a id="more"></a> #### Assumption</p></li>
+<li>HMM. Discrete.</li>
+<li>LDS. Continuous. linear. Filtering problem.</li>
+<li>PF. Continuous. Nonlinear. Filtering problem. <a id="more"></a></li>
+</ol>
+<h3 id="assumption">Assumption</h3>
+<ol type="1">
 <li><p>齐次 Markov 假设（未来只依赖于当前）：</p>
 <ul>
 <li><span class="math inline">\(i\)</span>: true states</li>
 <li><span class="math inline">\(o\)</span>: observations</li>
 </ul>
 <p><span class="math display">\[
-p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
-\]</span></p></li>
+ p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
+ \]</span></p></li>
 <li><p>观测独立假设： <span class="math display">\[
-p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
-\]</span></p></li>
+ p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
+ \]</span></p></li>
 </ol>
-<h4 id="two-equations">Two equations</h4>
+<h3 id="two-equations">Two equations</h3>
 <ol type="1">
 <li>状态方程 system equation
 <ul>
@@ -450,19 +453,19 @@ Z_t=g(Z_{t-1},u,\delta_1)
 <p><span class="math display">\[
 X_t=f(Z_t,u,\delta_2)
 \]</span></p>
-<h4 id="filtering-problem">Filtering problem</h4>
+<h3 id="filtering-problem">Filtering problem</h3>
 <ul>
 <li><p>Find <span class="math display">\[
 p(z_t|x_1,x_2,\cdots,x_t)
 \]</span></p></li>
 <li><p>online problem</p></li>
 </ul>
-<h4 id="process">Process</h4>
+<h3 id="process">Process</h3>
 <figure>
 <img src="C:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg" alt="动态模型" /><figcaption aria-hidden="true">动态模型</figcaption>
 </figure>
 <h2 id="linear-dynamical-system">Linear Dynamical System</h2>
-<h4 id="linearly">Linearly</h4>
+<h3 id="linearly">Linearly</h3>
 <ul>
 <li>two functions are linearly.</li>
 </ul>
@@ -474,12 +477,12 @@ x_t&amp;=C\cdot z_t+D+\delta\\
 \delta&amp;\sim\mathcal{N}(0,R)
 \end{align}
 \]</span></p>
-<h4 id="idea">Idea</h4>
+<h3 id="idea">Idea</h3>
 <ol type="1">
 <li>relationship between <span class="math inline">\(p(z_t|x_{1:t})\;\&amp;\;p(z_{t-1}|x_{1:t-1})\)</span></li>
 <li>we know <span class="math inline">\(p(z_t|z_{t-1}),\;p(x_t|z_t)\)</span></li>
 </ol>
-<h4 id="derivation">Derivation</h4>
+<h3 id="derivation">Derivation</h3>
 <p>For equation (5), we have <span class="math display">\[
 p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})=Cp(x_{1:t},z_t)
 \]</span> For <span class="math inline">\(p(x_{1:t},z_t)\)</span>： <span class="math display">\[
@@ -493,7 +496,7 @@ p(z_t|x_{1:t-1})&amp;=\int_{z_{t-1}}p(z_t,z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
 &amp;=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}
 \end{align}
 \]</span> In (13), it needs <span class="math inline">\(p(z_{t-1}|x_{1:t-1})\)</span>, a circuit.</p>
-<h4 id="process-1">Process</h4>
+<h3 id="process-1">Process</h3>
 <p>根据计算过程，我们可以分成2个过程。并由于线性高斯假设，我们可以得到解析解。</p>
 <ol type="1">
 <li><p>Prediction:</p>
@@ -514,7 +517,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
 </ol>
 <h2 id="particle-filter">Particle Filter</h2>
 <p>非线性、非高斯，我们不能得到解析解。为了确定分布(5)需要MC采样。</p>
-<h4 id="is-importance-sampling">IS (Importance Sampling)</h4>
+<h3 id="is-importance-sampling">IS (Importance Sampling)</h3>
 <p>对分布<span class="math inline">\(p(z)\)</span>求关于某个函数<span class="math inline">\(f(z)\)</span>的期望 <span class="math display">\[
 \mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)
 \]</span> 直接在分布<span class="math inline">\(p(z)\)</span>中采样比较困难，我们引入简单分布<span class="math inline">\(q(z)\)</span>，并根据<span class="math inline">\(\frac{p(z)}{q(z)}\)</span>的比值确定采样点的权重 <span class="math display">\[
@@ -524,7 +527,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
 w_t^i=\frac{p(z_t^i|x_{1:t})}{q(z_t^i|x_{1:t})},i=1,2,\cdots,N
 \]</span></p>
 <p>It is difficult to sample N points and calculate <span class="math inline">\(p(z_t^i|x_{1:t})\)</span>.</p>
-<h4 id="sis-sequential-importance-sampling">SIS (Sequential Importance Sampling)</h4>
+<h3 id="sis-sequential-importance-sampling">SIS (Sequential Importance Sampling)</h3>
 <p>In SIS, we talk about probability <span class="math inline">\(p(z_{1:t}|x_{1:t})\)</span>: <span class="math display">\[
 w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}
 \]</span> We want to find the relationship between <span class="math inline">\(w_t^i\)</span> and <span class="math inline">\(w_{t-1}^i\)</span>.</p>
@@ -539,7 +542,7 @@ q(z_{1:t}|x_{1:t})=q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})
 \]</span> Then we have <span class="math display">\[
 w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})}{q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})}=\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i
 \]</span> We have distribution for <span class="math inline">\(p(x_t|z_t)\)</span> and <span class="math inline">\(p(z_t|z_{t-1})\)</span>.</p>
-<h4 id="problem">Problem</h4>
+<h3 id="problem">Problem</h3>
 <p>权值退化 (the degeneracy phenomenon)，权重的方差变大</p>
 <p>通过<span class="math inline">\(N_{eff}=\frac{1}{\sum_{i=1}^{N_s}(w_k^i)^2}\)</span>判断是否存在权值退化。越小越严重。</p>
 <p>sol:</p>
@@ -549,14 +552,14 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
 <li>find a proper distribution <span class="math inline">\(q(z)\)</span>, let <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})\)</span>, then <span class="math inline">\(w_t^i=p(x_t|z_t)w_{t-1}^i\)</span></li>
 </ol></li>
 </ol>
-<h4 id="sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + <span class="math inline">\(q(z)=q&#39;(z)\)</span>)</h4>
-<h6 id="resampling">resampling:</h6>
+<h3 id="sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + <span class="math inline">\(q(z)=q&#39;(z)\)</span>)</h3>
+<h5 id="resampling">resampling:</h5>
 <ol type="1">
 <li>t - 1 时刻，采样完成并计算得到权重</li>
 <li>t 时刻，根据 <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})\)</span> 进行采样得到 <span class="math inline">\(z_t^i\)</span>。然后计算得到 <span class="math inline">\(N\)</span> 个权重。</li>
 <li>最后对权重归一化。</li>
 </ol>
-<h6 id="sir">SIR:</h6>
+<h5 id="sir">SIR:</h5>
 <p>For loop:</p>
 <ol type="1">
 <li>predict
@@ -576,7 +579,7 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
 <li><span class="math inline">\(x_t=average( w_t^i*x_t^i)\)</span></li>
 </ul></li>
 </ol>
-<h4 id="coding">Coding</h4>
+<h3 id="coding">Coding</h3>
 <p><a target="_blank" rel="noopener" href="https://github.com/johnhw/pfilter">time series</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">robot</a></p>
 <h2 id="reference">Reference</h2>
@@ -610,8 +613,8 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linear-Dynamical-System/" rel="tag"><i class="fa fa-tag"></i> Linear Dynamical System</a>
               <a href="/tags/Particle-Filter/" rel="tag"><i class="fa fa-tag"></i> Particle Filter</a>
+              <a href="/tags/Linear-Dynamical-System/" rel="tag"><i class="fa fa-tag"></i> Linear Dynamical System</a>
               <a href="/tags/Sampling/" rel="tag"><i class="fa fa-tag"></i> Sampling</a>
           </div>
 
@@ -691,7 +694,7 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:08</span>
+    <span title="Reading time total">1:09</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

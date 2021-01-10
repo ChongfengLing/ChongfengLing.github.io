@@ -55,18 +55,25 @@
 <li>填写WWW.{}.{}和去掉www是不同的。添加上www。</li>
 </ul></li>
 </ol>
+<h3 id="提供文件下载服务-3">提供文件下载服务 [3]</h3>
+<ol type="1">
+<li>修改程序配置文件<code>_config.yml</code>，修改成<code>post_asset_folder: true</code></li>
+<li>创建文件夹<code>/source/download</code>，存放下载文件example.pdf。</li>
+<li>应用格式为<code>[download](/source/download/example.pdf)</code>。</li>
+</ol>
 <h2 id="reference">Reference</h2>
 <ol type="1">
 <li><a href="https://blog.csdn.net/tuckenough/article/details/107383201">hexo theme next7.8 主题美化</a></li>
 <li><a href="https://segmentfault.com/a/1190000009544924">hexo的next主题个性化配置教程</a></li>
+<li><a href="https://www.dazhuanlan.com/2020/01/21/5e27041ce487f/">Hexo中添加本地文件下载</a></li>
 </ol>
 ]]></content>
       <categories>
         <category>How to</category>
       </categories>
       <tags>
-        <tag>Hexo-NexT</tag>
         <tag>Blog</tag>
+        <tag>Hexo-NexT</tag>
       </tags>
   </entry>
   <entry>
@@ -1859,22 +1866,25 @@ b \leftarrow b+\eta y_{i}
     <url>/timeseries1/</url>
     <content><![CDATA[<h2 id="动态模型">动态模型</h2>
 <ol type="1">
-<li><p>HMM. Discrete.</p></li>
-<li><p>LDS. Continuous. linear. Filtering problem.</p></li>
-<li><p>PF. Continuous. Nonlinear. Filtering problem. <a id="more"></a> #### Assumption</p></li>
+<li>HMM. Discrete.</li>
+<li>LDS. Continuous. linear. Filtering problem.</li>
+<li>PF. Continuous. Nonlinear. Filtering problem. <a id="more"></a></li>
+</ol>
+<h3 id="assumption">Assumption</h3>
+<ol type="1">
 <li><p>齐次 Markov 假设（未来只依赖于当前）：</p>
 <ul>
 <li><span class="math inline">\(i\)</span>: true states</li>
 <li><span class="math inline">\(o\)</span>: observations</li>
 </ul>
 <p><span class="math display">\[
-p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
-\]</span></p></li>
+ p(i_{t+1}|i_t,i_{t-1},\cdots,i_1,o_t,o_{t-1},\cdots,o_1)=p(i_{t+1}|i_t)
+ \]</span></p></li>
 <li><p>观测独立假设： <span class="math display">\[
-p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
-\]</span></p></li>
+ p(o_t|i_t,i_{t-1},\cdots,i_1,o_{t-1},\cdots,o_1)=p(o_t|i_t)
+ \]</span></p></li>
 </ol>
-<h4 id="two-equations">Two equations</h4>
+<h3 id="two-equations">Two equations</h3>
 <ol type="1">
 <li>状态方程 system equation
 <ul>
@@ -1892,19 +1902,19 @@ Z_t=g(Z_{t-1},u,\delta_1)
 <p><span class="math display">\[
 X_t=f(Z_t,u,\delta_2)
 \]</span></p>
-<h4 id="filtering-problem">Filtering problem</h4>
+<h3 id="filtering-problem">Filtering problem</h3>
 <ul>
 <li><p>Find <span class="math display">\[
 p(z_t|x_1,x_2,\cdots,x_t)
 \]</span></p></li>
 <li><p>online problem</p></li>
 </ul>
-<h4 id="process">Process</h4>
+<h3 id="process">Process</h3>
 <figure>
 <img src="C:%5Ctypora%5Cfigures%5C%E5%8A%A8%E6%80%81%E6%A8%A1%E5%9E%8B.jpg" alt="动态模型" /><figcaption aria-hidden="true">动态模型</figcaption>
 </figure>
 <h2 id="linear-dynamical-system">Linear Dynamical System</h2>
-<h4 id="linearly">Linearly</h4>
+<h3 id="linearly">Linearly</h3>
 <ul>
 <li>two functions are linearly.</li>
 </ul>
@@ -1916,12 +1926,12 @@ x_t&amp;=C\cdot z_t+D+\delta\\
 \delta&amp;\sim\mathcal{N}(0,R)
 \end{align}
 \]</span></p>
-<h4 id="idea">Idea</h4>
+<h3 id="idea">Idea</h3>
 <ol type="1">
 <li>relationship between <span class="math inline">\(p(z_t|x_{1:t})\;\&amp;\;p(z_{t-1}|x_{1:t-1})\)</span></li>
 <li>we know <span class="math inline">\(p(z_t|z_{t-1}),\;p(x_t|z_t)\)</span></li>
 </ol>
-<h4 id="derivation">Derivation</h4>
+<h3 id="derivation">Derivation</h3>
 <p>For equation (5), we have <span class="math display">\[
 p(z_t|x_{1:t})=p(x_{1:t},z_t)/p(x_{1:t})=Cp(x_{1:t},z_t)
 \]</span> For <span class="math inline">\(p(x_{1:t},z_t)\)</span>： <span class="math display">\[
@@ -1935,7 +1945,7 @@ p(z_t|x_{1:t-1})&amp;=\int_{z_{t-1}}p(z_t,z_{t-1}|x_{1:t-1})dz_{t-1}\nonumber\\
 &amp;=\int_{z_{t-1}}p(z_t|z_{t-1})p(z_{t-1}|x_{1:t-1})dz_{t-1}
 \end{align}
 \]</span> In (13), it needs <span class="math inline">\(p(z_{t-1}|x_{1:t-1})\)</span>, a circuit.</p>
-<h4 id="process-1">Process</h4>
+<h3 id="process-1">Process</h3>
 <p>根据计算过程，我们可以分成2个过程。并由于线性高斯假设，我们可以得到解析解。</p>
 <ol type="1">
 <li><p>Prediction:</p>
@@ -1956,7 +1966,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
 </ol>
 <h2 id="particle-filter">Particle Filter</h2>
 <p>非线性、非高斯，我们不能得到解析解。为了确定分布(5)需要MC采样。</p>
-<h4 id="is-importance-sampling">IS (Importance Sampling)</h4>
+<h3 id="is-importance-sampling">IS (Importance Sampling)</h3>
 <p>对分布<span class="math inline">\(p(z)\)</span>求关于某个函数<span class="math inline">\(f(z)\)</span>的期望 <span class="math display">\[
 \mathbb{E}[f(z)]=\int_zf(z)p(z)dz=\frac{1}{N}\sum\limits_{i=1}^Nf(z_i)
 \]</span> 直接在分布<span class="math inline">\(p(z)\)</span>中采样比较困难，我们引入简单分布<span class="math inline">\(q(z)\)</span>，并根据<span class="math inline">\(\frac{p(z)}{q(z)}\)</span>的比值确定采样点的权重 <span class="math display">\[
@@ -1966,7 +1976,7 @@ p(z_t|x_{1:t})\propto p(x_t|z_t)p(z_t|x_{1:t-1})
 w_t^i=\frac{p(z_t^i|x_{1:t})}{q(z_t^i|x_{1:t})},i=1,2,\cdots,N
 \]</span></p>
 <p>It is difficult to sample N points and calculate <span class="math inline">\(p(z_t^i|x_{1:t})\)</span>.</p>
-<h4 id="sis-sequential-importance-sampling">SIS (Sequential Importance Sampling)</h4>
+<h3 id="sis-sequential-importance-sampling">SIS (Sequential Importance Sampling)</h3>
 <p>In SIS, we talk about probability <span class="math inline">\(p(z_{1:t}|x_{1:t})\)</span>: <span class="math display">\[
 w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}
 \]</span> We want to find the relationship between <span class="math inline">\(w_t^i\)</span> and <span class="math inline">\(w_{t-1}^i\)</span>.</p>
@@ -1981,7 +1991,7 @@ q(z_{1:t}|x_{1:t})=q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})
 \]</span> Then we have <span class="math display">\[
 w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t)p(z_t|z_{t-1})p(z_{1:t-1}|x_{1:t-1})}{q(z_t|z_{1:t-1},x_{1:t})q(z_{1:t-1}|x_{1:t-1})}=\frac{p(x_t|z_t)p(z_t|z_{t-1})}{q(z_t|z_{1:t-1},x_{1:t})}w_{t-1}^i
 \]</span> We have distribution for <span class="math inline">\(p(x_t|z_t)\)</span> and <span class="math inline">\(p(z_t|z_{t-1})\)</span>.</p>
-<h4 id="problem">Problem</h4>
+<h3 id="problem">Problem</h3>
 <p>权值退化 (the degeneracy phenomenon)，权重的方差变大</p>
 <p>通过<span class="math inline">\(N_{eff}=\frac{1}{\sum_{i=1}^{N_s}(w_k^i)^2}\)</span>判断是否存在权值退化。越小越严重。</p>
 <p>sol:</p>
@@ -1991,14 +2001,14 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
 <li>find a proper distribution <span class="math inline">\(q(z)\)</span>, let <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})=p(z_t|z_{t-1})\)</span>, then <span class="math inline">\(w_t^i=p(x_t|z_t)w_{t-1}^i\)</span></li>
 </ol></li>
 </ol>
-<h4 id="sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + <span class="math inline">\(q(z)=q&#39;(z)\)</span>)</h4>
-<h6 id="resampling">resampling:</h6>
+<h3 id="sir-filter-algorithm-sampling-importance-resampling-sis-resampling-qzqz">SIR Filter Algorithm (Sampling Importance Resampling, SIS + Resampling + <span class="math inline">\(q(z)=q&#39;(z)\)</span>)</h3>
+<h5 id="resampling">resampling:</h5>
 <ol type="1">
 <li>t - 1 时刻，采样完成并计算得到权重</li>
 <li>t 时刻，根据 <span class="math inline">\(q(z_t|z_{1:t-1},x_{1:t})\)</span> 进行采样得到 <span class="math inline">\(z_t^i\)</span>。然后计算得到 <span class="math inline">\(N\)</span> 个权重。</li>
 <li>最后对权重归一化。</li>
 </ol>
-<h6 id="sir">SIR:</h6>
+<h5 id="sir">SIR:</h5>
 <p>For loop:</p>
 <ol type="1">
 <li>predict
@@ -2018,7 +2028,7 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
 <li><span class="math inline">\(x_t=average( w_t^i*x_t^i)\)</span></li>
 </ul></li>
 </ol>
-<h4 id="coding">Coding</h4>
+<h3 id="coding">Coding</h3>
 <p><a href="https://github.com/johnhw/pfilter">time series</a></p>
 <p><a href="https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python">robot</a></p>
 <h2 id="reference">Reference</h2>
@@ -2033,8 +2043,8 @@ w_t^i\propto\frac{p(z_{1:t}|x_{1:t})}{q(z_{1:t}|x_{1:t})}\propto \frac{p(x_t|z_t
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>Linear Dynamical System</tag>
         <tag>Particle Filter</tag>
+        <tag>Linear Dynamical System</tag>
         <tag>Sampling</tag>
       </tags>
   </entry>
@@ -2123,8 +2133,8 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
         <category>Time Series</category>
       </categories>
       <tags>
-        <tag>Particle Filter</tag>
         <tag>ARIMA</tag>
+        <tag>Particle Filter</tag>
       </tags>
   </entry>
   <entry>
@@ -2262,6 +2272,21 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
       </tags>
   </entry>
   <entry>
+    <title>【锋言疯语】1，考前做梦家</title>
+    <url>/fyfy1/</url>
+    <content><![CDATA[<p>老毛病了，总是在有紧急的眼前任务时给未来做一些很美好但是最后往往一地鸡毛的规划。毫无疑问的，这是在逃避眼前的事情。但至于为什么此刻的计划往往会一地稀碎为结尾，我想大概是一下几点吧，</p>
+<p>1，是规划往往太过于理想。这时的自己往往有着负罪感，对于眼前事情越逃避，负罪感越强烈，想要弥补的欲望就越大。欲望越大，计划里就想全都要了。过于丰满往往会产生赘肉，破坏美感；抑或是过于光彩夺目，以至于不敢面对，怕自己的拙能在这美好面前显得滑稽可笑。</p>
+<p>2，是关于成就感。自己是个非常需要成就感来激励自己，满足自己的粗人。这块儿有2个成就达成点，一个是完成了对于计划的计划，一个是完成了计划。这是两个可以合并也可以分离的事件。而自己往往是完成了前者，享受了微不足道缺更具迷惑感的那点点满足后，安然入睡。一觉起来，便进入了贤者时间，对把后者完成的欲望大幅下降，对预期能得到的成就感的期望与渴望也大幅降低。物质上的高支出，精神上的低收入。</p>
+<p>怎么解决呢？一是在布置计划的时候，收回那踢门一脚，保持对前一个事件的成就感的渴望，把渴望做为接下来的动力。二是收回脚的同时，动起手，开始对二部分的投入，好开头是成功的一半嘛。这样，同时拥有结果的反馈与预期的成就去激励，站在前一个时间的末尾的同时也在后一个时间的开头。在2个独立事件之间找桥梁，在一个单独事件中找分割点。永远在桥上。</p>
+<p>当然，方法论有了，实际操作会是怎么样呢？这篇文章是刻在桥上了，抑或只是一个终点？实践出真知。</p>
+<p>祝好</p>
+<p>2020.6.11</p>
+]]></content>
+      <categories>
+        <category>锋言疯语</category>
+      </categories>
+  </entry>
+  <entry>
     <title>【锋言疯语】2，考后忆梦者</title>
     <url>/fyfy2/</url>
     <content><![CDATA[<p>‘正常人谁写日记啊？’ 嗯我是正常人，所以是这‘日记’不正常</p>
@@ -2273,21 +2298,6 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
 <p>好的，又上桥成功！</p>
 <p>祝好</p>
 <p>2020.6.19</p>
-]]></content>
-      <categories>
-        <category>锋言疯语</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>【锋言疯语】1，考前做梦家</title>
-    <url>/fyfy1/</url>
-    <content><![CDATA[<p>老毛病了，总是在有紧急的眼前任务时给未来做一些很美好但是最后往往一地鸡毛的规划。毫无疑问的，这是在逃避眼前的事情。但至于为什么此刻的计划往往会一地稀碎为结尾，我想大概是一下几点吧，</p>
-<p>1，是规划往往太过于理想。这时的自己往往有着负罪感，对于眼前事情越逃避，负罪感越强烈，想要弥补的欲望就越大。欲望越大，计划里就想全都要了。过于丰满往往会产生赘肉，破坏美感；抑或是过于光彩夺目，以至于不敢面对，怕自己的拙能在这美好面前显得滑稽可笑。</p>
-<p>2，是关于成就感。自己是个非常需要成就感来激励自己，满足自己的粗人。这块儿有2个成就达成点，一个是完成了对于计划的计划，一个是完成了计划。这是两个可以合并也可以分离的事件。而自己往往是完成了前者，享受了微不足道缺更具迷惑感的那点点满足后，安然入睡。一觉起来，便进入了贤者时间，对把后者完成的欲望大幅下降，对预期能得到的成就感的期望与渴望也大幅降低。物质上的高支出，精神上的低收入。</p>
-<p>怎么解决呢？一是在布置计划的时候，收回那踢门一脚，保持对前一个事件的成就感的渴望，把渴望做为接下来的动力。二是收回脚的同时，动起手，开始对二部分的投入，好开头是成功的一半嘛。这样，同时拥有结果的反馈与预期的成就去激励，站在前一个时间的末尾的同时也在后一个时间的开头。在2个独立事件之间找桥梁，在一个单独事件中找分割点。永远在桥上。</p>
-<p>当然，方法论有了，实际操作会是怎么样呢？这篇文章是刻在桥上了，抑或只是一个终点？实践出真知。</p>
-<p>祝好</p>
-<p>2020.6.11</p>
 ]]></content>
       <categories>
         <category>锋言疯语</category>
