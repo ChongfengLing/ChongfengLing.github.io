@@ -24,20 +24,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Do not go gentle into that good night, Rage rage against the dying of the light!">
+  <meta name="description" content="1. Order Statistics 2. Maximum Likelihood Estimation 2.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【锋言疯语】4，Do not go gentle into that good night">
-<meta property="og:url" content="http://example.com/fyfy4/index.html">
+<meta property="og:title" content="[Statistics] 1. Point Estimation">
+<meta property="og:url" content="http://example.com/undefined/index.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Do not go gentle into that good night, Rage rage against the dying of the light!">
+<meta property="og:description" content="1. Order Statistics 2. Maximum Likelihood Estimation 2.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-06T15:13:24.845Z">
+<meta property="article:published_time" content="2021-01-10T14:35:13.000Z">
+<meta property="article:modified_time" content="2021-01-11T13:18:27.666Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
+<meta property="article:tag" content="MLE">
+<meta property="article:tag" content="Order Statistics">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/fyfy4/">
+<link rel="canonical" href="http://example.com/undefined/">
 
 
 <script class="page-configurations">
@@ -50,7 +52,7 @@
   };
 </script>
 
-  <title>【锋言疯语】4，Do not go gentle into that good night | LIng's Blog</title>
+  <title>[Statistics] 1. Point Estimation | LIng's Blog</title>
   
 
 
@@ -203,7 +205,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -215,6 +217,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#order-statistics"><span class="nav-text">1. Order Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-likelihood-estimation"><span class="nav-text">2. Maximum Likelihood Estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-estimation"><span class="nav-text">2.1 Point Estimation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mle-method"><span class="nav-text">2.2 MLE Method</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method-of-moments"><span class="nav-text">3. Method of Moments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bias"><span class="nav-text">4. Bias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sufficient-statistics"><span class="nav-text">5. Sufficient Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unbiased-%E4%B8%8E-sufficient-statistics"><span class="nav-text">6. Unbiased 与 Sufficient Statistics</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -309,7 +312,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/fyfy4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/undefined/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -325,7 +328,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【锋言疯语】4，Do not go gentle into that good night
+          [Statistics] 1. Point Estimation
         </h1>
 
         <div class="post-meta-container">
@@ -336,14 +339,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-09-24 00:00:00" itemprop="dateCreated datePublished" datetime="2020-09-24T00:00:00+08:00">2020-09-24</time>
+      <time title="Created: 2021-01-10 22:35:13" itemprop="dateCreated datePublished" datetime="2021-01-10T22:35:13+08:00">2021-01-10</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-01-06 23:13:24" itemprop="dateModified" datetime="2021-01-06T23:13:24+08:00">2021-01-06</time>
+        <time title="Modified: 2021-01-11 21:18:27" itemprop="dateModified" datetime="2021-01-11T21:18:27+08:00">2021-01-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -351,12 +354,16 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%94%8B%E8%A8%80%E7%96%AF%E8%AF%AD/" itemprop="url" rel="index"><span itemprop="name">锋言疯语</span></a>
+          <a href="/categories/study/" itemprop="url" rel="index"><span itemprop="name">study</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/study/Campus/" itemprop="url" rel="index"><span itemprop="name">Campus</span></a>
         </span>
     </span>
 
   
-    <span id="/fyfy4/" class="post-meta-item leancloud_visitors" data-flag-title="【锋言疯语】4，Do not go gentle into that good night" title="Views">
+    <span id="/undefined/" class="post-meta-item leancloud_visitors" data-flag-title="[Statistics] 1. Point Estimation" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -371,8 +378,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/fyfy4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/fyfy4/" itemprop="commentCount"></span>
+    <a title="valine" href="/undefined/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/undefined/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -384,14 +391,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1k</span>
+      <span>7.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -404,17 +411,153 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <blockquote>
-<p>Do not go gentle into that good night,</p>
-<p>Rage rage against the dying of the light!</p>
-</blockquote>
+        <h2 id="order-statistics">1. Order Statistics</h2>
+<h2 id="maximum-likelihood-estimation">2. Maximum Likelihood Estimation</h2>
+<h3 id="point-estimation">2.1 Point Estimation</h3>
+<p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为<span class="math inline">\(f(x;p)=p^x(1-p)^{1-x}\)</span>；我们把取到红球记为1，否则为0；我们一共取了<span class="math inline">\(n\)</span>球，得到了一串数据<span class="math inline">\(T=\{X_1=x_1,...,X_n=x_n\}, x_i\in \{0,1\}\)</span>。利用以上信息我们去估计<span class="math inline">\(p=u(x_1,...,x_n)\)</span>的值，又因为<span class="math inline">\(p\)</span>是一个点（值），所以称之为<strong>点估计</strong></p>
 <a id="more"></a>
-<p>第一次看《星际穿越》是在电脑屏幕上，感觉前期蛮乏味的，可能一半都没看到就没看了。也听过网上讨论“不要温柔的走入那个良夜”咋的咋的，但自己没有听到后半句，就没多想。只是把他看成了例如石碑至于《2001太空漫游》，没兴趣搞懂，就不想了吧。得益于疫情？暑假在银幕上又看了一遍，虽说因为是连看了二场的缘故（第一场看的1917，真是坑啊），中途恍惚了一下，但好歹也看完了。也听到了后一句。再加上冰川星球上那种挣扎与抗争，似乎懂了点。</p>
-<p>其实脑子里想gap的想法很早就有了，大概是起源在大二寒假，因为自己专业课有点划水，便萌生出gap一年去扎实掌握的想法，和爸妈说了一下被一顿骂。第二次有强烈欲望便是疫情下学校说不开线下课，结果也是遭到了激烈的反对。最后就是自己在拖，拖语言考试，拖找中介。在暑假调整状态，假装自己在gap中，调整自己时间安排。虽然说还有很多可以提升的，但也算是自己gap的一个底气吧。虽然但是，提交申请的时候也还是迷糊，还是gentle的走进了gap的无底黑夜。感谢爸妈的理解。</p>
-<p>说到底还是缺少规划吧。很多人问我为啥gap，我的回答也五花八门。是gre，托福没考出来并且自己的水平很难短时间取得满意的成绩？是自己背景太单薄不容易伸到理想中的学校？是想补补与拓展浪费的两年知识？是实习还没弄好？是在一个学期内完成以上的种种精神和时间压力过大？自己真的很想给上面的种种理由排个序，但无从排起，所以不同的回答也就只能是以上几种答案的排列组合了。</p>
-<p>是某天晚上cb快要闭馆了，自己脑子里还在想着休学的种种手续，脑子里突然想起“Do not go gentle into that good night”。回去的路上，我坐在车上，车在桥上，桥在河上，七月十五的大圆月在河里。真是good night啊。然后就好像突然明白这上下两句在说啥了（好吧我觉得当时的过程没有这么浪漫，这大概是臆想的情景）。</p>
-<p>希望自己能在这一年rage下去，当然，也要保护嗓子，合理安排体力啊。一开始好像给自己找了太多事，也把脑子崩的太紧，什么一星期完成一节网课，什么8点坐到cb就要着手学习。很多的目标定的太高了，有时还是得合理一些。</p>
-<p>不管怎么说，休学的第一个星期过去了，要有目标，要有调整，比如这篇想到啥就打啥的文章，得尽量控制篇数哈哈哈。</p>
+<h3 id="mle-method">2.2 MLE Method</h3>
+<p>我们可以先取一个值<span class="math inline">\(p=p_0\)</span>，此时模型就已知为<span class="math inline">\(f(x;p_0)\)</span>，我们可以算出<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p=p_0)=\prod_{i=1}^{n}p^{x_{i}}(1-p)^{1-x_{i}}=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}\)</span>。对<span class="math inline">\(p\)</span>每一个可能的取值，我们都可以得出一个概率。<strong>MLE的想法是，在这些取值中，找使得概率<span class="math inline">\(P\)</span>最大的<span class="math inline">\(\hat p\)</span>，作为我们的预测值。</strong></p>
+<p>数学上，<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p)=\prod_{i=1}^{n}f(x_i;p)=L(p),\;p \in[0,1]\)</span>，<span class="math inline">\(L(p)\)</span>叫做似然函数 Likelihood function。我们要求函数<span class="math inline">\(L(p)\)</span>的极大值，记为<span class="math inline">\(\hat p\)</span>，我们有<span class="math inline">\(L&#39;(\hat p)=0,\;\;L&#39;&#39;(\hat p)&lt;0\)</span>。</p>
+<p>由于有累积的存在，直接求一阶导<span class="math inline">\(L&#39;(p)\)</span>往往比较复杂，i.e <span class="math inline">\(L(p)=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}, \quad 0 \leq p \leq 1\)</span>，所以我们引入log函数，<strong>把累积转换成累加，方便导数的计算</strong>，i.e. <span class="math inline">\(\ln L(p)=\left(\sum_{i=1}^{n} x_{i}\right) \ln p+\left(n-\sum_{i=1}^{n} x_{i}\right) \ln (1-p)\)</span>。</p>
+<blockquote>
+<p>定义01（MLE）</p>
+<p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample from a distribution that depends on one or more unknown parameters <span class="math inline">\(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\)</span> with pmf or pdf that is denoted by <span class="math inline">\(f\left(x ; \theta_{1}, \theta_{2}, \ldots, \theta_{m}\right) .\)</span> Suppose that <span class="math inline">\(\left(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\right)\)</span> is restricted to a given parameter space <span class="math inline">\(\Omega .\)</span> Then the joint pmf or pdf of <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n},\)</span> namely, <span class="math display">\[
+\begin{aligned}
+L\left(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\right)=f(&amp;\left.x_{1} ; \theta_{1}, \ldots, \theta_{m}\right) f\left(x_{2} ; \theta_{1}, \ldots, \theta_{m}\right)
+\cdots f\left(x_{n} ; \theta_{1}, \ldots, \theta_{m}\right), \quad\left(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\right) \in \Omega
+\end{aligned}
+\]</span> is called the <strong>Likelihood function</strong>, which is regarded as a function of <span class="math inline">\(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\)</span>。</p>
+<p>Let <span class="math inline">\(\left[u_{1}\left(x_{1}, \ldots, x_{n}\right), u_{2}\left(x_{1}, \ldots, x_{n}\right), \ldots, u_{m}\left(x_{1}, \ldots, x_{n}\right)\right]\)</span> be the <span class="math inline">\(m\)</span>-tuple in <span class="math inline">\(\Omega\)</span> that maximizes <span class="math inline">\(L\left(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\right)\)</span>, then ML estimators of <span class="math inline">\(\theta_{1}, \theta_{2}, \ldots, \theta_{m}\)</span> are <span class="math display">\[
+\begin{aligned} \widehat{\theta}_{1} &amp;=u_{1}\left(X_{1}, \ldots, X_{n}\right) \\ \widehat{\theta}_{2} &amp;=u_{2}\left(X_{1}, \ldots, X_{n}\right) \\ &amp; \vdots \\ \widehat{\theta}_{m} &amp;=u_{m}\left(X_{1}, \ldots, X_{n}\right) \end{aligned}
+\]</span> ML estimates are the corresponding observed values of these statistics, namely <span class="math display">\[
+\begin{aligned}
+u_{1}\left(x_{1}, \ldots, x_{n}\right), u_{2}\left(x_{1}, \ldots, x_{n}\right), \ldots, u_{m}\left(x_{1}, \ldots, x_{n}\right)
+\end{aligned}
+\]</span></p>
+</blockquote>
+<ul>
+<li>很多情况下，<strong>estimators (also estimates)是唯一的。</strong></li>
+<li><span class="math inline">\(X\)</span>是未知变量，<span class="math inline">\(x_i\)</span>是具体的数。</li>
+<li>有多个<span class="math inline">\(\theta\)</span>时，求<span class="math inline">\(L\)</span>对每一个<span class="math inline">\(\theta\)</span>的偏导。</li>
+</ul>
+<h2 id="method-of-moments">3. Method of Moments</h2>
+<p>我们用模型的矩等于样本的矩，即用经验分布代替总体分布函数。</p>
+<ul>
+<li><span class="math inline">\(k\)</span>th moment of the sample: <span class="math inline">\(M_{k}=\sum_{i=1}^{n} X_{i}^{k} / n\)</span></li>
+<li><span class="math inline">\(k\)</span>th moment of the distribution: <span class="math inline">\(E(X^k)\)</span></li>
+<li>用<span class="math inline">\(k\)</span>th moment 去构造<span class="math inline">\(k\)</span>个等式，求解<span class="math inline">\(k\)</span>个estimates。</li>
+</ul>
+<blockquote>
+<p>Example 1</p>
+<p>Suppose that <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> is a random sample from a gamma distribution with parameters <span class="math inline">\(\alpha=\theta_{1}\)</span> and <span class="math inline">\(\beta=\theta_{2},\)</span> where <span class="math inline">\(\theta_{1}&gt;0, \theta_{2}&gt;0 .\)</span> It is difficult to maximize<br />
+<span class="math display">\[
+\begin{aligned}
+L\left(\theta_{1}, \theta_{2} ; x_{1}, \ldots, x_{n}\right)=\left[\frac{1}{\Gamma\left(\theta_{1}\right) \theta_{2}^{\theta_{1}}}\right]^{n}\left(x_{1} x_{2} \cdots x_{n}\right)^{\theta_{1}-1} \exp \left(-\sum_{i=1}^{n} x_{i} / \theta_{2}\right)
+\end{aligned}
+\]</span> As we known, <span class="math display">\[
+\begin{align}
+E(X)=\theta_{1} \theta_{2}&amp;=\bar{X}=M_1 \nonumber\\
+E[(X-E(X))^2]=\theta_{1} \theta_{2}^{2}&amp;=V=\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{k} / n \tag{1}
+\end{align}
+\]</span> The solution of which are <span class="math display">\[
+\begin{aligned}
+\widetilde{\theta}_{1}=\frac{\bar{X}^{2}}{V} \quad \text { and } \quad \tilde{\theta}_{2}=\frac{V}{\bar{X}}
+\end{aligned}
+\]</span></p>
+</blockquote>
+<ul>
+<li>等式（1）可以由<span class="math inline">\(M_2=E(X^2)\)</span>，IID条件以及<span class="math inline">\(\bar{X}\)</span>的定义推导。</li>
+</ul>
+<h2 id="bias">4. Bias</h2>
+<blockquote>
+<p>Definition 1 （Bias）</p>
+<p>If <span class="math inline">\(E\left[u\left(X_{1}, X_{2}, X_{n}\right)\right]=\theta,\)</span> then the statistic <span class="math inline">\(u\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> is called an unbiased estimator of <span class="math inline">\(\theta .\)</span> Otherwise, it is said to be biased.</p>
+</blockquote>
+<p>回到例子上，我们用取的<span class="math inline">\(n\)</span>个球来估计概率<span class="math inline">\(\theta\)</span>，得到对其的估计值<span class="math inline">\(\hat \theta=u(X_1,...,X_n)\)</span>，一个"好的"（unbiased）的估计是指估计值期望与真实参数期望相等，即<span class="math inline">\(E(\hat \theta)=\theta\)</span>。</p>
+<ul>
+<li>对随机变量<span class="math inline">\(X\)</span>来说，<span class="math inline">\(E(X)\)</span>~<span class="math inline">\(\theta\)</span></li>
+<li>对任意分布，样本方差<span class="math inline">\(S^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}\)</span>是方差的unbiased estimator。</li>
+</ul>
+<h2 id="sufficient-statistics">5. Sufficient Statistics</h2>
+<p>充分统计量包含了样本的所有信息。就如我们知道期望和方差，就能得出正态分布<span class="math inline">\(N(u,\sigma^2)\)</span>，而不需要知道采样去得到每一个点的概率。</p>
+<blockquote>
+<p>Definition 2 （sufficient statistics）</p>
+<p>A statistic <span class="math inline">\(t=T(X)\)</span> is sufficient for underlying parameter <span class="math inline">\(\theta\)</span> precisely if the conditional probability distribution of the data <span class="math inline">\(X\)</span>, given the statistic <span class="math inline">\(t=T(x)\)</span>, does not depend on the parameter <span class="math inline">\(\theta\)</span></p>
+</blockquote>
+<ul>
+<li>知道了充分统计量<span class="math inline">\(t\)</span>，那么样本<span class="math inline">\(X\)</span>的条件概率分布和参数<span class="math inline">\(\theta\)</span>无关。</li>
+</ul>
+<blockquote>
+<p>Theorem 1 因子分解定理</p>
+<p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> denote random variables with joint pdf or <span class="math inline">\(\operatorname{pmf} f\left(x_{1}, x_{2}, \ldots, x_{n} ; \theta\right),\)</span> which depends on the parameter <span class="math inline">\(\theta .\)</span> The statistic <span class="math inline">\(Y=u\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> is sufficient for <span class="math inline">\(\theta\)</span> if and only if <span class="math display">\[
+f\left(x_{1}, x_{2}, \ldots, x_{n} ; \theta\right)=\phi\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right) ; \theta\right] h\left(x_{1}, x_{2}, \ldots, x_{n}\right) \tag{2}
+\]</span> where <span class="math inline">\(\phi\)</span> depends on <span class="math inline">\(x_{1}, x_{2}, \ldots, x_{n}\)</span> only through <span class="math inline">\(u\left(x_{1}, \ldots, x_{n}\right)\)</span> and <span class="math inline">\(h\left(x_{1}, \ldots, x_{n}\right)\)</span> does not depend on <span class="math inline">\(\theta\)</span></p>
+</blockquote>
+<ul>
+<li><p>对充分统计量做one-to-one变换后，依然是充分统计量。</p>
+<ul>
+<li>设<span class="math inline">\(W=v(Y)=v\left[u\left(X_{1}, X_{2}, \ldots, X_{n}\right)\right]\)</span>为一对一函数，<span class="math inline">\(Y=v^{-1}(W)\)</span>为逆函数，（2）变成 <span class="math display">\[
+f\left(x_{1}, x_{2}, \ldots, x_{n} ; \theta\right)=\phi\left[v^{-1}\left\{v\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right)\right]\right\} ; \theta\right] h\left(x_{1}, x_{2}, \ldots, x_{n}\right) \nonumber
+\]</span></li>
+</ul></li>
+<li><p>当参数的MLE唯一时（指参数<span class="math inline">\(\theta_i,\,i=1\)</span>），MLE是充分统计量的函数。</p>
+<ul>
+<li>求MLE，即对（1）求对参数<span class="math inline">\(\theta\)</span>极大值，即对函数<span class="math inline">\(\phi\)</span>求极值，又<span class="math inline">\(\phi\sim u\)</span>, 所以结果是充分统计量<span class="math inline">\(u\)</span>的函数。</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Example 2</p>
+<p><span class="math inline">\(X_1,...,X_n\)</span> are random sample from <span class="math inline">\(b(1,p),p\in[0,1]\)</span>, let <span class="math inline">\(Y=X_1+...+X_n\)</span>, <span class="math inline">\(Y \sim b(n,p)\)</span>. By theorem 1, we get <span class="math inline">\(Y\)</span> is sufficient for <span class="math inline">\(p\)</span>. Only consider when <span class="math inline">\(y=\sum_{i=1}^nx_i\)</span>, the conditional probability is <span class="math display">\[
+\begin{aligned}
+P\left(X_{1}=x_{1}, \ldots, X_{n}=x_{n} \mid Y=y\right)&amp;=\frac{P\left(X_{1}=x_{1}, \ldots, X_{n}=x_{n}\right)}{P(Y=y)}\\
+&amp;=\frac{p^{x_{1}}(1-p)^{1-x_{1}} \cdots p^{x_{n}}(1-p)^{1-x_{n}}}{\left(\begin{array}{l}
+n \\
+y
+\end{array}\right) p^{y}(1-p)^{n-y}}\\
+&amp;=\frac{1}{\left(\begin{array}{l}
+n \\
+y
+\end{array}\right)}
+\end{aligned}
+\]</span> which does not depend on the parameter <span class="math inline">\(p\)</span>.</p>
+</blockquote>
+<ul>
+<li>我们只要知道抓的<span class="math inline">\(n\)</span>求中有<span class="math inline">\(y\)</span>个红球，就能知道抓取球的概率分布。</li>
+</ul>
+<p>定理一找充分统计量的方法可以写成exponential form，从乘法转换为加法，方便计算。</p>
+<blockquote>
+<p>Theorem 2</p>
+<p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample from a distribution with a pdf or pmf of the exponential form <span class="math display">\[
+f(x ; \theta)=\exp [K(x) p(\theta)+S(x)+q(\theta)] \nonumber
+\]</span> on a support free of <span class="math inline">\(\theta .\)</span> Then the statistic <span class="math inline">\(\sum_{i=1}^{n} K\left(X_{i}\right)\)</span> is sufficient for <span class="math inline">\(\theta\)</span>.</p>
+</blockquote>
+<ul>
+<li><p>不需要写成似然函数的形式，但是结果的累加是由似然函数中的累乘得出的。</p></li>
+<li><p>当有多个参数<span class="math inline">\(\theta\)</span>时，分别对应。</p>
+<ul>
+<li>假设<span class="math inline">\(X_1,...,X_n\)</span>独立同分布，<span class="math inline">\(X\sim N(\theta_1,\;\theta_2)\)</span></li>
+</ul>
+<p><span class="math display">\[
+f\left(x ; \theta_{1}, \theta_{2}\right)=\exp \left(\frac{-1}{2 \theta_{2}} x^{2}+\frac{\theta_1}{\theta_2}x -\frac{\theta_{1}^{2}}{2 \theta_{2}}-\ln \sqrt{2 \pi \theta_{2}}\right) \nonumber
+\]</span></p>
+<p>​ 得出充分统计量分别为 <span class="math display">\[
+Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_{i} \nonumber
+\]</span></p></li>
+</ul>
+<h2 id="unbiased-与-sufficient-statistics">6. Unbiased 与 Sufficient Statistics</h2>
+<blockquote>
+<p>Theorem 2 Rao-Blackwell Theorem</p>
+<p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample from a distribution with pdf or pmf <span class="math inline">\(f(x ; \theta), \theta \in \Omega .\)</span> Let <span class="math inline">\(Y_{1}=u_{1}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be a sufficient statistic for <span class="math inline">\(\theta,\)</span> and let <span class="math inline">\(Y_{2}=u_{2}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be an unbiased estimator of <span class="math inline">\(\theta,\)</span> where <span class="math inline">\(Y_{2}\)</span> is not a function of <span class="math inline">\(Y_{1}\)</span> alone. Then <span class="math inline">\(E\left(Y_{2} \mid y_{1}\right)=u\left(y_{1}\right)\)</span> defines a statistic <span class="math inline">\(u\left(Y_{1}\right),\)</span> a function of the sufficient statistic <span class="math inline">\(Y_{1}\)</span>, which is an unbiased estimator of <span class="math inline">\(\theta,\)</span> and its variance is less than that of <span class="math inline">\(Y_{2}\)</span></p>
+</blockquote>
+<ul>
+<li><p>根据sufficient statistics去更新unbiased estimator，得到一个方差更小的unbiased estimator。</p></li>
+<li><p><span class="math inline">\(Y_2\)</span>不一定要是无偏的。</p></li>
+<li><p>可以从一个简单的estimator出发，用定理进行迭代，得到一个better的estimator。</p>
+<ul>
+<li>和Boosting有啥联系？？？</li>
+</ul></li>
+</ul>
 
     </div>
 
@@ -439,19 +582,20 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MLE/" rel="tag"><i class="fa fa-tag"></i> MLE</a>
+              <a href="/tags/Order-Statistics/" rel="tag"><i class="fa fa-tag"></i> Order Statistics</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/fyfy3/" rel="prev" title="【锋言疯语】3，雨天离苏客">
-                  <i class="fa fa-chevron-left"></i> 【锋言疯语】3，雨天离苏客
+                <a href="/slm008/" rel="prev" title="[统计数学方法] 8. 提升方法 Boosting">
+                  <i class="fa fa-chevron-left"></i> [统计数学方法] 8. 提升方法 Boosting
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/timeseries2/" rel="next" title="[Time Series] 1. Introduction">
-                  [Time Series] 1. Introduction <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -610,7 +754,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/fyfy4/",
+      path: "/undefined/",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);
