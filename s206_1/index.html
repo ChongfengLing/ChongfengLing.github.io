@@ -24,22 +24,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="1. Order Statistics 2. Maximum Likelihood Estimation 2.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,.">
+  <meta name="description" content="1. Maximum Likelihood Estimation 1.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,...,X_n&#x3D;x_n\}, x_i\in">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[Statistics] 1. Point Estimation">
-<meta property="og:url" content="http://example.com/undefined/index.html">
+<meta property="og:url" content="http://example.com/s206_1/index.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="1. Order Statistics 2. Maximum Likelihood Estimation 2.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,.">
+<meta property="og:description" content="1. Maximum Likelihood Estimation 1.1 Point Estimation 我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为\(f(x;p)&#x3D;p^x(1-p)^{1-x}\)；我们把取到红球记为1，否则为0；我们一共取了\(n\)球，得到了一串数据\(T&#x3D;\{X_1&#x3D;x_1,...,X_n&#x3D;x_n\}, x_i\in">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-10T14:35:13.000Z">
-<meta property="article:modified_time" content="2021-01-11T13:18:27.666Z">
+<meta property="article:modified_time" content="2021-01-11T14:13:06.512Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
 <meta property="article:tag" content="MLE">
-<meta property="article:tag" content="Order Statistics">
+<meta property="article:tag" content="Moments">
+<meta property="article:tag" content="bias">
+<meta property="article:tag" content="sufficient statistics">
+<meta property="article:tag" content="Rao-Blackwell Theorem">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/undefined/">
+<link rel="canonical" href="http://example.com/s206_1/">
 
 
 <script class="page-configurations">
@@ -148,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">34</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">37</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -217,7 +220,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#order-statistics"><span class="nav-text">1. Order Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-likelihood-estimation"><span class="nav-text">2. Maximum Likelihood Estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-estimation"><span class="nav-text">2.1 Point Estimation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mle-method"><span class="nav-text">2.2 MLE Method</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method-of-moments"><span class="nav-text">3. Method of Moments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bias"><span class="nav-text">4. Bias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sufficient-statistics"><span class="nav-text">5. Sufficient Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unbiased-%E4%B8%8E-sufficient-statistics"><span class="nav-text">6. Unbiased 与 Sufficient Statistics</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-likelihood-estimation"><span class="nav-text">1. Maximum Likelihood Estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-estimation"><span class="nav-text">1.1 Point Estimation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mle-method"><span class="nav-text">1.2 MLE Method</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method-of-moments"><span class="nav-text">2. Method of Moments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bias"><span class="nav-text">3. Bias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sufficient-statistics"><span class="nav-text">4. Sufficient Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unbiased-%E4%B8%8E-sufficient-statistics"><span class="nav-text">5. Unbiased 与 Sufficient Statistics</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -246,7 +249,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -278,7 +281,7 @@
     <h3 class="widget-title">标签云</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ARIMA/" rel="tag">ARIMA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdaBoost/" rel="tag">AdaBoost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Baye-Theorem/" rel="tag">Baye Theorem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blog/" rel="tag">Blog</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C4-5/" rel="tag">C4.5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CART/" rel="tag">CART</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree/" rel="tag">Decision Tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual/" rel="tag">Dual</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual-Problem/" rel="tag">Dual Problem</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Entropy/" rel="tag">Entropy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FileZilla/" rel="tag">FileZilla</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gini-Index/" rel="tag">Gini Index</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo-NexT/" rel="tag">Hexo-NexT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hinge-Loss-Function/" rel="tag">Hinge Loss Function</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ID3/" rel="tag">ID3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Info-Gain/" rel="tag">Info Gain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KNN/" rel="tag">KNN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kernel-Method/" rel="tag">Kernel Method</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linear-Dynamical-System/" rel="tag">Linear Dynamical System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLE/" rel="tag">MLE</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Margin/" rel="tag">Maximum Margin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naive-Bayes/" rel="tag">Naive Bayes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Order-Statistics/" rel="tag">Order Statistics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Particle-Filter/" rel="tag">Particle Filter</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sampling/" rel="tag">Sampling</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Typora/" rel="tag">Typora</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Wordpress/" rel="tag">Wordpress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kd-tree/" rel="tag">kd tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA-Perception/" rel="tag">感知机 Perception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7/" rel="tag">线性可分性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" rel="tag">阿里云</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ARIMA/" rel="tag">ARIMA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AdaBoost/" rel="tag">AdaBoost</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Baye-Theorem/" rel="tag">Baye Theorem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blog/" rel="tag">Blog</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C4-5/" rel="tag">C4.5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CART/" rel="tag">CART</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree/" rel="tag">Decision Tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual/" rel="tag">Dual</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dual-Problem/" rel="tag">Dual Problem</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Entropy/" rel="tag">Entropy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FileZilla/" rel="tag">FileZilla</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gini-Index/" rel="tag">Gini Index</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo-NexT/" rel="tag">Hexo-NexT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hinge-Loss-Function/" rel="tag">Hinge Loss Function</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ID3/" rel="tag">ID3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Info-Gain/" rel="tag">Info Gain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KNN/" rel="tag">KNN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kernel-Method/" rel="tag">Kernel Method</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linear-Dynamical-System/" rel="tag">Linear Dynamical System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-model/" rel="tag">Logistic model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLE/" rel="tag">MLE</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Entropy-Model/" rel="tag">Maximum Entropy Model</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maximum-Margin/" rel="tag">Maximum Margin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Moments/" rel="tag">Moments</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Naive-Bayes/" rel="tag">Naive Bayes</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Particle-Filter/" rel="tag">Particle Filter</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rao-Blackwell-Theorem/" rel="tag">Rao-Blackwell Theorem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sampling/" rel="tag">Sampling</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Typora/" rel="tag">Typora</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Wordpress/" rel="tag">Wordpress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bias/" rel="tag">bias</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kd-tree/" rel="tag">kd tree</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sufficient-statistics/" rel="tag">sufficient statistics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA-Perception/" rel="tag">感知机 Perception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7/" rel="tag">线性可分性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" rel="tag">阿里云</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -312,7 +315,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/s206_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -346,7 +349,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-01-11 21:18:27" itemprop="dateModified" datetime="2021-01-11T21:18:27+08:00">2021-01-11</time>
+        <time title="Modified: 2021-01-11 22:13:06" itemprop="dateModified" datetime="2021-01-11T22:13:06+08:00">2021-01-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -363,7 +366,7 @@
     </span>
 
   
-    <span id="/undefined/" class="post-meta-item leancloud_visitors" data-flag-title="[Statistics] 1. Point Estimation" title="Views">
+    <span id="/s206_1/" class="post-meta-item leancloud_visitors" data-flag-title="[Statistics] 1. Point Estimation" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -378,8 +381,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/undefined/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/undefined/" itemprop="commentCount"></span>
+    <a title="valine" href="/s206_1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/s206_1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -411,12 +414,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="order-statistics">1. Order Statistics</h2>
-<h2 id="maximum-likelihood-estimation">2. Maximum Likelihood Estimation</h2>
-<h3 id="point-estimation">2.1 Point Estimation</h3>
+        <h2 id="maximum-likelihood-estimation">1. Maximum Likelihood Estimation</h2>
+<h3 id="point-estimation">1.1 Point Estimation</h3>
 <p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为<span class="math inline">\(f(x;p)=p^x(1-p)^{1-x}\)</span>；我们把取到红球记为1，否则为0；我们一共取了<span class="math inline">\(n\)</span>球，得到了一串数据<span class="math inline">\(T=\{X_1=x_1,...,X_n=x_n\}, x_i\in \{0,1\}\)</span>。利用以上信息我们去估计<span class="math inline">\(p=u(x_1,...,x_n)\)</span>的值，又因为<span class="math inline">\(p\)</span>是一个点（值），所以称之为<strong>点估计</strong></p>
 <a id="more"></a>
-<h3 id="mle-method">2.2 MLE Method</h3>
+<h3 id="mle-method">1.2 MLE Method</h3>
 <p>我们可以先取一个值<span class="math inline">\(p=p_0\)</span>，此时模型就已知为<span class="math inline">\(f(x;p_0)\)</span>，我们可以算出<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p=p_0)=\prod_{i=1}^{n}p^{x_{i}}(1-p)^{1-x_{i}}=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}\)</span>。对<span class="math inline">\(p\)</span>每一个可能的取值，我们都可以得出一个概率。<strong>MLE的想法是，在这些取值中，找使得概率<span class="math inline">\(P\)</span>最大的<span class="math inline">\(\hat p\)</span>，作为我们的预测值。</strong></p>
 <p>数学上，<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p)=\prod_{i=1}^{n}f(x_i;p)=L(p),\;p \in[0,1]\)</span>，<span class="math inline">\(L(p)\)</span>叫做似然函数 Likelihood function。我们要求函数<span class="math inline">\(L(p)\)</span>的极大值，记为<span class="math inline">\(\hat p\)</span>，我们有<span class="math inline">\(L&#39;(\hat p)=0,\;\;L&#39;&#39;(\hat p)&lt;0\)</span>。</p>
 <p>由于有累积的存在，直接求一阶导<span class="math inline">\(L&#39;(p)\)</span>往往比较复杂，i.e <span class="math inline">\(L(p)=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}, \quad 0 \leq p \leq 1\)</span>，所以我们引入log函数，<strong>把累积转换成累加，方便导数的计算</strong>，i.e. <span class="math inline">\(\ln L(p)=\left(\sum_{i=1}^{n} x_{i}\right) \ln p+\left(n-\sum_{i=1}^{n} x_{i}\right) \ln (1-p)\)</span>。</p>
@@ -441,7 +443,7 @@ u_{1}\left(x_{1}, \ldots, x_{n}\right), u_{2}\left(x_{1}, \ldots, x_{n}\right), 
 <li><span class="math inline">\(X\)</span>是未知变量，<span class="math inline">\(x_i\)</span>是具体的数。</li>
 <li>有多个<span class="math inline">\(\theta\)</span>时，求<span class="math inline">\(L\)</span>对每一个<span class="math inline">\(\theta\)</span>的偏导。</li>
 </ul>
-<h2 id="method-of-moments">3. Method of Moments</h2>
+<h2 id="method-of-moments">2. Method of Moments</h2>
 <p>我们用模型的矩等于样本的矩，即用经验分布代替总体分布函数。</p>
 <ul>
 <li><span class="math inline">\(k\)</span>th moment of the sample: <span class="math inline">\(M_{k}=\sum_{i=1}^{n} X_{i}^{k} / n\)</span></li>
@@ -469,7 +471,7 @@ E[(X-E(X))^2]=\theta_{1} \theta_{2}^{2}&amp;=V=\sum_{i=1}^{n}\left(X_{i}-\bar{X}
 <ul>
 <li>等式（1）可以由<span class="math inline">\(M_2=E(X^2)\)</span>，IID条件以及<span class="math inline">\(\bar{X}\)</span>的定义推导。</li>
 </ul>
-<h2 id="bias">4. Bias</h2>
+<h2 id="bias">3. Bias</h2>
 <blockquote>
 <p>Definition 1 （Bias）</p>
 <p>If <span class="math inline">\(E\left[u\left(X_{1}, X_{2}, X_{n}\right)\right]=\theta,\)</span> then the statistic <span class="math inline">\(u\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> is called an unbiased estimator of <span class="math inline">\(\theta .\)</span> Otherwise, it is said to be biased.</p>
@@ -479,7 +481,7 @@ E[(X-E(X))^2]=\theta_{1} \theta_{2}^{2}&amp;=V=\sum_{i=1}^{n}\left(X_{i}-\bar{X}
 <li>对随机变量<span class="math inline">\(X\)</span>来说，<span class="math inline">\(E(X)\)</span>~<span class="math inline">\(\theta\)</span></li>
 <li>对任意分布，样本方差<span class="math inline">\(S^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}\)</span>是方差的unbiased estimator。</li>
 </ul>
-<h2 id="sufficient-statistics">5. Sufficient Statistics</h2>
+<h2 id="sufficient-statistics">4. Sufficient Statistics</h2>
 <p>充分统计量包含了样本的所有信息。就如我们知道期望和方差，就能得出正态分布<span class="math inline">\(N(u,\sigma^2)\)</span>，而不需要知道采样去得到每一个点的概率。</p>
 <blockquote>
 <p>Definition 2 （sufficient statistics）</p>
@@ -545,7 +547,7 @@ f\left(x ; \theta_{1}, \theta_{2}\right)=\exp \left(\frac{-1}{2 \theta_{2}} x^{2
 Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_{i} \nonumber
 \]</span></p></li>
 </ul>
-<h2 id="unbiased-与-sufficient-statistics">6. Unbiased 与 Sufficient Statistics</h2>
+<h2 id="unbiased-与-sufficient-statistics">5. Unbiased 与 Sufficient Statistics</h2>
 <blockquote>
 <p>Theorem 2 Rao-Blackwell Theorem</p>
 <p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample from a distribution with pdf or pmf <span class="math inline">\(f(x ; \theta), \theta \in \Omega .\)</span> Let <span class="math inline">\(Y_{1}=u_{1}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be a sufficient statistic for <span class="math inline">\(\theta,\)</span> and let <span class="math inline">\(Y_{2}=u_{2}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be an unbiased estimator of <span class="math inline">\(\theta,\)</span> where <span class="math inline">\(Y_{2}\)</span> is not a function of <span class="math inline">\(Y_{1}\)</span> alone. Then <span class="math inline">\(E\left(Y_{2} \mid y_{1}\right)=u\left(y_{1}\right)\)</span> defines a statistic <span class="math inline">\(u\left(Y_{1}\right),\)</span> a function of the sufficient statistic <span class="math inline">\(Y_{1}\)</span>, which is an unbiased estimator of <span class="math inline">\(\theta,\)</span> and its variance is less than that of <span class="math inline">\(Y_{2}\)</span></p>
@@ -584,7 +586,10 @@ Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/MLE/" rel="tag"><i class="fa fa-tag"></i> MLE</a>
-              <a href="/tags/Order-Statistics/" rel="tag"><i class="fa fa-tag"></i> Order Statistics</a>
+              <a href="/tags/Moments/" rel="tag"><i class="fa fa-tag"></i> Moments</a>
+              <a href="/tags/bias/" rel="tag"><i class="fa fa-tag"></i> bias</a>
+              <a href="/tags/sufficient-statistics/" rel="tag"><i class="fa fa-tag"></i> sufficient statistics</a>
+              <a href="/tags/Rao-Blackwell-Theorem/" rel="tag"><i class="fa fa-tag"></i> Rao-Blackwell Theorem</a>
           </div>
 
         
@@ -660,7 +665,7 @@ Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:16</span>
+    <span title="Reading time total">1:15</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
@@ -754,7 +759,7 @@ NexT.utils.loadComments('#valine-comments', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
     new Valine(Object.assign({
       el  : '#valine-comments',
-      path: "/undefined/",
+      path: "/s206_1/",
     }, {"enable":true,"appId":"2jasoi9GfAqCxft7Pa84eFgg-MdYXbMMI","appKey":"zoneD6dBAq92qKtR85UaOHz5","placeholder":"Just go go","avatar":"mm","meta":["nick","mail"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":true,"serverURLs":null,"enableQQ":false,"requiredFields":["nick"]}
     ));
   }, window.Valine);

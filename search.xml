@@ -72,19 +72,18 @@
         <category>How to</category>
       </categories>
       <tags>
-        <tag>Blog</tag>
         <tag>Hexo-NexT</tag>
+        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
     <title>[Statistics] 1. Point Estimation</title>
-    <url>/undefined/</url>
-    <content><![CDATA[<h2 id="order-statistics">1. Order Statistics</h2>
-<h2 id="maximum-likelihood-estimation">2. Maximum Likelihood Estimation</h2>
-<h3 id="point-estimation">2.1 Point Estimation</h3>
+    <url>/s206_1/</url>
+    <content><![CDATA[<h2 id="maximum-likelihood-estimation">1. Maximum Likelihood Estimation</h2>
+<h3 id="point-estimation">1.1 Point Estimation</h3>
 <p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为<span class="math inline">\(f(x;p)=p^x(1-p)^{1-x}\)</span>；我们把取到红球记为1，否则为0；我们一共取了<span class="math inline">\(n\)</span>球，得到了一串数据<span class="math inline">\(T=\{X_1=x_1,...,X_n=x_n\}, x_i\in \{0,1\}\)</span>。利用以上信息我们去估计<span class="math inline">\(p=u(x_1,...,x_n)\)</span>的值，又因为<span class="math inline">\(p\)</span>是一个点（值），所以称之为<strong>点估计</strong></p>
 <a id="more"></a>
-<h3 id="mle-method">2.2 MLE Method</h3>
+<h3 id="mle-method">1.2 MLE Method</h3>
 <p>我们可以先取一个值<span class="math inline">\(p=p_0\)</span>，此时模型就已知为<span class="math inline">\(f(x;p_0)\)</span>，我们可以算出<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p=p_0)=\prod_{i=1}^{n}p^{x_{i}}(1-p)^{1-x_{i}}=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}\)</span>。对<span class="math inline">\(p\)</span>每一个可能的取值，我们都可以得出一个概率。<strong>MLE的想法是，在这些取值中，找使得概率<span class="math inline">\(P\)</span>最大的<span class="math inline">\(\hat p\)</span>，作为我们的预测值。</strong></p>
 <p>数学上，<span class="math inline">\(P(X_1=x_1,...,X_n=x_n;p)=\prod_{i=1}^{n}f(x_i;p)=L(p),\;p \in[0,1]\)</span>，<span class="math inline">\(L(p)\)</span>叫做似然函数 Likelihood function。我们要求函数<span class="math inline">\(L(p)\)</span>的极大值，记为<span class="math inline">\(\hat p\)</span>，我们有<span class="math inline">\(L&#39;(\hat p)=0,\;\;L&#39;&#39;(\hat p)&lt;0\)</span>。</p>
 <p>由于有累积的存在，直接求一阶导<span class="math inline">\(L&#39;(p)\)</span>往往比较复杂，i.e <span class="math inline">\(L(p)=p^{\Sigma x_{i}}(1-p)^{n-\Sigma x_{i}}, \quad 0 \leq p \leq 1\)</span>，所以我们引入log函数，<strong>把累积转换成累加，方便导数的计算</strong>，i.e. <span class="math inline">\(\ln L(p)=\left(\sum_{i=1}^{n} x_{i}\right) \ln p+\left(n-\sum_{i=1}^{n} x_{i}\right) \ln (1-p)\)</span>。</p>
@@ -109,7 +108,7 @@ u_{1}\left(x_{1}, \ldots, x_{n}\right), u_{2}\left(x_{1}, \ldots, x_{n}\right), 
 <li><span class="math inline">\(X\)</span>是未知变量，<span class="math inline">\(x_i\)</span>是具体的数。</li>
 <li>有多个<span class="math inline">\(\theta\)</span>时，求<span class="math inline">\(L\)</span>对每一个<span class="math inline">\(\theta\)</span>的偏导。</li>
 </ul>
-<h2 id="method-of-moments">3. Method of Moments</h2>
+<h2 id="method-of-moments">2. Method of Moments</h2>
 <p>我们用模型的矩等于样本的矩，即用经验分布代替总体分布函数。</p>
 <ul>
 <li><span class="math inline">\(k\)</span>th moment of the sample: <span class="math inline">\(M_{k}=\sum_{i=1}^{n} X_{i}^{k} / n\)</span></li>
@@ -137,7 +136,7 @@ E[(X-E(X))^2]=\theta_{1} \theta_{2}^{2}&amp;=V=\sum_{i=1}^{n}\left(X_{i}-\bar{X}
 <ul>
 <li>等式（1）可以由<span class="math inline">\(M_2=E(X^2)\)</span>，IID条件以及<span class="math inline">\(\bar{X}\)</span>的定义推导。</li>
 </ul>
-<h2 id="bias">4. Bias</h2>
+<h2 id="bias">3. Bias</h2>
 <blockquote>
 <p>Definition 1 （Bias）</p>
 <p>If <span class="math inline">\(E\left[u\left(X_{1}, X_{2}, X_{n}\right)\right]=\theta,\)</span> then the statistic <span class="math inline">\(u\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> is called an unbiased estimator of <span class="math inline">\(\theta .\)</span> Otherwise, it is said to be biased.</p>
@@ -147,7 +146,7 @@ E[(X-E(X))^2]=\theta_{1} \theta_{2}^{2}&amp;=V=\sum_{i=1}^{n}\left(X_{i}-\bar{X}
 <li>对随机变量<span class="math inline">\(X\)</span>来说，<span class="math inline">\(E(X)\)</span>~<span class="math inline">\(\theta\)</span></li>
 <li>对任意分布，样本方差<span class="math inline">\(S^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}\)</span>是方差的unbiased estimator。</li>
 </ul>
-<h2 id="sufficient-statistics">5. Sufficient Statistics</h2>
+<h2 id="sufficient-statistics">4. Sufficient Statistics</h2>
 <p>充分统计量包含了样本的所有信息。就如我们知道期望和方差，就能得出正态分布<span class="math inline">\(N(u,\sigma^2)\)</span>，而不需要知道采样去得到每一个点的概率。</p>
 <blockquote>
 <p>Definition 2 （sufficient statistics）</p>
@@ -213,7 +212,7 @@ f\left(x ; \theta_{1}, \theta_{2}\right)=\exp \left(\frac{-1}{2 \theta_{2}} x^{2
 Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_{i} \nonumber
 \]</span></p></li>
 </ul>
-<h2 id="unbiased-与-sufficient-statistics">6. Unbiased 与 Sufficient Statistics</h2>
+<h2 id="unbiased-与-sufficient-statistics">5. Unbiased 与 Sufficient Statistics</h2>
 <blockquote>
 <p>Theorem 2 Rao-Blackwell Theorem</p>
 <p>Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample from a distribution with pdf or pmf <span class="math inline">\(f(x ; \theta), \theta \in \Omega .\)</span> Let <span class="math inline">\(Y_{1}=u_{1}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be a sufficient statistic for <span class="math inline">\(\theta,\)</span> and let <span class="math inline">\(Y_{2}=u_{2}\left(X_{1}, X_{2}, \ldots, X_{n}\right)\)</span> be an unbiased estimator of <span class="math inline">\(\theta,\)</span> where <span class="math inline">\(Y_{2}\)</span> is not a function of <span class="math inline">\(Y_{1}\)</span> alone. Then <span class="math inline">\(E\left(Y_{2} \mid y_{1}\right)=u\left(y_{1}\right)\)</span> defines a statistic <span class="math inline">\(u\left(Y_{1}\right),\)</span> a function of the sufficient statistic <span class="math inline">\(Y_{1}\)</span>, which is an unbiased estimator of <span class="math inline">\(\theta,\)</span> and its variance is less than that of <span class="math inline">\(Y_{2}\)</span></p>
@@ -233,7 +232,10 @@ Y_{1}=\sum_{i=1}^{n} X_{i}^{2} \quad \text { and } \quad Y_{2}=\sum_{i=1}^{n} X_
       </categories>
       <tags>
         <tag>MLE</tag>
-        <tag>Order Statistics</tag>
+        <tag>Moments</tag>
+        <tag>bias</tag>
+        <tag>sufficient statistics</tag>
+        <tag>Rao-Blackwell Theorem</tag>
       </tags>
   </entry>
   <entry>
@@ -2432,6 +2434,21 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
       </tags>
   </entry>
   <entry>
+    <title>【锋言疯语】1，考前做梦家</title>
+    <url>/fyfy1/</url>
+    <content><![CDATA[<p>老毛病了，总是在有紧急的眼前任务时给未来做一些很美好但是最后往往一地鸡毛的规划。毫无疑问的，这是在逃避眼前的事情。但至于为什么此刻的计划往往会一地稀碎为结尾，我想大概是一下几点吧，</p>
+<p>1，是规划往往太过于理想。这时的自己往往有着负罪感，对于眼前事情越逃避，负罪感越强烈，想要弥补的欲望就越大。欲望越大，计划里就想全都要了。过于丰满往往会产生赘肉，破坏美感；抑或是过于光彩夺目，以至于不敢面对，怕自己的拙能在这美好面前显得滑稽可笑。</p>
+<p>2，是关于成就感。自己是个非常需要成就感来激励自己，满足自己的粗人。这块儿有2个成就达成点，一个是完成了对于计划的计划，一个是完成了计划。这是两个可以合并也可以分离的事件。而自己往往是完成了前者，享受了微不足道缺更具迷惑感的那点点满足后，安然入睡。一觉起来，便进入了贤者时间，对把后者完成的欲望大幅下降，对预期能得到的成就感的期望与渴望也大幅降低。物质上的高支出，精神上的低收入。</p>
+<p>怎么解决呢？一是在布置计划的时候，收回那踢门一脚，保持对前一个事件的成就感的渴望，把渴望做为接下来的动力。二是收回脚的同时，动起手，开始对二部分的投入，好开头是成功的一半嘛。这样，同时拥有结果的反馈与预期的成就去激励，站在前一个时间的末尾的同时也在后一个时间的开头。在2个独立事件之间找桥梁，在一个单独事件中找分割点。永远在桥上。</p>
+<p>当然，方法论有了，实际操作会是怎么样呢？这篇文章是刻在桥上了，抑或只是一个终点？实践出真知。</p>
+<p>祝好</p>
+<p>2020.6.11</p>
+]]></content>
+      <categories>
+        <category>锋言疯语</category>
+      </categories>
+  </entry>
+  <entry>
     <title>【锋言疯语】2，考后忆梦者</title>
     <url>/fyfy2/</url>
     <content><![CDATA[<p>‘正常人谁写日记啊？’ 嗯我是正常人，所以是这‘日记’不正常</p>
@@ -2443,21 +2460,6 @@ X_t-\alpha_1X_{t-1}-\alpha_2X_{t-2}-...-\alpha_p&#39; X_{t-p&#39;}=\beta_1e_{t-1
 <p>好的，又上桥成功！</p>
 <p>祝好</p>
 <p>2020.6.19</p>
-]]></content>
-      <categories>
-        <category>锋言疯语</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>【锋言疯语】1，考前做梦家</title>
-    <url>/fyfy1/</url>
-    <content><![CDATA[<p>老毛病了，总是在有紧急的眼前任务时给未来做一些很美好但是最后往往一地鸡毛的规划。毫无疑问的，这是在逃避眼前的事情。但至于为什么此刻的计划往往会一地稀碎为结尾，我想大概是一下几点吧，</p>
-<p>1，是规划往往太过于理想。这时的自己往往有着负罪感，对于眼前事情越逃避，负罪感越强烈，想要弥补的欲望就越大。欲望越大，计划里就想全都要了。过于丰满往往会产生赘肉，破坏美感；抑或是过于光彩夺目，以至于不敢面对，怕自己的拙能在这美好面前显得滑稽可笑。</p>
-<p>2，是关于成就感。自己是个非常需要成就感来激励自己，满足自己的粗人。这块儿有2个成就达成点，一个是完成了对于计划的计划，一个是完成了计划。这是两个可以合并也可以分离的事件。而自己往往是完成了前者，享受了微不足道缺更具迷惑感的那点点满足后，安然入睡。一觉起来，便进入了贤者时间，对把后者完成的欲望大幅下降，对预期能得到的成就感的期望与渴望也大幅降低。物质上的高支出，精神上的低收入。</p>
-<p>怎么解决呢？一是在布置计划的时候，收回那踢门一脚，保持对前一个事件的成就感的渴望，把渴望做为接下来的动力。二是收回脚的同时，动起手，开始对二部分的投入，好开头是成功的一半嘛。这样，同时拥有结果的反馈与预期的成就去激励，站在前一个时间的末尾的同时也在后一个时间的开头。在2个独立事件之间找桥梁，在一个单独事件中找分割点。永远在桥上。</p>
-<p>当然，方法论有了，实际操作会是怎么样呢？这篇文章是刻在桥上了，抑或只是一个终点？实践出真知。</p>
-<p>祝好</p>
-<p>2020.6.11</p>
 ]]></content>
       <categories>
         <category>锋言疯语</category>
