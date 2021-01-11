@@ -78,7 +78,7 @@
   </entry>
   <entry>
     <title>[Statistics] 1. Point Estimation</title>
-    <url>/2061/</url>
+    <url>/statistics-1/</url>
     <content><![CDATA[<h2 id="maximum-likelihood-estimation">1. Maximum Likelihood Estimation</h2>
 <h3 id="point-estimation">1.1 Point Estimation</h3>
 <p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为<span class="math inline">\(f(x;p)=p^x(1-p)^{1-x}\)</span>；我们把取到红球记为1，否则为0；我们一共取了<span class="math inline">\(n\)</span>球，得到了一串数据<span class="math inline">\(T=\{X_1=x_1,...,X_n=x_n\}, x_i\in \{0,1\}\)</span>。利用以上信息我们去估计<span class="math inline">\(p=u(x_1,...,x_n)\)</span>的值，又因为<span class="math inline">\(p\)</span>是一个点（值），所以称之为<strong>点估计</strong></p>
