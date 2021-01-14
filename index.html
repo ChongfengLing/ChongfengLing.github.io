@@ -472,10 +472,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-01-13 21:11:01 / Modified: 21:12:17" itemprop="dateCreated datePublished" datetime="2021-01-13T21:11:01+08:00">2021-01-13</time>
+      <time title="Created: 2021-01-13 21:11:01" itemprop="dateCreated datePublished" datetime="2021-01-13T21:11:01+08:00">2021-01-13</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-01-14 22:05:39" itemprop="dateModified" datetime="2021-01-14T22:05:39+08:00">2021-01-14</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -519,14 +525,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>6.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>6 mins.</span>
     </span>
 </div>
 
@@ -539,7 +545,129 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <p>假设检验 hypothesis testing的核心就是，小概率事件不会发生。</p>
+<h2 id="tests-about-one-mean">1. Tests about One Mean</h2>
+<h3 id="hypothesis-testing">1.1 Hypothesis Testing</h3>
+<p>我们通过<strong>process I</strong>得到结果为<span class="math inline">\(X\sim N(u=50,\sigma^2)\)</span>，我们想要证明新的<strong>process II</strong>后，<span class="math inline">\(X\sim N(u=55,\sigma^2)\)</span>。这种想用新分布去反驳旧分布的技术成为假设检验。</p>
+<ul>
+<li>机器的效率一开始时符合<span class="math inline">\(X\sim N(u=50,\sigma^2)\)</span>，现在引进新技术，想知道新技术有没有提高效率，即有没有变成<span class="math inline">\(X\sim N(u=55,\sigma^2)\)</span>。</li>
+</ul>
+<p>We want to test the <strong>simple null hypothesis</strong> <span class="math inline">\(H_{0}: \mu=50\)</span> against the <strong>simple alternative hypothesis</strong> <span class="math inline">\(H_{1}: \mu=55\)</span>。为了进行判断，我们想要从样本<span class="math inline">\(X_1,...,X_n\)</span>中根据<strong>小概率事件不会发生</strong>的原则，找出一个规则去<strong>接受或拒绝<span class="math inline">\(H_0\)</span></strong>。针对样本空间来讲，即对样本空间进行一个划分，分成拒绝域<strong>critical region</strong> <span class="math inline">\(C=\{(x_1,...,x_n):f(x)\;with\;condition\;\}\)</span>以及接受域<span class="math inline">\(C&#39;\)</span>。对均值的检验，我们可以用样本均值<span class="math inline">\(\bar{X}\)</span>作为<strong>Test statistic</strong>去作为样本的函数去划分域。</p>
+<ol type="1">
+<li><strong>Type I error <span class="math inline">\(\alpha\)</span> </strong>$=P$： <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C\)</span>，样本在拒绝域上但其实<span class="math inline">\(H_0\)</span>是对的。
+<ul>
+<li><span class="math inline">\(\alpha\)</span>也称之为 significance level of the test，在检验的开始由我们决定。</li>
+</ul></li>
+<li><strong>Type II error</strong> <span class="math inline">\(\beta\)</span> $=P$： <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C&#39;\)</span>，样本在接受域上但其实<span class="math inline">\(H_1\)</span>是对的。</li>
+</ol>
+<figure>
+<img src="C:%5CUsers%5CScott%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210114112915272.png" alt="image-20210114112915272" /><figcaption aria-hidden="true">image-20210114112915272</figcaption>
+</figure>
+<ul>
+<li><span class="math inline">\(C&#39;\)</span>是<span class="math inline">\(C\)</span>的补集。</li>
+<li><span class="math inline">\(\alpha+\beta\neq1\)</span></li>
+<li><span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>是负相关。<span class="math inline">\(\alpha,\beta\)</span>分别与样本大小<span class="math inline">\(n\)</span>负相关。</li>
+</ul>
+<p>Type I 和 II error是小概率事件发生了的情况。我们一般认为，当<span class="math inline">\(H_0\)</span>正确的时候，<span class="math inline">\(\left(X_{1}, X_{2}, \ldots, X_{n}\right) \in C\)</span>属于小概率事件，不会发生（这也是假设检验的核心），所以我们会犯错。</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>或是<span class="math inline">\(H_1\)</span>对是客观的事实，所以存在事实是对的但我们判断成负的概率，反之也是。因此，我们不可能同时犯两种错误。</li>
+</ul>
+<p>在检验中，我们有2种方法去view假设检验：</p>
+<ol type="1">
+<li><span class="math inline">\(p-value\)</span> 可以根据样本的统计量（i.e. <span class="math inline">\(\bar{X}\)</span>）得到样本对应的<span class="math inline">\(p-value\)</span>，把p值与<span class="math inline">\(\alpha\)</span>进行比较也可以得出结果。</li>
+<li>confidence intervals</li>
+</ol>
+<blockquote>
+<p>Example 1</p>
+</blockquote>
+<h3 id="单边多边检验">1.2 单边、多边检验</h3>
+<p>当方差可知的时候 <span class="math display">\[
+\begin{array}{ccc}
+H_{0} &amp; H_{1} &amp; \text { Critical Region } \\
+\hline \mu=\mu_{0} &amp; \mu&gt;\mu_{0} &amp; z \geq z_{\alpha} \text { or } \bar{x} \geq \mu_{0}+z_{\alpha} \sigma / \sqrt{n} \\
+\mu=\mu_{0} &amp; \mu&lt;\mu_{0} &amp; z \leq-z_{\alpha} \text { or } \bar{x} \leq \mu_{0}-z_{\alpha} \sigma / \sqrt{n} \\
+\mu=\mu_{0} &amp; \mu \neq \mu_{0} &amp; |z| \geq z_{\alpha / 2} \text { or }\left|\bar{x}-\mu_{0}\right| \geq z_{\alpha / 2} \sigma / \sqrt{n}
+\end{array}
+\]</span> 但方差位置且样本量<span class="math inline">\(n&lt;30\)</span>时 <span class="math display">\[
+\begin{array}{ccc}
+H_{0} &amp; H_{1} &amp; \text { Critical Region } \\
+\hline \mu=\mu_{0} &amp; \mu&gt;\mu_{0} &amp; t \geq t_{\alpha}(n-1) \text { or } \bar{x} \geq \mu_{0}+t_{\alpha}(n-1) s / \sqrt{n} \\
+\mu=\mu_{0} &amp; \mu&lt;\mu_{0} &amp; t \leq-t_{\alpha}(n-1) \text { or } \bar{x} \leq \mu_{0}-t_{\alpha}(n-1) s / \sqrt{n} \\
+\mu=\mu_{0} &amp; \mu \neq \mu_{0} &amp; |t| \geq t_{\alpha / 2}(n-1) \text { or }\left|\bar{x}-\mu_{0}\right| \geq t_{\alpha / 2}(n-1) s / \sqrt{n}
+\end{array}
+\]</span></p>
+<h2 id="power-of-a-statistical-test">2. Power of A Statistical Test</h2>
+<p>对一个test: <span class="math inline">\(H_0:p=a,\;H_1:p&gt;a\)</span>来讲，模型为<span class="math inline">\(b(1,p)\)</span>，<strong>当我们选定好一个拒绝域<span class="math inline">\(C\)</span>的时候</strong>，我们找到一个函数<span class="math inline">\(K(p)\)</span>去联系<span class="math inline">\(\alpha\)</span>与<span class="math inline">\(\beta\)</span>。</p>
+<p>设有20个样本<span class="math inline">\(X_1,...,X_{20}\)</span>根据定义可知 <span class="math display">\[
+\begin{aligned}
+\alpha&amp;=P(X\in C;P=a)\\
+\beta&amp;=P(X\in C&#39;;P=b&gt;a)\\
+&amp;=1-P(X\in C;P=b)
+\end{aligned}
+\]</span> 我们记power function of the test为 <span class="math display">\[
+\begin{align}
+K(p)=P(X\in C:P=p),\;\;\;\;p\geq a
+\end{align}
+\]</span> 因此我们可以根据power function来表示<span class="math inline">\(\alpha,\beta\)</span> <span class="math display">\[
+\begin{aligned}
+\alpha&amp;=K(p=a)\\
+\beta&amp;=1-K(p=b)
+\end{aligned}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(K(p)\sim C,\;p\)</span></li>
+</ul>
+<p>当我们更换拒绝域<span class="math inline">\(C\)</span>的时候，<span class="math inline">\(K\)</span>以及<span class="math inline">\(\alpha,\beta\)</span>也随之变化。因为我们要同时减小两个error <span class="math inline">\(\alpha,\beta\)</span>，所以我们可以根据power function选择更好的拒绝域<span class="math inline">\(C\)</span>。</p>
+<h2 id="best-critical-regions">3. Best Critical Regions</h2>
+<p>拒绝域在满足<span class="math inline">\(\alpha=P\left(C ; \theta_{0}\right)\)</span>的情况下，可以<span class="math inline">\(u(X_1,...,X_n)&lt;a,\;u\in [a,b],\;u&gt;b\)</span>。我们要找到一个最好的拒绝域（确定方向）。</p>
+<blockquote>
+<p>定义1 the best critical regions</p>
+<p>Consider the test of the simple null hypothesis <span class="math inline">\(H_{0}: \theta=\theta_{0}\)</span> against the simple alternative hypothesis <span class="math inline">\(H_{1}: \theta=\theta_{1} .\)</span> Let <span class="math inline">\(C\)</span> be a critical region of size <span class="math inline">\(\alpha ;\)</span> that is, <span class="math inline">\(\alpha=P\left(C ; \theta_{0}\right) .\)</span> Then <span class="math inline">\(C\)</span> is a best critical region of size <span class="math inline">\(\alpha\)</span> if, for every other critical region D of size $ =P(D ; _{0}),$ we have <span class="math display">\[
+P\left(C ; \theta_{1}\right) \geq P\left(D ; \theta_{1}\right)
+\]</span> That is, when <span class="math inline">\(H_{1}: \theta=\theta_{1}\)</span> is true, the probability of rejecting <span class="math inline">\(H_{0}: \theta=\theta_{0}\)</span> with the use of the critical region <span class="math inline">\(C\)</span> is at least as great as the corresponding probability with the use of any other critical region <span class="math inline">\(D\)</span> of size <span class="math inline">\(\alpha\)</span>.</p>
+</blockquote>
+<ul>
+<li>在<span class="math inline">\(\alpha\)</span>一定下，最优拒绝域也是那个有最优power function的定义域。</li>
+</ul>
+<blockquote>
+<p>定理1 Neyman-Pearson Lemma</p>
+<p>(Neyman-Pearson Lemma) Let <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> be a random sample of size <span class="math inline">\(n\)</span> from a distribution with pdf or <span class="math inline">\(\operatorname{pmf} f(x ; \theta),\)</span> where <span class="math inline">\(\theta_{0}\)</span> and <span class="math inline">\(\theta_{1}\)</span> are two possible values of <span class="math inline">\(\theta\)</span> Denote the joint pdf or pmf of <span class="math inline">\(X_{1}, X_{2}, \ldots, X_{n}\)</span> by the likelihood function <span class="math display">\[
+L(\theta)=L\left(\theta ; x_{1}, x_{2}, \ldots, x_{n}\right)=f\left(x_{1} ; \theta\right) f\left(x_{2} ; \theta\right) \cdots f\left(x_{n} ; \theta\right)
+\]</span> If there exist a positive constant <span class="math inline">\(k\)</span> and a subset <span class="math inline">\(C\)</span> of the sample space such that （a） <span class="math inline">\(P\left[\left(X_{1}, X_{2}, \ldots, X_{n}\right) \in C ; \theta_{0}\right]=\alpha\)</span> （b） <span class="math inline">\(\frac{L\left(\theta_{0}\right)}{L\left(\theta_{1}\right)} \leq k\)</span> for <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C,\)</span> and （c） <span class="math inline">\(\frac{L\left(\theta_{0}\right)}{L\left(\theta_{1}\right)} \geq k\)</span> for <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C^{\prime}\)</span> then <span class="math inline">\(C\)</span> is a best critical region of size <span class="math inline">\(\alpha\)</span> for testing the simple null hypothesis <span class="math inline">\(H_{0}\)</span> :<span class="math inline">\(\theta=\theta_{0}\)</span> against the simple alternative hypothesis <span class="math inline">\(H_{1}: \theta=\theta_{1}\)</span></p>
+</blockquote>
+<ul>
+<li><span class="math inline">\(K\)</span>是常数，根据<span class="math inline">\(\alpha\)</span>的变化而变化</li>
+<li>得出的方向是不变的</li>
+</ul>
+<blockquote>
+<p>定义2 Uniformly most powerful test</p>
+<p><span class="math inline">\(8.6-2\)</span> A test defined by a critical region <span class="math inline">\(C\)</span> of size <span class="math inline">\(\alpha\)</span> is a uniformly most powerful test if it is a most powerful test against each simple alternative in <span class="math inline">\(H_{1} .\)</span> The critical region <span class="math inline">\(C\)</span> is called a uniformly most powerful critical region of size <span class="math inline">\(\alpha\)</span>.</p>
+</blockquote>
+<ul>
+<li><p>？</p></li>
+<li><p>当充分统计量存在时，最优拒绝域与uniformly power critical region取决于充分统计量。</p>
+<ul>
+<li><span class="math inline">\(\begin{aligned} \frac{L\left(\theta_{0}\right)}{L\left(\theta_{1}\right)} &amp;=\frac{\phi\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right) ; \theta_{0}\right] h\left(x_{1}, x_{2}, \ldots, x_{n}\right)}{\phi\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right) ; \theta_{1}\right] h\left(x_{1}, x_{2}, \ldots, x_{n}\right)} \\ &amp;=\frac{\phi\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right) ; \theta_{0}\right)}{\phi\left[u\left(x_{1}, x_{2}, \ldots, x_{n}\right) ; \theta_{1}\right]} \end{aligned}\)</span></li>
+</ul></li>
+</ul>
+<h2 id="likelihood-ratio-tests-似然比检验">4. Likelihood Ratio Tests 似然比检验</h2>
+<p>似然比检验：<span class="math inline">\(H_0\)</span>和<span class="math inline">\(H_1\)</span>是composite，即<span class="math inline">\(H_{0}: \theta \in \omega, \quad H_{1}: \theta \in \omega^{\prime}\)</span>，<span class="math inline">\(\omega\bigcup w&#39;= \Omega\)</span></p>
+<p>N-P lemma：<span class="math inline">\(H_0,H_1\)</span>是simple的 i.e. <span class="math inline">\(H_0=a,H_1=b\)</span>。</p>
+<blockquote>
+<p>定义3 似然比 Likelihood</p>
+<p>The likelihood ratio is the quotient <span class="math display">\[
+\lambda=\frac{L(\widehat{\omega})}{L(\widehat{\Omega})}
+\]</span> where <span class="math inline">\(L(\widehat{\omega})\)</span> is the maximum of the likelihood function with respect to <span class="math inline">\(\theta\)</span> when <span class="math inline">\(\theta \in \omega\)</span> and <span class="math inline">\(L(\widehat{\Omega})\)</span> is the maximum of the likelihood function with respect to <span class="math inline">\(\theta\)</span> when <span class="math inline">\(\theta \in \Omega\)</span></p>
+</blockquote>
+<ul>
+<li><span class="math inline">\(\lambda\)</span>是一个关于充分统计量的分布。</li>
+</ul>
+<blockquote>
+<p>定义4 似然比检验</p>
+<p>To test <span class="math inline">\(H_{0}: \theta \in \omega\)</span> against <span class="math inline">\(H_{1}: \theta \in \omega^{\prime},\)</span> the critical region for the likelihood ratio test is the set of points in the sample space for which <span class="math display">\[
+\lambda=\frac{L(\widehat{\omega})}{L(\widehat{\Omega})} \leq k
+\]</span> where <span class="math inline">\(0&lt;k&lt;1\)</span> and <span class="math inline">\(k\)</span> is selected so that the test has a desired significance level <span class="math inline">\(\alpha\)</span></p>
+</blockquote>
 
       
     </div>
@@ -606,7 +734,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-01-13 21:12:32" itemprop="dateModified" datetime="2021-01-13T21:12:32+08:00">2021-01-13</time>
+        <time title="Modified: 2021-01-14 22:07:27" itemprop="dateModified" datetime="2021-01-14T22:07:27+08:00">2021-01-14</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1737,13 +1865,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">85k</span>
+    <span title="Symbols count total">91k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:17</span>
+    <span title="Reading time total">1:23</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
