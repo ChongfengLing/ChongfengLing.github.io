@@ -24,21 +24,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="DL 2-2 Optimization algorithms Batch Idea  vectorization of X and Y.  Mini-batch gradient descent Idea  process \(X\) into \(X^{\{1\}},\;X^{\{2\}},\;...,\;X^{\{T\}}\), same to the correspondi">
+  <meta name="description" content="DL 2-2 Optimization algorithms Batch Idea  vectorization of X and Y.  Mini-batch gradient descent Idea  process $X$ into $X^1,;X^2,;…,;X^$, same to the corresponding $y$.  Algorithm Choose mini-batch">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LIng&#39;s Blog">
 <meta property="og:url" content="http://example.com/draft/[DL%202-2]%20Optimization%20algorithms.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="DL 2-2 Optimization algorithms Batch Idea  vectorization of X and Y.  Mini-batch gradient descent Idea  process \(X\) into \(X^{\{1\}},\;X^{\{2\}},\;...,\;X^{\{T\}}\), same to the correspondi">
+<meta property="og:description" content="DL 2-2 Optimization algorithms Batch Idea  vectorization of X and Y.  Mini-batch gradient descent Idea  process $X$ into $X^1,;X^2,;…,;X^$, same to the corresponding $y$.  Algorithm Choose mini-batch">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/typora/figures/dl2-2-1-指数平均.png">
+<meta property="og:image" content="c:%5Ctypora%5Cfigures%5Cdl2-2-1-%E6%8C%87%E6%95%B0%E5%B9%B3%E5%9D%87.png">
 <meta property="og:image" content="c:%5Ctypora%5Cfigures%5Cdl2-2-2.png">
 <meta property="og:image" content="c:%5Ctypora%5Cfigures%5Cdl2-2-3.png">
 <meta property="article:published_time" content="2021-01-06T15:29:15.230Z">
 <meta property="article:modified_time" content="2021-01-06T15:29:15.230Z">
 <meta property="article:author" content="Chongfeng Ling 凌崇锋">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/typora/figures/dl2-2-1-指数平均.png">
+<meta name="twitter:image" content="c:%5Ctypora%5Cfigures%5Cdl2-2-1-%E6%8C%87%E6%95%B0%E5%B9%B3%E5%9D%87.png">
 
 
 <link rel="canonical" href="http://example.com/draft/[DL%202-2]%20Optimization%20algorithms">
@@ -220,7 +220,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dl-2-2-optimization-algorithms"><span class="nav-text">DL 2-2 Optimization algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#batch"><span class="nav-text">Batch</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea"><span class="nav-text">Idea</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mini-batch-gradient-descent"><span class="nav-text">Mini-batch gradient descent</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-1"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#algorithm"><span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#choose-mini-batch-size-with-m-training-data"><span class="nav-text">Choose mini-batch size with m training data</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exponentially-weighted-averages"><span class="nav-text">Exponentially weighted averages</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-2"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#o_to_t-11-y_ti0t1-iyt-i"><span class="nav-text">$O_t&#x3D;O_{t-1}+(1-)y_t&#x3D;{i&#x3D;0}{t}(1-)iy{t-i} $</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#bias-correction"><span class="nav-text">Bias correction</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gradient-descent-with-momentum"><span class="nav-text">Gradient descent with momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-3"><span class="nav-text">idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#implement"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rmsprop-root-mean-square-prop"><span class="nav-text">RMSprop (root mean square prop)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-4"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#implement-1"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#adam-adaptive-moment-estimation-optimization-algorithm"><span class="nav-text">Adam (adaptive moment estimation) optimization algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-5"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#implement-2"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-rate-decay"><span class="nav-text">Learning rate decay</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea-6"><span class="nav-text">Idea</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-problem-of-local-optima-and-plateaus"><span class="nav-text">The problem of local optima and plateaus</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DL-2-2-Optimization-algorithms"><span class="nav-text">DL 2-2 Optimization algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Batch"><span class="nav-text">Batch</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea"><span class="nav-text">Idea</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mini-batch-gradient-descent"><span class="nav-text">Mini-batch gradient descent</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea-2"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Algorithm"><span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Choose-mini-batch-size-with-m-training-data"><span class="nav-text">Choose mini-batch size with m training data</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exponentially-weighted-averages"><span class="nav-text">Exponentially weighted averages</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea-3"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#O-t-alpha-O-t-1-1-alpha-y-t-sum-i-0-t-1-alpha-alpha-iy-t-i"><span class="nav-text">$O_t&#x3D;\alpha O_{t-1}+(1-\alpha)y_t&#x3D;\sum_{i&#x3D;0}^{t}(1-\alpha)\alpha ^iy_{t-i} $</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Bias-correction"><span class="nav-text">Bias correction</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradient-descent-with-momentum"><span class="nav-text">Gradient descent with momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#idea"><span class="nav-text">idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Implement"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RMSprop-root-mean-square-prop"><span class="nav-text">RMSprop (root mean square prop)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea-4"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Implement-2"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Adam-adaptive-moment-estimation-optimization-algorithm"><span class="nav-text">Adam (adaptive moment estimation) optimization algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea-5"><span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Implement-3"><span class="nav-text">Implement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Learning-rate-decay"><span class="nav-text">Learning rate decay</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Idea-6"><span class="nav-text">Idea</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-problem-of-local-optima-and-plateaus"><span class="nav-text">The problem of local optima and plateaus</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -333,102 +333,112 @@
       
       
       <div class="post-body">
-          <h2 id="dl-2-2-optimization-algorithms">DL 2-2 Optimization algorithms</h2>
-<h4 id="batch">Batch</h4>
-<h6 id="idea">Idea</h6>
+          <h2 id="DL-2-2-Optimization-algorithms">DL 2-2 Optimization algorithms</h2>
+<h4 id="Batch">Batch</h4>
+<h6 id="Idea">Idea</h6>
 <ul>
 <li>vectorization of X and Y.</li>
 </ul>
-<h4 id="mini-batch-gradient-descent">Mini-batch gradient descent</h4>
-<h6 id="idea-1">Idea</h6>
+<h4 id="Mini-batch-gradient-descent">Mini-batch gradient descent</h4>
+<h6 id="Idea-2">Idea</h6>
 <ul>
-<li>process <span class="math inline">\(X\)</span> into <span class="math inline">\(X^{\{1\}},\;X^{\{2\}},\;...,\;X^{\{T\}}\)</span>, same to the corresponding <span class="math inline">\(y\)</span>.</li>
+<li>process $X$ into $X^1,;X^2,;…,;X^$, same to the corresponding $y$.</li>
 </ul>
-<h6 id="algorithm">Algorithm</h6>
-<h6 id="choose-mini-batch-size-with-m-training-data">Choose mini-batch size with m training data</h6>
+<h6 id="Algorithm">Algorithm</h6>
+<h6 id="Choose-mini-batch-size-with-m-training-data">Choose mini-batch size with m training data</h6>
 <ul>
 <li>mini-batch size = m: batch gradient descent
 <ul>
 <li>use when m &lt; 2000</li>
-</ul></li>
+</ul>
+</li>
 <li>mini-batch size = 1: stochastic gradient
 <ul>
 <li>not efficient</li>
-</ul></li>
+</ul>
+</li>
 <li>mini-batch size between 1 and m:
 <ul>
-<li>let mini-batch size be <span class="math inline">\(2^n\)</span></li>
-</ul></li>
+<li>let mini-batch size be $2^n$</li>
 </ul>
-<h4 id="exponentially-weighted-averages">Exponentially weighted averages</h4>
-<h6 id="idea-2">Idea</h6>
+</li>
+</ul>
+<h4 id="Exponentially-weighted-averages">Exponentially weighted averages</h4>
+<h6 id="Idea-3">Idea</h6>
 <ul>
 <li>a very efficient way to calculate average both from computation and memory efficiency point of view.</li>
 </ul>
-<h6 id="o_to_t-11-y_ti0t1-iyt-i">$O_t=O_{t-1}+(1-)y_t=<em>{i=0}<sup>{t}(1-)</sup>iy</em>{t-i} $</h6>
+<h6 id="O-t-alpha-O-t-1-1-alpha-y-t-sum-i-0-t-1-alpha-alpha-iy-t-i">$O_t=\alpha O_{t-1}+(1-\alpha)y_t=\sum_{i=0}^{t}(1-\alpha)\alpha ^iy_{t-i} $</h6>
 <ul>
-<li>the larger the <span class="math inline">\(\alpha\)</span>, the smoother the curve.</li>
-<li><span class="math inline">\(O_t\)</span> is the average of the last <span class="math inline">\(\frac{1}{1-\alpha}\)</span> days' value.</li>
-<li><img src="C:\typora\figures\dl2-2-1-指数平均.png" title="fig:" alt="dl2-2-1 指数平均" />
+<li>the larger the $\alpha$, the smoother the curve.</li>
+<li>$O_t$ is the average of the last $\frac{1}{1-\alpha}$ days’ value.</li>
+<li><img src="C:%5Ctypora%5Cfigures%5Cdl2-2-1-%E6%8C%87%E6%95%B0%E5%B9%B3%E5%9D%87.png" alt="dl2-2-1 指数平均">
 <ul>
-<li>green line (near to the right): $$ is large</li>
-<li>yellow line (more oscillation): <span class="math inline">\(\alpha\)</span> is small</li>
-</ul></li>
+<li>green line (near to the right): $\alpha $ is large</li>
+<li>yellow line (more oscillation): $\alpha$ is small</li>
 </ul>
-<h6 id="bias-correction">Bias correction</h6>
-<ul>
-<li><span class="math inline">\(\frac{O_t}{1-\alpha ^t}=\alpha O_{t-1}+(1-\alpha)y_t\)</span></li>
+</li>
 </ul>
-<h4 id="gradient-descent-with-momentum">Gradient descent with momentum</h4>
-<h6 id="idea-3">idea</h6>
+<h6 id="Bias-correction">Bias correction</h6>
+<ul>
+<li>$\frac{O_t}{1-\alpha ^t}=\alpha O_{t-1}+(1-\alpha)y_t$</li>
+</ul>
+<h4 id="Gradient-descent-with-momentum">Gradient descent with momentum</h4>
+<h6 id="idea">idea</h6>
 <ul>
 <li>compute an exponentially weighted average of gradients, and then use that gradient to update weights instead.</li>
 <li>smooth the route in x-y plane.</li>
 </ul>
-<h6 id="implement">Implement</h6>
+<h6 id="Implement">Implement</h6>
 <ul>
-<li><img src="C:%5Ctypora%5Cfigures%5Cdl2-2-2.png" title="fig:" alt="dl2-2-2" /></li>
-<li><img src="C:%5Ctypora%5Cfigures%5Cdl2-2-3.png" title="fig:" alt="dl2-2-3" />
+<li><img src="C:%5Ctypora%5Cfigures%5Cdl2-2-2.png" alt="dl2-2-2"></li>
+<li><img src="C:%5Ctypora%5Cfigures%5Cdl2-2-3.png" alt="dl2-2-3">
 <ul>
-<li><ol type="1">
-<li>is gradient descent. (2) is gradient descent with momentum (small <span class="math inline">\(\beta\)</span>). (3) is gradient descent with momentum (large <span class="math inline">\(\beta\)</span>).</li>
-</ol></li>
-</ul></li>
+<li>(1) is gradient descent. (2) is gradient descent with momentum (small $\beta$). (3) is gradient descent with momentum (large $\beta$).</li>
 </ul>
-<h4 id="rmsprop-root-mean-square-prop">RMSprop (root mean square prop)</h4>
-<h6 id="idea-4">Idea</h6>
+</li>
+</ul>
+<h4 id="RMSprop-root-mean-square-prop">RMSprop (root mean square prop)</h4>
+<h6 id="Idea-4">Idea</h6>
 <ul>
 <li>learn fast in one direction and learn slowly in others directions.</li>
 </ul>
-<h6 id="implement-1">Implement</h6>
+<h6 id="Implement-2">Implement</h6>
 <ul>
 <li>see in Adam</li>
 </ul>
-<h4 id="adam-adaptive-moment-estimation-optimization-algorithm">Adam (adaptive moment estimation) optimization algorithm</h4>
-<h6 id="idea-5">Idea</h6>
+<h4 id="Adam-adaptive-moment-estimation-optimization-algorithm">Adam (adaptive moment estimation) optimization algorithm</h4>
+<h6 id="Idea-5">Idea</h6>
 <ul>
 <li>combines ideas from Gradient descent with momentum and RMSprop.</li>
 </ul>
-<h6 id="implement-2">Implement</h6>
+<h6 id="Implement-3">Implement</h6>
 <ul>
-<li><span class="math inline">\(\begin{cases} v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\ v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\ s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\ s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_2)^t} \\ W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}} + \varepsilon} \end{cases}\)</span></li>
+<li>$\begin{cases}<br>
+v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \<br>
+v^{corrected}<em>{dW^{[l]}} = \frac{v</em>{dW^{[l]}}}{1 - (\beta_1)^t} \<br>
+s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \<br>
+s^{corrected}<em>{dW^{[l]}} = \frac{s</em>{dW^{[l]}}}{1 - (\beta_2)^t} \<br>
+W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}<em>{dW^{[l]}}}{\sqrt{s^{corrected}</em>{dW^{[l]}}} + \varepsilon}<br>
+\end{cases}$</li>
 <li>where:
 <ul>
 <li>t counts the number of steps taken of Adam</li>
 <li>L is the number of layers</li>
-<li><span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are hyperparameters that control the two exponentially weighted averages.</li>
-<li><span class="math inline">\(\alpha\)</span> is the learning rate</li>
-<li><span class="math inline">\(\varepsilon\)</span> is a very small number to avoid dividing by zero</li>
-</ul></li>
+<li>$\beta_1$ and $\beta_2$ are hyperparameters that control the two exponentially weighted averages.</li>
+<li>$\alpha$ is the learning rate</li>
+<li>$\varepsilon$ is a very small number to avoid dividing by zero</li>
 </ul>
-<h4 id="learning-rate-decay">Learning rate decay</h4>
-<h6 id="idea-6">Idea</h6>
+</li>
+</ul>
+<h4 id="Learning-rate-decay">Learning rate decay</h4>
+<h6 id="Idea-6">Idea</h6>
 <ul>
 <li>大rate速度快，但是最后的收敛波动范围大，所以在最后减小rate。</li>
 </ul>
-<h4 id="the-problem-of-local-optima-and-plateaus">The problem of local optima and plateaus</h4>
-<ol type="1">
-<li>The chance to get a local optima in high n dimensional space is is very small (<span class="math inline">\(P=\frac{1}{2^n}\)</span>).</li>
+<h4 id="The-problem-of-local-optima-and-plateaus">The problem of local optima and plateaus</h4>
+<ol>
+<li>The chance to get a local optima in high n dimensional space is is very small ($P=\frac{1}{2^n}$).</li>
 <li>plateaus can make learning slow.</li>
 </ol>
 
@@ -492,13 +502,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">91k</span>
+    <span title="Symbols count total">88k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:23</span>
+    <span title="Reading time total">1:20</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

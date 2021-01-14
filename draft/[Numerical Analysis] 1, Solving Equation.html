@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="1 Solving Equation Aim: for function \(f(x)\) defined on \(\mathbb{R}\), find a (one) root \(x&#x3D;r\) such that \(f(r)&#x3D;0\). Def: an iterative method obeys linear convergence with rate S if \(\lim_{t \r">
+  <meta name="description" content="1 Solving Equation Aim: for function $f(x)$ defined on $\mathbb{R}$, find a (one) root $x&#x3D;r$ such that $f®&#x3D;0$. Def: an iterative method obeys linear convergence with rate S if $\lim_{t \rightarrow \in">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LIng&#39;s Blog">
 <meta property="og:url" content="http://example.com/draft/[Numerical%20Analysis]%201,%20Solving%20Equation.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="1 Solving Equation Aim: for function \(f(x)\) defined on \(\mathbb{R}\), find a (one) root \(x&#x3D;r\) such that \(f(r)&#x3D;0\). Def: an iterative method obeys linear convergence with rate S if \(\lim_{t \r">
+<meta property="og:description" content="1 Solving Equation Aim: for function $f(x)$ defined on $\mathbb{R}$, find a (one) root $x&#x3D;r$ such that $f®&#x3D;0$. Def: an iterative method obeys linear convergence with rate S if $\lim_{t \rightarrow \in">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-01-06T15:33:29.184Z">
 <meta property="article:modified_time" content="2021-01-06T15:33:29.184Z">
@@ -216,7 +216,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#solving-equation"><span class="nav-text">1 Solving Equation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bisection-method"><span class="nav-text">1.1 Bisection Method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fixed-point-iteration"><span class="nav-text">1.2 Fixed Point Iteration</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Solving-Equation"><span class="nav-text">1 Solving Equation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Bisection-Method"><span class="nav-text">1.1 Bisection Method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Fixed-Point-Iteration"><span class="nav-text">1.2 Fixed Point Iteration</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -329,49 +329,60 @@
       
       
       <div class="post-body">
-          <h2 id="solving-equation">1 Solving Equation</h2>
-<p>Aim: for function <span class="math inline">\(f(x)\)</span> defined on <span class="math inline">\(\mathbb{R}\)</span>, find a (one) root <span class="math inline">\(x=r\)</span> such that <span class="math inline">\(f(r)=0\)</span>.</p>
-<p>Def: an iterative method obeys <strong>linear convergence</strong> with rate S if <span class="math inline">\(\lim_{t \rightarrow \infty}{\frac{e_{i+1}}{e_i}=S&lt;1}\)</span></p>
+          <h2 id="1-Solving-Equation">1 Solving Equation</h2>
+<p>Aim: for function $f(x)$ defined on $\mathbb{R}$, find a (one) root $x=r$ such that $f®=0$.</p>
+<p>Def: an iterative method obeys <strong>linear convergence</strong> with rate S if $\lim_{t \rightarrow \infty}{\frac{e_{i+1}}{e_i}=S&lt;1}$</p>
 <p>Def: An iterative method is called <strong>locally convergent</strong> to r if the method converges to r for initial guesses sufficiently close to r.</p>
 <p>Property:</p>
 <ul>
-<li>Existence: find a interval <span class="math inline">\([a,b]\)</span> for continuous <span class="math inline">\(f(x)\)</span> such that <span class="math inline">\(f(a)f(b)&lt;0\)</span>, exist a root <span class="math inline">\(r \in [a,b]\)</span>.
+<li>Existence: find a interval $[a,b]$ for continuous $f(x)$ such that $f(a)f(b)&lt;0$, exist a root $r \in [a,b]$.
 <ul>
-<li>Remark: r can be infinite, eg <span class="math inline">\(f(x)=\begin{cases} x+1,x&lt;-1 \\ 0,x\in [-1,1] \\ x-1,x&gt;1 \end{cases}\)</span> between -2 and 2.</li>
-</ul></li>
-<li>Uniqueness: root <span class="math inline">\(r\)</span> may not be unique and mostly depends on the interval <span class="math inline">\([a,b]\)</span> we chosen in advance.</li>
+<li>Remark: r can be infinite, eg $f(x)=\begin{cases}	x+1,x&lt;-1	\	0,x\in [-1,1]	\	x-1,x&gt;1	\end{cases}$ between -2 and 2.</li>
 </ul>
-<h4 id="bisection-method">1.1 Bisection Method</h4>
-<p>Idea: given function <span class="math inline">\(f\)</span>, divide interval <span class="math inline">\([a,b]\)</span> into two intervals <span class="math inline">\([a,c],[c,b]\)</span> and the root <span class="math inline">\(r \in[a,c]\)</span> or <span class="math inline">\(r\in[c,b]\)</span>.</p>
+</li>
+<li>Uniqueness: root $r$ may not be unique and mostly depends on the interval $[a,b]$ we chosen in advance.</li>
+</ul>
+<h4 id="1-1-Bisection-Method">1.1 Bisection Method</h4>
+<p>Idea: given function $f$, divide interval $[a,b]$ into two intervals $[a,c],[c,b]$ and the root $r \in[a,c]$ or $r\in[c,b]$.</p>
 <ul>
-<li>we choose <span class="math inline">\(c=\frac{a+b}{2}\)</span></li>
+<li>we choose $c=\frac{a+b}{2}$</li>
 </ul>
 <p>Property: Bisection method is linear convergence.</p>
 <p>Accurate and speed:</p>
-<ol type="1">
-<li>initial: <span class="math inline">\([a_0,b_0], length=b-a, error=|c-r|&lt;\frac{b-a}{2}\)</span>.</li>
-<li>after one iteration: <span class="math inline">\([a_1,b_1], length=\frac{b-a}{2}, error=|c-r|&lt;\frac{b-a}{2^2}\)</span>.</li>
-<li>after n iteration: <span class="math inline">\([a_n,b_n],length=\frac{b-a}{2^n}, error=|c-r|&lt;\frac{b-a}{2^{n+1}}\)</span></li>
+<ol>
+<li>initial: $[a_0,b_0], length=b-a, error=|c-r|&lt;\frac{b-a}{2}$.</li>
+<li>after one iteration: $[a_1,b_1], length=\frac{b-a}{2}, error=|c-r|&lt;\frac{b-a}{2^2}$.</li>
+<li>after n iteration: $[a_n,b_n],length=\frac{b-a}{2^n}, error=|c-r|&lt;\frac{b-a}{2^{n+1}}$</li>
 </ol>
-<p>Def: A solution is correct with <span class="math inline">\(p\)</span> decimal places if the error is less than <span class="math inline">\(0.5*10^{-p}\)</span>. <strong>(idea for tolerance) </strong></p>
-<h4 id="fixed-point-iteration">1.2 Fixed Point Iteration</h4>
-<p>Def: The real number r is a fixed point of function <span class="math inline">\(g\)</span> is <span class="math inline">\(g(r)=r\)</span> (Fixed Point)</p>
-<p>Def: let <span class="math inline">\(x_0=initial\,guess\)</span>, then <span class="math inline">\(x_{i+1}=g(x_i),i=0,1,2,...\)</span> (Fixed Point Iteration)</p>
-<p>Theorem: if <span class="math inline">\(g\)</span> is continuous and <span class="math inline">\(x_i\)</span> converge to a number r, r is a fixed point of <span class="math inline">\(g\)</span></p>
+<p>Def: A solution is correct with $p$ decimal places if the error is less than $0.5*10^{-p}$. __(idea for tolerance) __</p>
+<h4 id="1-2-Fixed-Point-Iteration">1.2 Fixed Point Iteration</h4>
+<p>Def: The real number r is a fixed point of function $g$ is $g®=r$ (Fixed Point)</p>
+<p>Def: let $x_0=initial,guess$, then $x_{i+1}=g(x_i),i=0,1,2,…$ (Fixed Point Iteration)</p>
+<p>Theorem: if $g$ is continuous and $x_i$ converge to a number r, r is a fixed point of $g$</p>
 <ul>
 <li>(proof)</li>
 </ul>
-<p>idea <strong>(why we introduce fixed point)</strong>: every equation <span class="math inline">\(f(x)=0\)</span> can be turned into a fixed point problem <span class="math inline">\(g(r)=r\)</span> in many different ways.</p>
+<p>idea <strong>(why we introduce fixed point)</strong>: every equation $f(x)=0$ can be turned into a fixed point problem $g®=r$ in many different ways.</p>
 <p>How to write?</p>
 <ul>
-<li><span class="math inline">\(x=f(x)-x=g(x)\)</span> (1.2.1)</li>
+<li>$x=f(x)-x=g(x)$	 (1.2.1)</li>
 </ul>
-<p>Existence and which <span class="math inline">\(g\)</span> is better (fewer iterations)? - Intuitively, when <span class="math inline">\(g\)</span> is a constant function, only one iteration is needed whatever <span class="math inline">\(x_0\)</span> is. At this time <span class="math inline">\(g&#39;=0\)</span>. - denoted <span class="math inline">\(e_i=|r-x_i|\)</span>, we can turn (1.2.1) into <span class="math inline">\(e_i=ae_{i+1}\, for\,g(x)=x\)</span> - Theorem: for continuously differentiable <span class="math inline">\(g\)</span>, <span class="math inline">\(g(r)=r\)</span> and <span class="math inline">\(S=|g&#39;(r)|&lt;1\)</span>, then the FPI <strong>converges linearly</strong> with rate S to fixed points <span class="math inline">\(r\)</span> <strong>for initial guess sufficiently close <span class="math inline">\(r\)</span></strong> - for <span class="math inline">\(g(r)&gt;1\)</span>, there can be a convergence to r for some large enough initial guess - useful posteriori, know the root first</p>
+<p>Existence and which $g$ is better (fewer iterations)?</p>
+<ul>
+<li>Intuitively, when $g$ is a constant function, only one iteration is needed whatever $x_0$ is. At this time $g’=0$.</li>
+<li>denoted $e_i=|r-x_i|$, we can turn (1.2.1) into $e_i=ae_{i+1}, for,g(x)=x$</li>
+<li>Theorem: for continuously differentiable $g$, $g®=r$ and $S=|g’®|&lt;1$, then the FPI <strong>converges linearly</strong> with rate S to fixed points $r$ <strong>for initial guess sufficiently close $r$</strong>
+<ul>
+<li>for $g®&gt;1$, there can be a convergence to r for some large enough initial guess</li>
+<li>useful posteriori, know the root first</li>
+</ul>
+</li>
+</ul>
 <p>Property: FIP is locally convergent, it can be linear convergent sometimes.</p>
-<p>Example: calculate <span class="math inline">\(\sqrt{2}\)</span></p>
-<ol type="1">
-<li>construct <span class="math inline">\(g(x)=\frac{x+\frac{2}{x}}{2}\)</span></li>
-<li><span class="math inline">\(S=1\)</span> at <span class="math inline">\(x=\sqrt{2}\)</span>, exist and fast</li>
+<p>Example: calculate $\sqrt{2}$</p>
+<ol>
+<li>construct $g(x)=\frac{x+\frac{2}{x}}{2}$</li>
+<li>$S=1$ at $x=\sqrt{2}$, exist and fast</li>
 </ol>
 <p>Accurate and speed</p>
 <ul>
@@ -439,13 +450,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">91k</span>
+    <span title="Symbols count total">88k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:23</span>
+    <span title="Reading time total">1:20</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

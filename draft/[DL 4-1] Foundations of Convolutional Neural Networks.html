@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection">
+  <meta name="description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection   kernel (fil">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LIng&#39;s Blog">
 <meta property="og:url" content="http://example.com/draft/[DL%204-1]%20Foundations%20of%20Convolutional%20Neural%20Networks.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection">
+<meta property="og:description" content="Convolutional Neural Networks Foundations of Convolutional Neural Networks CV problems  image classification object detection neural style transfer  Challenges  big input  Edge detection   kernel (fil">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-2%20mul%20filters.png">
@@ -223,7 +223,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#convolutional-neural-networks"><span class="nav-text">Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#foundations-of-convolutional-neural-networks"><span class="nav-text">Foundations of Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cv-problems"><span class="nav-text">CV problems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#challenges"><span class="nav-text">Challenges</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#edge-detection"><span class="nav-text">Edge detection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#padding-%E5%A1%AB%E5%85%85"><span class="nav-text">Padding 填充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#convolution-problems"><span class="nav-text">convolution problems</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process"><span class="nav-text">process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#strided-convolution"><span class="nav-text">Strided Convolution</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#cross-correlation-convolution"><span class="nav-text">cross-correlation &amp; convolution</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolutions-over-volume-cnn-in-3d-image"><span class="nav-text">Convolutions Over Volume (CNN in 3D image)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#one-filter"><span class="nav-text">One filter</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#multiple-filters"><span class="nav-text">Multiple filters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#implement-for-one-layer-of-a-convolutional-network"><span class="nav-text">Implement for one layer of a Convolutional Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#simple-convolutional-network-example"><span class="nav-text">Simple Convolutional Network Example</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#process-1"><span class="nav-text">process</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#types-of-cnn-layer"><span class="nav-text">types of CNN layer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pooling-layers"><span class="nav-text">Pooling Layers</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#max-pooling"><span class="nav-text">Max pooling</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#average-pooling"><span class="nav-text">Average pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cnn-example"><span class="nav-text">CNN example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#why-convolutions"><span class="nav-text">Why Convolutions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#much-few-parameters"><span class="nav-text">much few parameters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Foundations-of-Convolutional-Neural-Networks"><span class="nav-text">Foundations of Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CV-problems"><span class="nav-text">CV problems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Challenges"><span class="nav-text">Challenges</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edge-detection"><span class="nav-text">Edge detection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Padding-%E5%A1%AB%E5%85%85"><span class="nav-text">Padding 填充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#convolution-problems"><span class="nav-text">convolution problems</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#process"><span class="nav-text">process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Strided-Convolution"><span class="nav-text">Strided Convolution</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#cross-correlation-convolution"><span class="nav-text">cross-correlation &amp; convolution</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Convolutions-Over-Volume-CNN-in-3D-image"><span class="nav-text">Convolutions Over Volume (CNN in 3D image)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#One-filter"><span class="nav-text">One filter</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Multiple-filters"><span class="nav-text">Multiple filters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Implement-for-one-layer-of-a-Convolutional-Network"><span class="nav-text">Implement for one layer of a Convolutional Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-Convolutional-Network-Example"><span class="nav-text">Simple Convolutional Network Example</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#process-2"><span class="nav-text">process</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#types-of-CNN-layer"><span class="nav-text">types of CNN layer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pooling-Layers"><span class="nav-text">Pooling Layers</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Max-pooling"><span class="nav-text">Max pooling</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Average-pooling"><span class="nav-text">Average pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CNN-example"><span class="nav-text">CNN example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-Convolutions"><span class="nav-text">Why Convolutions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#much-few-parameters"><span class="nav-text">much few parameters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -336,134 +336,171 @@
       
       
       <div class="post-body">
-          <h1 id="convolutional-neural-networks">Convolutional Neural Networks</h1>
-<h3 id="foundations-of-convolutional-neural-networks">Foundations of Convolutional Neural Networks</h3>
-<h4 id="cv-problems">CV problems</h4>
-<ol type="1">
+          <h1>Convolutional Neural Networks</h1>
+<h3 id="Foundations-of-Convolutional-Neural-Networks">Foundations of Convolutional Neural Networks</h3>
+<h4 id="CV-problems">CV problems</h4>
+<ol>
 <li>image classification</li>
 <li>object detection</li>
 <li>neural style transfer</li>
 </ol>
-<h4 id="challenges">Challenges</h4>
+<h4 id="Challenges">Challenges</h4>
 <ul>
 <li>big input</li>
 </ul>
-<h4 id="edge-detection">Edge detection</h4>
+<h4 id="Edge-detection">Edge detection</h4>
 <ul>
-<li><p>kernel (filter)</p>
-<ol type="1">
-<li><p>Vertical <span class="math display">\[
-\begin{array}{|l|l|l|}
-\hline 1 &amp; 0 &amp; -1 \\
-\hline 1 &amp; 0 &amp; -1 \\
-\hline 1 &amp; 0 &amp; -1 \\
-\hline
-\end{array}
-\]</span></p></li>
-<li><p>Horizontal <span class="math display">\[
-\begin{array}{|l|l|l|}
-\hline 1 &amp; 1 &amp; 1 \\
-\hline 0 &amp; 0 &amp; 0 \\
-\hline -1 &amp; -1 &amp; -1 \\
-\hline
-\end{array}
-\]</span></p></li>
-</ol></li>
-<li><p>different kernel and can be learn by NN</p></li>
-<li><p>convolution</p></li>
+<li>
+<p>kernel (filter)</p>
+<ol>
+<li>
+<p>Vertical<br>
+$$<br>
+\begin{array}{|l|l|l|}<br>
+\hline 1 &amp; 0 &amp; -1 \<br>
+\hline 1 &amp; 0 &amp; -1 \<br>
+\hline 1 &amp; 0 &amp; -1 \<br>
+\hline<br>
+\end{array}<br>
+$$</p>
+</li>
+<li>
+<p>Horizontal<br>
+$$<br>
+\begin{array}{|l|l|l|}<br>
+\hline 1 &amp; 1 &amp; 1 \<br>
+\hline 0 &amp; 0 &amp; 0 \<br>
+\hline -1 &amp; -1 &amp; -1 \<br>
+\hline<br>
+\end{array}<br>
+$$</p>
+</li>
+</ol>
+</li>
+<li>
+<p>different kernel and can be learn by NN</p>
+</li>
+<li>
+<p>convolution</p>
+</li>
 </ul>
-<h4 id="padding-填充">Padding 填充</h4>
+<h4 id="Padding-填充">Padding 填充</h4>
 <h6 id="convolution-problems">convolution problems</h6>
-<ol type="1">
+<ol>
 <li>shrinking output</li>
 <li>throwing away a lot of the information from the edges of the image</li>
 </ol>
 <h6 id="process">process</h6>
-<ol type="1">
-<li><p>valid convolutions <span class="math display">\[
-n \times n *f \times f \longrightarrow (n-f+1 )\times (n-f+1)
-\]</span></p></li>
-<li><p>same convolutions <span class="math inline">\((P=p)\)</span> <span class="math display">\[
-n \times n *f \times f \longrightarrow (n+2p-f+1 )\times (n+2p-f+1)
-\]</span></p>
+<ol>
+<li>
+<p>valid convolutions<br>
+$$<br>
+n \times n *f \times f \longrightarrow (n-f+1 )\times (n-f+1)<br>
+$$</p>
+</li>
+<li>
+<p>same convolutions $(P=p)$<br>
+$$<br>
+n \times n *f \times f \longrightarrow (n+2p-f+1 )\times (n+2p-f+1)<br>
+$$</p>
 <ul>
-<li><span class="math inline">\(p=\frac{f-1}{2}\)</span>, normally <span class="math inline">\(f\)</span> is odd number</li>
-</ul></li>
+<li>$p=\frac{f-1}{2}$, normally $f$ is odd number</li>
+</ul>
+</li>
 </ol>
-<h4 id="strided-convolution">Strided Convolution</h4>
-<p>padding <span class="math inline">\(p\)</span> and stride <span class="math inline">\(s\)</span> <span class="math display">\[
-n \times n *f \times f \longrightarrow floor(\frac{n+2p-f}{s}+1 )\times floor(\frac{n+2p-f}{s}+1)
-\]</span></p>
+<h4 id="Strided-Convolution">Strided Convolution</h4>
+<p>padding $p$ and stride $s$<br>
+$$<br>
+n \times n *f \times f \longrightarrow floor(\frac{n+2p-f}{s}+1 )\times floor(\frac{n+2p-f}{s}+1)<br>
+$$</p>
 <ul>
 <li>rounding down means kernel will not out of the original matrix</li>
 </ul>
 <h6 id="cross-correlation-convolution">cross-correlation &amp; convolution</h6>
-<h4 id="convolutions-over-volume-cnn-in-3d-image">Convolutions Over Volume (CNN in 3D image)</h4>
-<h6 id="one-filter">One filter</h6>
+<h4 id="Convolutions-Over-Volume-CNN-in-3D-image">Convolutions Over Volume (CNN in 3D image)</h4>
+<h6 id="One-filter">One filter</h6>
 <ul>
-<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png" alt="image-20201112145817000" style="zoom:50%;" /></li>
+<li>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-1%203d%20image.png" alt="image-20201112145817000" style="zoom:50%;" />
+</li>
 </ul>
-<h6 id="multiple-filters">Multiple filters</h6>
+<h6 id="Multiple-filters">Multiple filters</h6>
 <ul>
-<li><p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-2%20mul%20filters.png" alt="image-20201112150355569" style="zoom:50%;" /></p></li>
-<li><p>idea: get information from different edges (vertical or horizontal or ...)</p></li>
-<li><p><span class="math inline">\(n_c:\)</span>filters</p></li>
+<li>
+<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-2%20mul%20filters.png" alt="image-20201112150355569" style="zoom:50%;" />
+</li>
+<li>
+<p>idea: get information from different edges (vertical or horizontal or …)</p>
+</li>
+<li>
+<p>$n_c:$filters</p>
+</li>
 </ul>
-<h4 id="implement-for-one-layer-of-a-convolutional-network">Implement for one layer of a Convolutional Network</h4>
+<h4 id="Implement-for-one-layer-of-a-Convolutional-Network">Implement for one layer of a Convolutional Network</h4>
 <ul>
-<li><figure>
-<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-5%20eg%20CNN.png" alt="image-20201112152951323" /><figcaption aria-hidden="true">image-20201112152951323</figcaption>
-</figure></li>
-<li><figure>
-<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-4%20summary.png" alt="image-20201112152815089" /><figcaption aria-hidden="true">image-20201112152815089</figcaption>
-</figure></li>
+<li>
+<p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-5%20eg%20CNN.png" alt="image-20201112152951323"></p>
+</li>
+<li>
+<p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-4%20summary.png" alt="image-20201112152815089"></p>
+</li>
 </ul>
-<h4 id="simple-convolutional-network-example">Simple Convolutional Network Example</h4>
-<h6 id="process-1">process</h6>
+<h4 id="Simple-Convolutional-Network-Example">Simple Convolutional Network Example</h4>
+<h6 id="process-2">process</h6>
 <ul>
-<li><figure>
-<img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-3%20eg%20figure.png" alt="image-20201112154626139" /><figcaption aria-hidden="true">image-20201112154626139</figcaption>
-</figure></li>
-<li><p>fewer height and weight of image</p></li>
-<li><p>more channels</p></li>
+<li>
+<p><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-3%20eg%20figure.png" alt="image-20201112154626139"></p>
+</li>
+<li>
+<p>fewer height and weight of image</p>
+</li>
+<li>
+<p>more channels</p>
+</li>
 </ul>
-<h6 id="types-of-cnn-layer">types of CNN layer</h6>
-<ol type="1">
+<h6 id="types-of-CNN-layer">types of CNN layer</h6>
+<ol>
 <li>Convolution</li>
 <li>Pooling</li>
 <li>Fully connected</li>
 </ol>
-<h4 id="pooling-layers">Pooling Layers</h4>
-<h6 id="max-pooling">Max pooling</h6>
+<h4 id="Pooling-Layers">Pooling Layers</h4>
+<h6 id="Max-pooling">Max pooling</h6>
 <ul>
 <li>hypermeters (no need to learn)
-<ol type="1">
-<li><span class="math inline">\(f:\)</span> pooling filter size</li>
-<li><span class="math inline">\(s:\)</span> stride</li>
-</ol></li>
+<ol>
+<li>$f:$ pooling filter size</li>
+<li>$s:$ stride</li>
+</ol>
+</li>
 <li>return the maximum in the matrix</li>
 </ul>
-<h6 id="average-pooling">Average pooling</h6>
+<h6 id="Average-pooling">Average pooling</h6>
 <ul>
 <li>return the average in the matrix</li>
 </ul>
-<h4 id="cnn-example">CNN example</h4>
+<h4 id="CNN-example">CNN example</h4>
 <ul>
-<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-6%20whole%20example.png" title="fig:" alt="image-20201112165222684" />
+<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-1-6%20whole%20example.png" alt="image-20201112165222684">
 <ul>
 <li>Forward</li>
 <li>hyperparameters can be learned from other literatures.</li>
 <li>one layer (has weights to be learned) includes one ConV and several pooling layers.</li>
 <li>FC: fully connected layer</li>
-</ul></li>
 </ul>
-<h4 id="why-convolutions">Why Convolutions</h4>
+</li>
+</ul>
+<h4 id="Why-Convolutions">Why Convolutions</h4>
 <h6 id="much-few-parameters">much few parameters</h6>
-<ol type="1">
-<li><p><strong>parameter sharing</strong>: two parts of one image may be under the similar distribution.</p></li>
-<li><p><strong>sparsity of connections</strong>: each output value depends only on a small number of inputs.</p></li>
+<ol>
+<li>
+<p><strong>parameter sharing</strong>: two parts of one image may be under the similar distribution.</p>
+</li>
+<li>
+<p><strong>sparsity of connections</strong>: each output value depends only on a small number of inputs.</p>
+</li>
 </ol>
-<h4 id="reference">Reference</h4>
+<h4 id="Reference">Reference</h4>
 <p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/1">Deep Learning in Coursera</a></p>
 
       </div>
@@ -526,13 +563,13 @@ n \times n *f \times f \longrightarrow floor(\frac{n+2p-f}{s}+1 )\times floor(\f
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">91k</span>
+    <span title="Symbols count total">88k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:23</span>
+    <span title="Reading time total">1:20</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":220,"display":"alwas","padding":18,"offset":20},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":3,"unescape":false,"preload":true}};
   </script>
 
-  <meta name="description" content="Object Localization Object Localization \(x,\,y\)  \(x\): one image \(y&#x3D;(p_c,b_x,b_y,b_h,,b_h,c)\)  \(p_c\): confidence of an object being present or not in the image \((b_x,b_y)\): the coordi">
+  <meta name="description" content="Object Localization Object Localization $x,,y$  $x$: one image $y&#x3D;(p_c,b_x,b_y,b_h,b_h,c)$  $p_c$: confidence of an object being present or not in the image $(b_x,b_y)$: the coordinate of object’s cen">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LIng&#39;s Blog">
 <meta property="og:url" content="http://example.com/draft/[DL%204-3]%20Object%20Detection.html">
 <meta property="og:site_name" content="LIng&#39;s Blog">
-<meta property="og:description" content="Object Localization Object Localization \(x,\,y\)  \(x\): one image \(y&#x3D;(p_c,b_x,b_y,b_h,,b_h,c)\)  \(p_c\): confidence of an object being present or not in the image \((b_x,b_y)\): the coordi">
+<meta property="og:description" content="Object Localization Object Localization $x,,y$  $x$: one image $y&#x3D;(p_c,b_x,b_y,b_h,b_h,c)$  $p_c$: confidence of an object being present or not in the image $(b_x,b_y)$: the coordinate of object’s cen">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20FC%20to%20CONV.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20CONVly%20slide.png">
@@ -219,7 +219,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#object-localization"><span class="nav-text">Object Localization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#object-localization-1"><span class="nav-text">Object Localization</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#xy"><span class="nav-text">\(x,\,y\)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#cost-function"><span class="nav-text">Cost function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#object-detection"><span class="nav-text">Object Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#method-i"><span class="nav-text">Method I</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#method-ii-convolutional-implementation-of-sliding-windows"><span class="nav-text">Method II (convolutional implementation of sliding windows)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bounding-box-predictions"><span class="nav-text">Bounding Box Predictions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#yolo-you-only-look-once-algorithm"><span class="nav-text">YOLO (you only look once) algorithm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#intersection-over-union"><span class="nav-text">Intersection Over Union</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#non-max-suppression"><span class="nav-text">Non-max Suppression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#anchor-boxed"><span class="nav-text">Anchor Boxed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#summary-for-yolo"><span class="nav-text">Summary for YOLO</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Localization"><span class="nav-text">Object Localization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-Localization-2"><span class="nav-text">Object Localization</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#x-y"><span class="nav-text">$x,,y$</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Cost-function"><span class="nav-text">Cost function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Object-Detection"><span class="nav-text">Object Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Method-I"><span class="nav-text">Method I</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Method-II-convolutional-implementation-of-sliding-windows"><span class="nav-text">Method II (convolutional implementation of sliding windows)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bounding-Box-Predictions"><span class="nav-text">Bounding Box Predictions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#YOLO-you-only-look-once-algorithm"><span class="nav-text">YOLO (you only look once) algorithm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Intersection-Over-Union"><span class="nav-text">Intersection Over Union</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Non-max-Suppression"><span class="nav-text">Non-max Suppression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Anchor-Boxed"><span class="nav-text">Anchor Boxed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Summary-for-YOLO"><span class="nav-text">Summary for YOLO</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -332,27 +332,28 @@
       
       
       <div class="post-body">
-          <h2 id="object-localization">Object Localization</h2>
-<h4 id="object-localization-1">Object Localization</h4>
-<h6 id="xy"><span class="math inline">\(x,\,y\)</span></h6>
+          <h2 id="Object-Localization">Object Localization</h2>
+<h4 id="Object-Localization-2">Object Localization</h4>
+<h6 id="x-y">$x,,y$</h6>
 <ul>
-<li><span class="math inline">\(x\)</span>: one image</li>
-<li><span class="math inline">\(y=(p_c,b_x,b_y,b_h,,b_h,c)\)</span>
+<li>$x$: one image</li>
+<li>$y=(p_c,b_x,b_y,b_h,b_h,c)$
 <ul>
-<li><span class="math inline">\(p_c\)</span>: confidence of an object being present or not in the image</li>
-<li><span class="math inline">\((b_x,b_y)\)</span>: the coordinate of object's center</li>
-<li><span class="math inline">\(c\)</span>: class of the object being detected (1 for <em>car</em>, 2 for <em>passage</em>,...)</li>
-</ul></li>
+<li>$p_c$: confidence of an object being present or not in the image</li>
+<li>$(b_x,b_y)$: the coordinate of object’s center</li>
+<li>$c$: class of the object being detected (1 for <em>car</em>, 2 for <em>passage</em>,…)</li>
 </ul>
-<h6 id="cost-function">Cost function</h6>
-<ul>
-<li>when <span class="math inline">\(p_c=1\)</span>, cost=...</li>
-<li>when <span class="math inline">\(p_c=0\)</span>, cost=0</li>
+</li>
 </ul>
-<p>determine different <span class="math inline">\(y\)</span> can detect object and landmark</p>
-<h4 id="object-detection">Object Detection</h4>
-<h6 id="method-i">Method I</h6>
-<ol type="1">
+<h6 id="Cost-function">Cost function</h6>
+<ul>
+<li>when $p_c=1$, cost=…</li>
+<li>when $p_c=0$, cost=0</li>
+</ul>
+<p>determine different $y$ can detect object and landmark</p>
+<h4 id="Object-Detection">Object Detection</h4>
+<h6 id="Method-I">Method I</h6>
+<ol>
 <li>using car image to train the model by ConvNet</li>
 <li>using a sliding windows with stride s to loop the detected image</li>
 </ol>
@@ -360,46 +361,47 @@
 <ul>
 <li>high computational cost</li>
 </ul>
-<h6 id="method-ii-convolutional-implementation-of-sliding-windows">Method II (convolutional implementation of sliding windows)</h6>
+<h6 id="Method-II-convolutional-implementation-of-sliding-windows">Method II (convolutional implementation of sliding windows)</h6>
 <p><strong>Part I: Turning FC layer into convolutional layers</strong></p>
 <ul>
-<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20FC%20to%20CONV.png" title="fig:" alt="image-20201119104122169" /></li>
+<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20FC%20to%20CONV.png" alt="image-20201119104122169"></li>
 </ul>
 <p><strong>Part II</strong></p>
 <ul>
-<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20CONVly%20slide.png" title="fig:" alt="image-20201119104404118" /></li>
+<li><img src="https://raw.githubusercontent.com/ChongfengLing/typora-picBed/main/img/dl4-3-1%20CONVly%20slide.png" alt="image-20201119104404118"></li>
 <li>to put different convolutional layers together</li>
 <li>the sliding windows share the same weight</li>
-<li><span class="math inline">\(d_h,d_w\)</span> are fixed</li>
+<li>$d_h,d_w$ are fixed</li>
 </ul>
-<h4 id="bounding-box-predictions">Bounding Box Predictions</h4>
+<h4 id="Bounding-Box-Predictions">Bounding Box Predictions</h4>
 <p><strong>Problem</strong>: not all cars are fitted in fixed box</p>
-<h6 id="yolo-you-only-look-once-algorithm">YOLO (you only look once) algorithm</h6>
-<ol type="1">
+<h6 id="YOLO-you-only-look-once-algorithm">YOLO (you only look once) algorithm</h6>
+<ol>
 <li>dividing image into smaller grids</li>
 <li>labeling each grid for training by the last method
 <ul>
 <li>for an object in more than one grid, we assign it to the grid where its midpoint is</li>
-<li><span class="math inline">\(b_x,b_y,b_h,b_w\)</span> are Relative coordinates to the grid</li>
-</ul></li>
+<li>$b_x,b_y,b_h,b_w$ are Relative coordinates to the grid</li>
+</ul>
+</li>
 <li>training the output and input by Conv</li>
 </ol>
 <p><strong>Advantage</strong></p>
 <ul>
-<li>get a concrete output of <span class="math inline">\(b_x,b_y,b_h,b_w\)</span></li>
+<li>get a concrete output of $b_x,b_y,b_h,b_w$</li>
 <li>share the same weight in grids</li>
 </ul>
-<h4 id="intersection-over-union">Intersection Over Union</h4>
+<h4 id="Intersection-Over-Union">Intersection Over Union</h4>
 <p>Both for grading and evaluating your object detection algorithm.</p>
-<p><span class="math inline">\(IoU=\frac{size\;of\;intersection}{size\;of\;union}\)</span></p>
+<p>$IoU=\frac{size;of;intersection}{size;of;union}$</p>
 <ul>
 <li>correct if IoU at least 0.5</li>
 </ul>
-<h4 id="non-max-suppression">Non-max Suppression</h4>
+<h4 id="Non-max-Suppression">Non-max Suppression</h4>
 <p>to detect object only once</p>
-<h4 id="anchor-boxed">Anchor Boxed</h4>
+<h4 id="Anchor-Boxed">Anchor Boxed</h4>
 <p>add more boxes when detect</p>
-<h4 id="summary-for-yolo">Summary for YOLO</h4>
+<h4 id="Summary-for-YOLO">Summary for YOLO</h4>
 <ul>
 <li>Input image (608, 608, 3)</li>
 <li>The input image goes through a CNN, resulting in a (19,19,5,85) dimensional output.</li>
@@ -407,14 +409,16 @@
 <ul>
 <li>Each cell in a 19x19 grid over the input image gives 425 numbers.</li>
 <li>425 = 5 x 85 because each cell contains predictions for 5 boxes, corresponding to 5 anchor boxes, as seen in lecture.</li>
-<li>85 = 5 + 80 where 5 is because <span class="math inline">\((p_c, b_x, b_y, b_h, b_w)\)</span> has 5 numbers, and 80 is the number of classes we'd like to detect</li>
-</ul></li>
+<li>85 = 5 + 80 where 5 is because $(p_c, b_x, b_y, b_h, b_w)$ has 5 numbers, and 80 is the number of classes we’d like to detect</li>
+</ul>
+</li>
 <li>You then select only few boxes based on:
 <ul>
 <li>Score-thresholding: throw away boxes that have detected a class with a score less than the threshold</li>
 <li>Non-max suppression: Compute the Intersection over Union and avoid selecting overlapping boxes</li>
-</ul></li>
-<li>This gives you YOLO's final output.</li>
+</ul>
+</li>
+<li>This gives you YOLO’s final output.</li>
 </ul>
 
       </div>
@@ -477,13 +481,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">91k</span>
+    <span title="Symbols count total">88k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:23</span>
+    <span title="Reading time total">1:20</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
