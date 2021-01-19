@@ -406,7 +406,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>果然还是要从底层去理解，不然上层建筑一换，不结实的地基就很有大问题。</p>
+          <p>果然还是要从底层去理解，不然上层建筑一换，不结实的地基就很有大问题。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/howto2/#more" rel="contents">
@@ -525,7 +525,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.1k</span>
+      <span>6.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -546,20 +546,19 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>假设检验 hypothesis testing的核心就是，小概率事件不会发生。</p>
-<h2 id="1-Tests-about-One-Mean">1. Tests about One Mean</h2>
-<h3 id="1-1-Hypothesis-Testing">1.1 Hypothesis Testing</h3>
-<p>我们通过<strong>process I</strong>得到结果为$X\sim N(u=50,\sigma^2)$，我们想要证明新的<strong>process II</strong>后，$X\sim N(u=55,\sigma^2)$。这种想用新分布去反驳旧分布的技术成为假设检验。</p>
+<h2 id="tests-about-one-mean">1. Tests about One Mean</h2>
+<h3 id="hypothesis-testing">1.1 Hypothesis Testing</h3>
+<p>我们通过<strong>process I</strong>得到结果为<span class="math inline">\(X\sim N(u=50,\sigma^2)\)</span>，我们想要证明新的<strong>process II</strong>后，<span class="math inline">\(X\sim N(u=55,\sigma^2)\)</span>。这种想用新分布去反驳旧分布的技术成为假设检验。</p>
 <ul>
-<li>机器的效率一开始时符合$X\sim N(u=50,\sigma^2)$，现在引进新技术，想知道新技术有没有提高效率，即有没有变成$X\sim N(u=55,\sigma^2)$。</li>
+<li>机器的效率一开始时符合<span class="math inline">\(X\sim N(u=50,\sigma^2)\)</span>，现在引进新技术，想知道新技术有没有提高效率，即有没有变成<span class="math inline">\(X\sim N(u=55,\sigma^2)\)</span>。</li>
 </ul>
-<p>We want to test the <strong>simple null hypothesis</strong> $H_{0}: \mu=50$ against the <strong>simple alternative hypothesis</strong> $H_{1}: \mu=55$。为了进行判断，我们想要从样本$X_1,…,X_n$中根据<strong>小概率事件不会发生</strong>的原则，找出一个规则去<strong>接受或拒绝$H_0$</strong>。针对样本空间来讲，即对样本空间进行一个划分，分成拒绝域<strong>critical region</strong> $C={(x_1,…,x_n):f(x);with;condition;}$以及接受域$C’$。对均值的检验，我们可以用样本均值$\bar{X}$作为<strong>Test statistic</strong>去作为样本的函数去划分域。</p>
-<ol>
-<li>**Type I error $\alpha$ **$=P\left[\left(X_{1}, X_{2}, \ldots, X_{n}\right) \in C ; H_{0}\right] $： $\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C$，样本在拒绝域上但其实$H_0$是对的。
+<p>We want to test the <strong>simple null hypothesis</strong> <span class="math inline">\(H_{0}: \mu=50\)</span> against the <strong>simple alternative hypothesis</strong> <span class="math inline">\(H_{1}: \mu=55\)</span>。为了进行判断，我们想要从样本<span class="math inline">\(X_1,...,X_n\)</span>中根据<strong>小概率事件不会发生</strong>的原则，找出一个规则去<strong>接受或拒绝<span class="math inline">\(H_0\)</span></strong>。针对样本空间来讲，即对样本空间进行一个划分，分成拒绝域<strong>critical region</strong> <span class="math inline">\(C=\{(x_1,...,x_n):f(x)\;with\;condition\;\}\)</span>以及接受域<span class="math inline">\(C&#39;\)</span>。对均值的检验，我们可以用样本均值<span class="math inline">\(\bar{X}\)</span>作为<strong>Test statistic</strong>去作为样本的函数去划分域。</p>
+<ol type="1">
+<li><strong>Type I error <span class="math inline">\(\alpha\)</span> </strong>$=P$： <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C\)</span>，样本在拒绝域上但其实<span class="math inline">\(H_0\)</span>是对的。
 <ul>
-<li>$\alpha$也称之为 significance level of the test，在检验的开始由我们决定。</li>
-</ul>
-</li>
-<li><strong>Type II error</strong> $\beta$ $=P\left[\left(X_{1}, X_{2}, \ldots, X_{n}\right) \in C’ ; H_{1}\right] $： $\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C’$，样本在接受域上但其实$H_1$是对的。</li>
+<li><span class="math inline">\(\alpha\)</span>也称之为 significance level of the test，在检验的开始由我们决定。</li>
+</ul></li>
+<li><strong>Type II error</strong> <span class="math inline">\(\beta\)</span> $=P$： <span class="math inline">\(\left(x_{1}, x_{2}, \ldots, x_{n}\right) \in C&#39;\)</span>，样本在接受域上但其实<span class="math inline">\(H_1\)</span>是对的。</li>
 </ol>
           <!--noindex-->
             <div class="post-button">
@@ -679,7 +678,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -699,8 +698,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="1-Confidence-Intervals-for-Means">1. Confidence Intervals for Means</h2>
-<p>在点估计中，我们只能一次估计一个点。而在区间估计中，我们用一个区间去预测未知参数。如果我们构造出100个这样的区间，那么我有$100*(1-\alpha)$次的区间预测正确，即真实的未知参数值位于对应区间上。</p>
+          <h2 id="confidence-intervals-for-means">1. Confidence Intervals for Means</h2>
+<p>在点估计中，我们只能一次估计一个点。而在区间估计中，我们用一个区间去预测未知参数。如果我们构造出100个这样的区间，那么我有<span class="math inline">\(100*(1-\alpha)\)</span>次的区间预测正确，即真实的未知参数值位于对应区间上。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/statistics-2/#more" rel="contents">
@@ -819,7 +818,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>7.3k</span>
+      <span>7.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -839,9 +838,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="1-Maximum-Likelihood-Estimation">1. Maximum Likelihood Estimation</h2>
-<h3 id="1-1-Point-Estimation">1.1 Point Estimation</h3>
-<p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为$f(x;p)=p^x(1-p)^{1-x}$；我们把取到红球记为1，否则为0；我们一共取了$n$球，得到了一串数据$T={X_1=x_1,…,X_n=x_n}, x_i\in {0,1}$。利用以上信息我们去估计$p=u(x_1,…,x_n)$的值，又因为$p$是一个点（值），所以称之为<strong>点估计</strong></p>
+          <h2 id="maximum-likelihood-estimation">1. Maximum Likelihood Estimation</h2>
+<h3 id="point-estimation">1.1 Point Estimation</h3>
+<p>我们从盒子中等概率i.i.d.的取一个球并放回，借此想要得知取到红球的概率。可知事件的模型为<span class="math inline">\(f(x;p)=p^x(1-p)^{1-x}\)</span>；我们把取到红球记为1，否则为0；我们一共取了<span class="math inline">\(n\)</span>球，得到了一串数据<span class="math inline">\(T=\{X_1=x_1,...,X_n=x_n\}, x_i\in \{0,1\}\)</span>。利用以上信息我们去估计<span class="math inline">\(p=u(x_1,...,x_n)\)</span>的值，又因为<span class="math inline">\(p\)</span>是一个点（值），所以称之为<strong>点估计</strong></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/statistics-1/#more" rel="contents">
@@ -960,7 +959,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3k</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -980,7 +979,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>三个臭皮匠，顶过诸葛亮。</p>
+          <p>三个臭皮匠，顶过诸葛亮。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm008/#more" rel="contents">
@@ -1099,7 +1098,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>14k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1119,7 +1118,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>支持向量机(Support Vector Machines)是一种<strong>二元分类</strong>模型。<strong>基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。<strong>基本模型是</strong>特征空间上的间隔最大</strong>的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。</p>
+          <p>支持向量机(Support Vector Machines)是一种<strong>二元分类</strong>模型。<strong>基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</strong>基本模型是<strong>特征空间上的间隔最大</strong>的线性分类器，区别于感知机。学习策略为间隔最大化，可化为求解凸二次规划convex quadratic programming。学习算法为求解凸二次规划的最优算法。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm007/#more" rel="contents">
@@ -1238,7 +1237,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.3k</span>
+      <span>6.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1258,7 +1257,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Logistic Regression 是统计学习中的经典分类方法。最大熵是概率模型学习的一个准则，将其推广到分类问题得到最大熵模型( maximum entropy model) 。逻辑回归模型与最大熵模型都属于对数线性模型。</p>
+          <p>Logistic Regression 是统计学习中的经典分类方法。最大熵是概率模型学习的一个准则，将其推广到分类问题得到最大熵模型( maximum entropy model) 。逻辑回归模型与最大熵模型都属于对数线性模型。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm006/#more" rel="contents">
@@ -1377,14 +1376,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>17k</span>
+      <span>18k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>15 mins.</span>
+      <span>16 mins.</span>
     </span>
 </div>
 
@@ -1397,7 +1396,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>决策树是一种基本的分类与回归方法，这里主要讨论分类问题。**他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。**学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。</p>
+          <p>决策树是一种基本的分类与回归方法，这里主要讨论分类问题。<strong>他可以认为是if-then规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。</strong>学习过程主要包括3个步骤：特征选择、决策树的生成、决策树的修建，并根据损失函数最小化的原则建立决策树模型。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm005/#more" rel="contents">
@@ -1516,7 +1515,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.8k</span>
+      <span>7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -1536,7 +1535,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>朴素贝叶斯 Naive Bayes是基于Bayes Theorem和特征条件独立假设的回归和分类方法，普遍用于垃圾邮件检测等，本文主要介绍分类方法。</p>
+          <p>朴素贝叶斯 Naive Bayes是基于Bayes Theorem和特征条件独立假设的回归和分类方法，普遍用于垃圾邮件检测等，本文主要介绍分类方法。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm004/#more" rel="contents">
@@ -1655,14 +1654,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.9k</span>
+      <span>6.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>6 mins.</span>
     </span>
 </div>
 
@@ -1675,7 +1674,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。<strong>k值的选择、距离度量、分类决策规则</strong>是KNN的3个基本要素。</p>
+          <p>k-nearest neighbor (KNN)，一种基本的分类与回归方法。这里只介绍分类问题。<strong>k值的选择、距离度量、分类决策规则</strong>是KNN的3个基本要素。
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/slm003/#more" rel="contents">
@@ -1765,13 +1764,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">88k</span>
+    <span title="Symbols count total">91k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:20</span>
+    <span title="Reading time total">1:23</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
